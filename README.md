@@ -16,8 +16,13 @@ Honestly, we probably don't.  But since cudaDecon was recently open-sourced, and
 Similarly, if you've stumbled upon this looking for GPU-accelerated affine transformations, then feel free to try these out, but don't miss the fantastic [gputools](https://github.com/maweigert/gputools) package, which provides OpenCL-acceleration of a number of image processing algorithms including affine transforms.
 
 ## Installation
-Conda installation coming soon, with precompiled libraries for Windows, Linux, and OSX.
+install [anaconda](https://www.anaconda.com/distribution/#download-section) or [miniconda](https://docs.conda.io/en/latest/miniconda.html), add a couple channels to your config, then install pycudadecon:
 
+```bash
+$ conda config --add channels conda-forge
+$ conda config --add channels talley
+$ conda install pycudadecon
+```
 
 ## Usage
 I'll try to write up better examples eventually, but for now take a look through the tests for examples on use.
