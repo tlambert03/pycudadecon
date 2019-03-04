@@ -19,6 +19,9 @@ Similarly, if you've stumbled upon this looking for GPU-accelerated affine trans
 Conda installation coming soon, with precompiled libraries for Windows, Linux, and OSX.
 
 
+## Usage
+I'll try to write up better examples eventually, but for now take a look through the tests for examples on use.
+
 ___
 
 <sup>1</sup> D.S.C. Biggs and M. Andrews, Acceleration of iterative image restoration algorithms, Applied Optics, Vol. 36, No. 8, 1997.
