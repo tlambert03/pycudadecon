@@ -7,7 +7,7 @@ The main features are:
 * CUDA accelerated deconvolution
 * Deskew, Rotation, and general affine transformations
 * CUDA-based camera-correction for [sCMOS artifact correction](https://llspy.readthedocs.io/en/latest/camera.html)
-* a few context managers for setup/breakdown of GPU-I/O-heavy tasks and convenience functions cause why not
+* a few context managers for setup/breakdown of GPU-I/O-heavy tasks and convenience functions
 * windows, linux, mac
 
 ### Why do we need yet another python package for deconvolution?
