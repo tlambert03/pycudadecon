@@ -1,10 +1,10 @@
 # pyCUDAdecon
-This package provides a python wrapper and convenience functions for [cudaDeconv](https://github.com/dmilkie/cudaDecon) (which is a CUDA/C++ implementation of an accelerated Richardson Lucy Deconvolution<sup>1</sup>).  cudaDeconv was originally written by [Lin Shao](https://github.com/linshaova) and modified by [Dan Milkie](https://github.com/dmilkie), at Janelia Research campus.  This package makes use of a shared library interface that I wrote for cudaDecon while developing [LLSpy](https://github.com/tlambert03/LLSpy), and the code here is mostly extracted from that package to allow it to be used independently of LLSpy.
+This package provides a python wrapper and convenience functions for [cudaDeconv](https://github.com/dmilkie/cudaDecon) (which is a CUDA/C++ implementation of an accelerated Richardson Lucy Deconvolution<sup>1</sup>).  cudaDeconv was originally written by [Lin Shao](https://github.com/linshaova) and modified by [Dan Milkie](https://github.com/dmilkie), at Janelia Research campus.  This package makes use of a shared library interface that I wrote for cudaDecon while developing [LLSpy](https://github.com/tlambert03/LLSpy), that adds a couple additional kernels for affine transformations and camera corrections.  The code here is mostly extracted from that package to allow it to be used independently of LLSpy.
 
 The main features are:
 * radially averaged OTF generation
 * OTF interpolation for voxel size independence between PSF and data volumes
-* CUDA accelerated deconvolution
+* CUDA accelerated deconvolution with a handful of artifact-reducing features. 
 * Deskew, Rotation, and general affine transformations
 * CUDA-based camera-correction for [sCMOS artifact correction](https://llspy.readthedocs.io/en/latest/camera.html)
 * a few context managers for setup/breakdown of GPU-I/O-heavy tasks and convenience functions
