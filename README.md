@@ -8,6 +8,7 @@ The main features are:
 * Deskew, Rotation, and general affine transformations
 * CUDA-based camera-correction for [sCMOS artifact correction](https://llspy.readthedocs.io/en/latest/camera.html)
 * a few context managers for setup/breakdown of GPU-I/O-heavy tasks and convenience functions cause why not
+* windows, linux, mac
 
 ### Why do we need yet another python package for deconvolution?
 Honestly, we probably don't.  But since cudaDecon was recently open-sourced, and I had mostly already written this wrapper, it seemed appropriate to release it.  I do think the C++ backbone is well done, and it's relatively mature and tested at this point.  That said, there are some other good python deconvolution packages out there such as [flowdec](https://github.com/hammerlab/flowdec), and probably many others.
@@ -16,6 +17,7 @@ Honestly, we probably don't.  But since cudaDecon was recently open-sourced, and
 Similarly, if you've stumbled upon this looking for GPU-accelerated affine transformations, then feel free to try these out, but don't miss the fantastic [gputools](https://github.com/maweigert/gputools) package, which provides OpenCL-acceleration of a number of image processing algorithms including affine transforms.
 
 ## Installation
+precompiled libraries are available for windows, linux, and mac via conda.  
 install [anaconda](https://www.anaconda.com/distribution/#download-section) or [miniconda](https://docs.conda.io/en/latest/miniconda.html), add a couple channels to your config, then install pycudadecon:
 
 ```bash
