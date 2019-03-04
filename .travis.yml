@@ -1,0 +1,50 @@
+#os: osx
+language: python
+python:
+  - 3.6
+  - 3.7
+
+branches:
+  only:
+  - master
+  - develop
+
+install:
+  - echo "TRAVIS_PYTHON_VERSION=$TRAVIS_PYTHON_VERSION"
+  - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+  - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
+  - if [[ "$BRANCH" == "master" ]]; then
+      export LABEL="main";
+    else
+      export LABEL="dev";
+    fi
+  - sudo apt-get update
+
+  # Install Anaconda
+  - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - export USER=talley
+  - export CONDA_BLD_PATH=~/conda-bld
+
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda install conda-build anaconda-client
+  - conda update -q conda
+  - conda config --add channels anaconda
+  - conda config --add channels conda-forge
+  - conda config --add channels talley
+  - conda config --add channels talley/label/dev
+  - conda config --set show_channel_urls true
+  - conda info -a
+
+script:
+  - conda build --py $TRAVIS_PYTHON_VERSION  conda.recipe
+  - OUTPUT=$(conda build --py $TRAVIS_PYTHON_VERSION --output conda.recipe)
+  - echo $OUTPUT
+
+after_success:
+  - echo $TRAVIS_TEST_RESULT
+  - conda convert -p osx-64 -o $CONDA_BLD_PATH $OUTPUT
+  - anaconda -v -t $CONDA_UPLOAD_TOKEN upload -u $USER --force $CONDA_BLD_PATH/osx-64/*.tar.bz2 --label $LABEL
+  - anaconda -v -t $CONDA_UPLOAD_TOKEN upload -u $USER --force $CONDA_BLD_PATH/linux-64/*.tar.bz2 --label $LABEL
