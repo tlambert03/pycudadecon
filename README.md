@@ -14,17 +14,29 @@ The main features are:
 Honestly, we probably don't.  But since cudaDecon was recently open-sourced, and I had mostly already written this wrapper, it seemed appropriate to release it.  I do think the C++ backbone is well done, and it's relatively mature and tested at this point.  That said, there are some other good python deconvolution packages out there such as [flowdec](https://github.com/hammerlab/flowdec), and probably many others.
 
 ### gputools
-Similarly, if you've stumbled upon this looking for GPU-accelerated affine transformations, then feel free to try these out, but don't miss the fantastic [gputools](https://github.com/maweigert/gputools) package, which provides OpenCL-acceleration of a number of image processing algorithms including affine transforms.
+Similarly, if you've stumbled upon this looking for GPU-accelerated affine transformations, then feel free to try these out, but don't miss the fantastic [gputools](https://github.com/maweigert/gputools) package, which provides OpenCL-acceleration for a number of image processing algorithms including affine transforms (and much more).
 
 ## Installation
-precompiled libraries are available for windows, linux, and mac via conda.  
-install [anaconda](https://www.anaconda.com/distribution/#download-section) or [miniconda](https://docs.conda.io/en/latest/miniconda.html), add a couple channels to your config, then install pycudadecon:
+Precompiled libraries are available for windows, linux, and mac via conda.  
+Install [anaconda](https://www.anaconda.com/distribution/#download-section) or [miniconda](https://docs.conda.io/en/latest/miniconda.html), add a couple channels to your config, then install pycudadecon:
 
 ```bash
 $ conda config --add channels conda-forge
 $ conda config --add channels talley
 $ conda install pycudadecon
 ```
+
+### GPU requirements
+
+This software requires a CUDA-compatible NVIDIA GPU.  
+The underlying libraries (llspylibs) have been compiled against different versions of the CUDA toolkit.  The required CUDA libraries are bundled in the conda distributions so you don't need to install the CUDA toolkit separately.  If desired, you can pick which version of CUDA you'd like based on your needs, but please note that different versions of the CUDA toolkit have different GPU driver requirements (the OS X build has only been compiled for CUDA 9.0).  To see which version you have installed currently, use `conda list llspylibs`, and to manually select a specific version of llspylibs:
+
+| CUDA  | Linux driver | Win driver | Install With |
+| ------------- | ------------ | --------   | -----------  |
+| 10.0  | ≥ 410.48     | ≥ 411.31   | `conda install llspylibs=<version>=cu10.0`  |
+|  9.0  | ≥ 384.81     | ≥ 385.54   | `conda install llspylibs=<version>=cu9.0`  |
+
+...where `<version>` is the version of llspylibs you'd like to install (use `conda search llspylibs` to see available versions)
 
 ## Usage
 I'll try to write up better examples eventually, but for now take a look through the tests for examples on use.
