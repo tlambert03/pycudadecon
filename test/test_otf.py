@@ -1,7 +1,7 @@
 import unittest
 import os
 import numpy as np
-from pycudadecon import makeotf
+from pycudadecon import make_otf
 from pycudadecon.util import imread, is_otf
 
 
@@ -15,7 +15,7 @@ class TestMakeOTF(unittest.TestCase):
         """
         Test that it can make an otf file from a psf
         """
-        result = makeotf(self.psf, self.dest)
+        result = make_otf(self.psf, self.dest)
         self.assertTrue(os.path.isfile(result))
         known = imread(self.otf)
 
@@ -27,7 +27,7 @@ class TestMakeOTF(unittest.TestCase):
         """
         Test that it can make an otf file from a psf
         """
-        result = makeotf(self.psf, self.dest, otf_bgrd='auto')
+        result = make_otf(self.psf, self.dest, otf_bgrd='auto')
         self.assertTrue(os.path.isfile(result))
         os.remove(self.dest)
 

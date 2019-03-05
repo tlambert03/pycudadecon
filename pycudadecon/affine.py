@@ -62,7 +62,29 @@ else:
 
 
 def deskewGPU(im, dxdata=0.1, dzdata=0.5, angle=31.5, width=0, shift=0, pad_val='auto'):
-    """Deskew data acquired in stage-scanning mode on GPU"""
+    """Deskew data acquired in stage-scanning mode on GPU
+
+    Simple affine transform variant to perform a shear operation to correct
+    for volume shearing.
+
+    Args:
+        im (np.ndarray): Image volume to deskew
+        dxdata (float): XY Pixel size of image volume (default: {0.1})
+        dzdata (float): Z-step size in image volume.  In a typical light sheet
+            stage-scanning aquisition, this corresponds to the step
+            size that the stage takes between planes, NOT the final
+            Z-step size between planeds after deskewing along the optical
+            axis of the detection objective (default: {0.5})
+        angle (float): Deskew angle (usually, angle between sheet and axis of
+            stage motion) (default: {31.5})
+        width (int): If not 0, crop output image to specified width (default: {0})
+        shift (int): If not 0, shift image center by this value (default: {0})
+        pad_val (int): Value to pad image with when deskewing.  If 'auto'
+            the median value of the last Z plane will be used. (default: {'auto'})
+
+    Returns:
+        np.ndarray: Deskewed volume
+    """
     if isinstance(pad_val, str) and pad_val == 'auto':
         pad_val = np.median(im[-1])
     assert isinstance(pad_val, (int, float))
@@ -84,17 +106,76 @@ def deskewGPU(im, dxdata=0.1, dzdata=0.5, angle=31.5, width=0, shift=0, pad_val=
 
 
 def affineGPU(im, tmat, dzyx=None):
-    """Perform affine transformation of image with provided transformation matrix
+    """Perform 3D affine transformation of image given a 4x4 transformation matrix
 
-    optional dzyx parameter {tuple, list} specifies the voxel size of the image [dz, dy, dx].
-    If it is provided, it will be used to transform the image from intrinsic
-    coordinates to world coordinates prior to transformation, e.g.:
+    optional dzyx parameter {tuple, list} specifies the voxel size of the
+    image [dz, dy, dx]. If it is provided, it will be used to transform
+    the image from intrinsic coordinates to world coordinates prior to
+    transformation, e.g.:
 
-    x = 0.5 + (x - 0.5) * dx;
+    *x = 0.5 + (x - 0.5) * dx*
 
     and then back to intrinsic coords afterwards... e.g.:
 
-    tu = 0.5 + (tu - 0.5) / dx;
+    *tu = 0.5 + (tu - 0.5) / dx*
+
+
+    Args:
+        im (np.ndarray): 3D input volume
+        tmat (np.ndarray): Affine transformation matrix
+        dzyx (list): Voxel size of input volume ([dz, dy, dx]).  If provided, the
+            transformation matrix is assumed to be in units of sample space.
+            otherwise the transformation is performed in image coordinates
+            (default: {None})
+
+    Returns:
+        np.ndarray: Transformed volume
+
+    Raises:
+        ValueError: If the dimensions of the transformation matrix do not
+            the input volume.  For instance, a 3D input volume requires a
+            4 x 4 tranforamtion matrix.
+
+    Examples:
+
+        Perform simple translation
+
+        >>> nx, ny, nz = (10, 20, 3)
+        >>> T = np.array([[1, 0, 0, nx],
+        ...               [0, 1, 0, ny],
+        ...               [0, 0, 1, nz],
+        ...               [0, 0, 0, 1]])
+        >>> rotated = affineGPU(im, T)
+
+        Perform a rotation about the Y axis...
+        (this is the underlying code for :func:`rotateGPU`)
+
+        >>> theta = angle * np.pi / 180
+        >>> nz, ny, nx = im.shape
+        >>> xzRatio = dxdata / (np.deg2rad(angle) * dzdata)
+        >>> # first translate the middle of the image to the origin
+        >>> T1 = np.array([[1, 0, 0, nx / 2],
+        >>>                [0, 1, 0, ny / 2],
+        >>>                [0, 0, 1, nz / 2],
+        >>>                [0, 0, 0, 1]])
+        >>> # then scale (resample) the Z axis the dz/dx ratio
+        >>> S = np.array([[1, 0, 0, 0],
+        >>>               [0, 1, 0, 0],
+        >>>               [0, 0, xzRatio, 0],
+        >>>               [0, 0, 0, 1]])
+        >>> # then rotate theta degrees about the Y axis
+        >>> R = np.array([[np.cos(theta), 0, -np.sin(theta), 0],
+        >>>               [0, 1, 0, 0],
+        >>>               [np.sin(theta), 0, np.cos(theta), 0],
+        >>>               [0, 0, 0, 1]])
+        >>> # then translate back to the original origin
+        >>> T2 = np.array([[1, 0, 0, -nx / 2],
+        >>>                [0, 1, 0, -ny / 2],
+        >>>                [0, 0, 1, -nz / 2],
+        >>>                [0, 0, 0, 1]])
+        >>> T = np.eye(4)
+        >>> T = np.dot(np.dot(np.dot(np.dot(T, T1), S), R), T2)
+        >>> rotated = affineGPU(im, T)
 
     """
     if not tmat.shape == tuple([im.ndim + 1] * 2):

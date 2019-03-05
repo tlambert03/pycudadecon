@@ -7,9 +7,6 @@ logger = logging.getLogger(__name__)
 
 
 cudaLib = load_lib('libcudaDeconv')
-rl_cleanup = None
-cuda_reset = None
-
 
 if not cudaLib:
     logger.error('Could not load libcudaDeconv!')
@@ -78,10 +75,6 @@ else:
             ctypes.c_float, # pad_val
             ctypes.c_bool, # bDupRevStack
         ]
-        # call after
-        rl_cleanup = cudaLib.RL_cleanup
-
-        cuda_reset = cudaLib.cuda_reset
 
     except AttributeError as e:
         logger.warning('Failed to properly import libcudaDeconv')
@@ -166,11 +159,14 @@ def rl_decon(im, background=80, n_iters=10, shift=0, save_deskewed=False,
             result (default: {False})
         output_shape: Specify the output shape after deskewing.  Usually this
             is unnecessary and will be autodetected.  Mostly intended for
-            use within a :class:`pycudadecon.RLContext` context. (default: autodetect)
-        napodize: [description] (default: {15})
-        nz_blend: [description] (default: {0})
-        pad_val: [description] (default: {0.0})
-        dup_rev_z: [description] (default: {False})
+            use within a :class:`pycudadecon.RLContext` context.
+            (default: autodetect)
+        napodize: Number of pixels to soften edge with. (default: {15})
+        nz_blend: Number of top and bottom sections to blend in to reduce
+            axial ringing. (default: {0})
+        pad_val: Value to pad image with when deskewing (default: {0.0})
+        dup_rev_z: Duplicate reversed stack prior to decon to reduce
+            Z ringing (default: {False})
     """
     nz, ny, nx = im.shape
     if output_shape is None:
@@ -205,6 +201,26 @@ def rl_decon(im, background=80, n_iters=10, shift=0, save_deskewed=False,
         return decon_result
 
 
+def rl_cleanup():
+    """Release GPU buffer and cleanup after deconvolution
+
+    | Resets any bleach corrections
+    | Removes OTF from GPU buffer
+    | Destroys cuFFT plan
+    | Releases GPU buffers
+    """
+    cudaLib.RL_cleanup()
+
+
+def cuda_reset():
+    """Calls `cudaDeviceReset <https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__DEVICE.html#group__CUDART__DEVICE_1gef69dd5c6d0206c2b8d099abac61f217>`_
+
+    Destroy all allocations and reset all state on the current device
+    in the current process.
+    """
+    cudaLib.cuda_reset()
+
+
 def quickDecon(im, otfpath, save_deskewed=False, **kwargs):
     """Perform deconvolution of im with otf at otfpath
 
@@ -237,11 +253,19 @@ class RLContext(object):
     """ Context manager to setup the GPU for RL decon
 
     Takes care of handing the OTF to the GPU, preparing a cuFFT plane,
-    and cleaning up after decon
+    and cleaning up after decon.  Internally, this calls :func:`rl_init`,
+    stores the shape of the expected output volume after any deskew/decon,
+    then calls :func:`rl_cleanup` when exiting the context.
+
+    Args:
+        shape (tuple, list): 3-Tuple with the shape of the data volume to
+            deconvolve ([nz, ny, nx])
+        otfpath (str): path to the OTF TIF file
+        **kwargs: optional keyword arguments to pass to :func:`rl_init`
 
     Example:
         >>> with RLContext(data.shape, otfpath, dz) as ctx:
-                result = rl_decon(data, ctx.out_shape)
+        ...     result = rl_decon(data, ctx.out_shape)
 
     """
     def __init__(self, shape, otfpath, **kwargs):

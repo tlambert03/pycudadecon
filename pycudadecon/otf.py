@@ -48,7 +48,7 @@ def requireOTFlib(func, *args, **kwargs):
     return dec
 
 
-def makeotf(psf, outpath=None, dzpsf=0.1, dxpsf=0.1, wavelength=520, na=1.25,
+def make_otf(psf, outpath=None, dzpsf=0.1, dxpsf=0.1, wavelength=520, na=1.25,
             nimm=1.3, otf_bgrd=None, krmax=0, fixorigin=10, cleanup_otf=False,
             **kwargs):
     """ Generate a radially averaged OTF file from a PSF file
@@ -101,7 +101,7 @@ class TemporaryOTF(object):
     Args:
         psf (str, np.ndarray): 3D PSF numpy array, or a filepath to a 3D PSF
             or 2D complex OTF file.
-        **kwargs: optional keyword arguments will be passed to the :func:`pycudadecon.otf.makeotf` function
+        **kwargs: optional keyword arguments will be passed to the :func:`pycudadecon.otf.make_otf` function
 
     Note:
         OTF files cannot currently be provided directly as 2D complex np.ndarrays
@@ -125,9 +125,9 @@ class TemporaryOTF(object):
             if isinstance(self.psf, np.ndarray):
                 with tempfile.NamedTemporaryFile() as tpsf:
                     tf.imsave(tpsf.name, self.psf)
-                    makeotf(tpsf.name, self.temp.name, **self.kwargs)
+                    make_otf(tpsf.name, self.temp.name, **self.kwargs)
             elif isinstance(self.psf, str) and os.path.isfile(self.psf):
-                makeotf(self.psf, self.temp.name, **self.kwargs)
+                make_otf(self.psf, self.temp.name, **self.kwargs)
             else:
                 raise ValueError('Did not expect PSF file as {}'
                                  .format(type(self.psf)))

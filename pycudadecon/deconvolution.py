@@ -35,6 +35,9 @@ def _yield_arrays(images, fpattern='*.tif'):
 def decon(images, psf, fpattern='*.tif', **kwargs):
     """Deconvolve an image or images with a PSF or OTF file
 
+    If `images` is a directory, use the `fpattern` argument to select files
+    by filename pattern.
+
     Args:
         images (str, np.ndarray, list, tuple): The array, filepath,
             directory, or list/tuple thereof to deconvolve
@@ -73,13 +76,47 @@ def decon(images, psf, fpattern='*.tif', **kwargs):
         ValueError: If save_deskewed is True and deskew is unset or 0
         IOError: If a directory is provided as input and ``fpattern`` yields no files
         NotImplementedError: If ``psf`` is provided as a complex, 2D numpy array
-            (OTFs can only be provided as filenames created with ``makeotf``)
+            (OTFs can only be provided as filenames created with :func:`pycudadecon.make_otf`)
 
     Returns:
         np.ndarray, list: numpy array or list of arrays (deconvolved images)
 
+        If the input ``images`` is a single array, or filepath, then the returned
+        value will be a single 3D image volume.
+
+        If the input is a directory or a list of arrays, then the returned value
+        will be a list of 3D image volumes.
+
         if ``save_deskewed == True``, returns a tuple (decon, deskewed) or a list
         of tuples (if input was iterable)
+
+    Examples:
+
+        deconvolve a 3D TIF volume with a 3D PSF volume (e.g. a single bead stack)
+
+        >>> impath = '/path/to/image.tif'
+        >>> psfpath = '/path/to/psf.tif'
+        >>> result = decon(impath, psfpath)
+
+        deconvolve all TIF files in a specific directory that match a certain
+        `filename pattern <https://docs.python.org/3.6/library/fnmatch.html>`_,
+        (in this example, all TIFs with the string '560nm' in their name)
+
+        >>> imdirectory = '/directory/with/images'
+        >>> psfpath = '/path/to/psf.tif'
+        >>> result = decon(imdirectory, psfpath, fpattern='*560nm*.tif')
+
+        deconvolve a list of images, provided either as np.ndarrays, filepaths,
+        or directories
+
+        >>> imdirectory = '/directory/with/images'
+        >>> impath = '/path/to/image.tif'
+        >>> imarray = tifffile.imread('some_other_image.tif')
+        >>> psfpath = '/path/to/psf.tif'
+        >>> result = decon([imdirectory, impath, imarray],
+        ...                 psfpath, fpattern='*560nm*.tif')
+
+
 
     """
     if kwargs.get('save_deskewed'):
