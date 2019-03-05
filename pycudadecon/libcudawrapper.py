@@ -81,6 +81,8 @@ else:
         cuda_reset = cudaLib.cuda_reset
 
     except AttributeError as e:
+        rl_cleanup = None
+        cuda_reset = None
         logger.warning('Failed to properly import libcudaDeconv')
         print(e)
 
