@@ -7,6 +7,9 @@ logger = logging.getLogger(__name__)
 
 
 cudaLib = load_lib('libcudaDeconv')
+rl_cleanup = None
+cuda_reset = None
+
 
 if not cudaLib:
     logger.error('Could not load libcudaDeconv!')
@@ -81,8 +84,6 @@ else:
         cuda_reset = cudaLib.cuda_reset
 
     except AttributeError as e:
-        rl_cleanup = None
-        cuda_reset = None
         logger.warning('Failed to properly import libcudaDeconv')
         print(e)
 
