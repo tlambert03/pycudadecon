@@ -1,2 +1,0 @@
-tifffile>=0.15
-numpy
