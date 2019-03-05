@@ -14,7 +14,8 @@ The main features are:
 * a few context managers for setup/breakdown of GPU-I/O-heavy tasks and convenience functions
 * windows, linux, mac
 
-[Documentation](https://pycudadecon.readthedocs.io/en/latest/index.html)
+#### Documentation
+[Documentation](https://pycudadecon.readthedocs.io/en/latest/index.html) generously hosted by [Read the Docs](https://readthedocs.org/)
 
 
 ### Why do we need yet another python package for deconvolution?
@@ -46,7 +47,51 @@ The underlying libraries (llspylibs) have been compiled against different versio
 ...where `<version>` is the version of llspylibs you'd like to install (use `conda search llspylibs` to see available versions)
 
 ## Usage
-I'll try to write up better examples eventually, but for now take a look through the tests for examples on use, or have a look at the [documentation](https://pycudadecon.readthedocs.io/en/latest/index.html)
+
+If you have a PSF and an image volume and you just want to get started, check out the [`pycudadecon.decon()`](https://pycudadecon.readthedocs.io/en/latest/deconvolution.html#pycudadecon.decon) function, which is designed be able to handle most basic applications.
+
+```python
+from pycudadecon import decon
+image_path = '/path/to/some_image.tif'
+psf_path = '/path/to/psf_3D.tif'
+result = decon(image_path, psf_path)
+```
+
+For finer-tuned control, you may wish to make an OTF file from your PSF using [`pycudadecon.make_otf()`](https://pycudadecon.readthedocs.io/en/latest/otf.html?highlight=make_otf#pycudadecon.make_otf), and then use the [`pycudadecon.RLContext`](https://pycudadecon.readthedocs.io/en/latest/deconvolution.html?highlight=RLContext#pycudadecon.RLContext) context manager to setup the GPU for use with the [`pycudadecon.rl_decon()`](https://pycudadecon.readthedocs.io/en/latest/deconvolution.html?highlight=RLContext#pycudadecon.rl_decon) function.  (Note all images processed in the same context must have the same input shape).
+
+```python
+from pycudadecon import RLContext, rl_decon
+from glob import glob
+import tifffile
+image_folder = '/path/to/some_images/'
+imlist = glob(image_folder + '*488*.tif')
+otf_path = '/path/to/pregenerated_otf.tif'
+with tifffile.TiffFile(imlist[0]) as tf:
+    imshape = tf.series[0].shape
+with RLContext(imshape, otf_path, dz) as ctx:
+    for impath in imlist:
+        image = tifffile.imread(impath)
+        result = rl_decon(image, ctx.out_shape)
+        # do something with result...
+```
+
+If you have a 3D PSF volume, the [`pycudadecon.TemporaryOTF`](https://pycudadecon.readthedocs.io/en/latest/otf.html?highlight=temporaryotf#pycudadecon.TemporaryOTF) context manager facilitates temporary OTF generation...
+
+```python
+ # continuing with the variables from the previous example...
+ psf_path = "/path/to/psf_3D.tif"
+ with TemporaryOTF(psf) as otf:
+     with RLContext(imshape, otf.path, dz) as ctx:
+         for impath in imlist:
+             image = tifffile.imread(impath)
+             result = rl_decon(image, ctx.out_shape)
+             # do something with result...
+```
+
+... and that bit of code is essentially what the [`pycudadecon.decon()`](https://pycudadecon.readthedocs.io/en/latest/deconvolution.html#pycudadecon.decon) function is doing, with a little bit of additional conveniences added in.
+
+*Each of these functions has many options and accepts multiple keyword arguments. See the [documentation](https://pycudadecon.readthedocs.io/en/latest/index.html) for further information on the respective functions.*
+
 ___
 
 <sup>1</sup> D.S.C. Biggs and M. Andrews, Acceleration of iterative image restoration algorithms, Applied Optics, Vol. 36, No. 8, 1997.
