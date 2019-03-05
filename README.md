@@ -92,6 +92,7 @@ If you have a 3D PSF volume, the [`pycudadecon.TemporaryOTF`](https://pycudadeco
 
 *Each of these functions has many options and accepts multiple keyword arguments. See the [documentation](https://pycudadecon.readthedocs.io/en/latest/index.html) for further information on the respective functions.*
 
+For examples and information on affine transforms, volume rotations, and deskewing (typical of light sheet volumes acquired with stage-scanning), see the [documentation on Affine Transformations](https://pycudadecon.readthedocs.io/en/latest/affine.html)
 ___
 
 <sup>1</sup> D.S.C. Biggs and M. Andrews, Acceleration of iterative image restoration algorithms, Applied Optics, Vol. 36, No. 8, 1997.
