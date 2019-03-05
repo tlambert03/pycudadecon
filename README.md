@@ -3,7 +3,7 @@
 [![Documentation Status](https://readthedocs.org/projects/pycudadecon/badge/?version=latest)](https://pycudadecon.readthedocs.io/en/latest/?badge=latest) [![Python 3.6](https://img.shields.io/badge/python-3.6-green.svg)](https://www.python.org/downloads/release/python-360/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
     
 
-This package provides a python wrapper and convenience functions for [cudaDeconv](https://github.com/dmilkie/cudaDecon) (which is a CUDA/C++ implementation of an accelerated Richardson Lucy Deconvolution<sup>1</sup>).  cudaDeconv was originally written by [Lin Shao](https://github.com/linshaova) and modified by [Dan Milkie](https://github.com/dmilkie), at Janelia Research campus.  This package makes use of a shared library interface that I wrote for cudaDecon while developing [LLSpy](https://github.com/tlambert03/LLSpy) (a Lattice light-sheet post-processing utility), that adds a couple additional kernels for affine transformations and camera corrections.  The code here is mostly extracted from that package to allow it to be used independently of LLSpy.
+This package provides a python wrapper and convenience functions for [cudaDeconv](https://github.com/dmilkie/cudaDecon), which is a CUDA/C++ implementation of an accelerated Richardson Lucy Deconvolution algorithm<sup>1</sup>, suitable for general applications, but designed particularly for stage-scanning light sheet applications such as Lattice Light Sheet.  cudaDeconv was originally written by [Lin Shao](https://github.com/linshaova) and modified by [Dan Milkie](https://github.com/dmilkie), at Janelia Research campus.  This package makes use of a cross-platform shared library interface that I wrote for cudaDecon while developing [LLSpy](https://github.com/tlambert03/LLSpy) (a Lattice light-sheet post-processing utility), that adds a couple additional kernels for affine transformations and camera corrections.  The code here is mostly extracted from that package and cleaned up to allow it to be used independently of LLSpy.
 
 The main features are:
 * radially averaged OTF generation
@@ -45,6 +45,8 @@ The underlying libraries (llspylibs) have been compiled against different versio
 |  9.0  | ≥ 384.81     | ≥ 385.54   | `conda install llspylibs=<version>=cu9.0`  |
 
 ...where `<version>` is the version of llspylibs you'd like to install (use `conda search llspylibs` to see available versions)
+
+If you run into trouble, feel free to [open an issue](https://github.com/tlambert03/pycudadecon/issues) and describe your setup.
 
 ## Usage
 
@@ -95,4 +97,4 @@ If you have a 3D PSF volume, the [`pycudadecon.TemporaryOTF`](https://pycudadeco
 For examples and information on affine transforms, volume rotations, and deskewing (typical of light sheet volumes acquired with stage-scanning), see the [documentation on Affine Transformations](https://pycudadecon.readthedocs.io/en/latest/affine.html)
 ___
 
-<sup>1</sup> D.S.C. Biggs and M. Andrews, Acceleration of iterative image restoration algorithms, Applied Optics, Vol. 36, No. 8, 1997.
+<sup>1</sup> D.S.C. Biggs and M. Andrews, Acceleration of iterative image restoration algorithms, Applied Optics, Vol. 36, No. 8, 1997. https://doi.org/10.1364/AO.36.001766
