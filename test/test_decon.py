@@ -1,8 +1,7 @@
 import unittest
 import os
 import numpy as np
-from pycudadecon.decon import decon
-from pycudadecon.libcudawrapper import RLContext, rl_init, rl_decon, rl_cleanup
+from pycudadecon import decon, RLContext, rl_init, rl_decon, rl_cleanup
 from pycudadecon.util import imread
 
 

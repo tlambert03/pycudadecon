@@ -35,10 +35,31 @@ def _yield_arrays(images, fpattern='*.tif'):
 
 
 class TemporaryOTF(object):
-    """ normalizes the input PSF to always provide the path to an OTF
-    file ... converting the PSF to a temporary file if necessary
-    """
+    """Context manager to read OTF file or generate a temporary OTF from a PSF.
 
+    Normalizes the input PSF to always provide the path to an OTF file,
+    converting the PSF to a temporary file if necessary.
+
+    ``self.path`` can be used within the context to get the filepath to
+    the temporary OTF filepath.
+
+    Args:
+        psf (str, np.ndarray): 3D PSF numpy array, or a filepath to a 3D PSF
+            or 2D complex OTF file.
+        **kwargs: optional keyword arguments will be passed to the :func:`pycudadecon.otf.makeotf` function
+
+    Note:
+        OTF files cannot currently be provided directly as 2D complex np.ndarrays
+
+    Raises:
+        ValueError: If the PSF/OTF is an unexpected type
+        NotImplementedError: if the PSF/OTF is a complex 2D numpy array
+
+    Example:
+        >>> with TemporaryOTF(psf, **kwargs) as otf:
+                print(otf.path)
+        /tmp/...
+    """
     def __init__(self, psf, **kwargs):
         self.psf = psf
         self.kwargs = kwargs
@@ -53,7 +74,7 @@ class TemporaryOTF(object):
             elif isinstance(self.psf, str) and os.path.isfile(self.psf):
                 makeotf(self.psf, self.temp.name, **self.kwargs)
             else:
-                raise NotImplementedError('Did not expect PSF file as {}'
+                raise ValueError('Did not expect PSF file as {}'
                                           .format(type(self.psf)))
             self.path = self.temp.name
         elif is_otf(self.psf) and os.path.isfile(self.psf):
@@ -74,40 +95,52 @@ class TemporaryOTF(object):
 def decon(images, psf, fpattern='*.tif', **kwargs):
     """Deconvolve an image or images with a PSF or OTF file
 
-    Inputs:
-        images: file or directory path, a numpy array,  or a list/tuple of
-                any of the above.
-        psf: a filepath of a PSF or OTF file, or a 3D numpy PSF array
-        kwargs:  optional keyword arguments, with defaults shown
-            dzdata          [0.5]
-            dxdata          [0.1]
-            dxpsf           [0.1]
-            dzpsf           [0.1]
+    Args:
+        images (str, np.ndarray, list, tuple): The array, filepath,
+            directory, or list/tuple thereof to deconvolve
+        psf (str, np.ndarray): a filepath of a PSF or OTF file, or a 3D numpy
+            PSF array.  Function will auto-detect whether the file is a 3D PSF
+            or a filepath representing a 2D complex OTF.
+        fpattern (str, optional): Defaults to '\*.tif'. Filepattern to use when
+            a directory is provided in the ``images`` argument
+        ** kwargs: optional keyword arguments listed below
+        ** dxdata (float): The xy pixel size of the ``image``. Defaults to 0.1
+        ** dzdata (float): The z step size of the ``image``. Defaults to 0.5
+        ** dxpsf (float): The xy pixel size of the ``psf``. Defaults to 0.1
+        ** dzpsf (float): The z step size of the ``psf``. Defaults to 0.1
+        ** background (int): Background to subtract.  use 'auto' to subtract
+            median val of last Z plane. Defaults to 80
+        ** deskew (float): Angle to deskew data (for stage scanning acquisition).
+            Defaults to 0
+        ** pad_val (int): Value to pad edges with when deskewing. Should be
+            zero when ``background`` is 'auto' Defaults to 0
+        ** rotate (float): Degrees to rotate volume in Y axis (to make Z axis orthogonal to coverslip). Defaults to 0
+        ** width (int): Width of output image (0 = full). Defaults to 0
+        ** n_iters (int): Number of iterations in deconvolution Defaults to 10
+        ** save_deskewed (bool): Save raw deskewed files (if deskew > 0). Defaults to False
+        ** napodize (int): Number of pixels to soften edge with. Defaults to 15
+        ** nz_blend (int): Number of top and bottom sections to blend in to reduce axial ringing. Defaults to 0
+        ** dup_rev_z (bool): Duplicate reversed stack prior to decon to reduce axial ringing. Defaults to False
+        ** wavelength (int): Wavelength in nanometers (for OTF cleanup). Defaults to 520
+        ** fixorigin (int):  For all kz, extrapolate using pixels kr=1 to this pixel to get value for kr=0. Defaults to 10
+        ** otf_bgrd (None, int): Background to subtract in PSF (None = autodetect). Defaults to None
+        ** na (float): Numerical aperture (for OTF cleanup). Defaults to 1.25]
+        ** nimm (float): Refractive index of medium (for OTF cleanup). Defaults to 1.3
+        ** krmax (int): Pixels outside this limit will be zeroed (overwriting estimated value from ``na`` and ``nimm``). Defaults to 0
+        ** cleanup_otf (bool): Clean up OTF outside of OTF support. Defaults to False
 
-            wavelength      [520]
-            fixorigin       [10]
-            otf_bgrd        [None]      None = autodetect
-            na              [1.25]
-            nimm            [1.3]
-            krmax           [0]         pixels outside this limit will be zeroed
-                                        (overwriting estimated value from NA and NIMM)
-            cleanup_otf     [False]
-
-            deskew          [0]
-            rotate          [0]
-            width           [0]
-            background      [80]        'auto' = median val of last Z plane
-            n_iters         [10]
-            save_deskewed   [False]     save deskewed
-            napodize        [15]
-            nz_blend        [0]
-            padVal          [0.0]       should be zero when background is auto
-            dup_rev_z       [False]
+    Raises:
+        ValueError: If save_deskewed is True and deskew is unset or 0
+        IOError: If a directory is provided as input and ``fpattern`` yields no files
+        NotImplementedError: If ``psf`` is provided as a complex, 2D numpy array
+            (OTFs can only be provided as filenames created with ``makeotf``)
 
     Returns:
-        numpy array or list of arrays with deconvolved images
-            if save_deskewed == True, returns a tuple (decon, deskewed)
-            or a list of tuples (if input was iterable)
+        np.ndarray, list: numpy array or list of arrays (deconvolved images)
+
+        if ``save_deskewed == True``, returns a tuple (decon, deskewed) or a list
+        of tuples (if input was iterable)
+
     """
     if kwargs.get('save_deskewed'):
         if kwargs.get('deskew', 1) == 0:

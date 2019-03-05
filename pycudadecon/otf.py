@@ -1,4 +1,4 @@
-from .util import load_lib, imread
+from .util import load_lib
 import ctypes
 import logging
 logger = logging.getLogger(__name__)

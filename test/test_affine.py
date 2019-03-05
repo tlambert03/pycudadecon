@@ -1,7 +1,7 @@
 import unittest
 import os
 import numpy as np
-from pycudadecon.libcudawrapper import deskewGPU, rotateGPU, affineGPU
+from pycudadecon import deskewGPU, rotateGPU, affineGPU
 from pycudadecon.util import imread
 
 
