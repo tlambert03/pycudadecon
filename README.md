@@ -1,5 +1,9 @@
 # pyCUDAdecon
-This package provides a python wrapper and convenience functions for [cudaDeconv](https://github.com/dmilkie/cudaDecon) (which is a CUDA/C++ implementation of an accelerated Richardson Lucy Deconvolution<sup>1</sup>).  cudaDeconv was originally written by [Lin Shao](https://github.com/linshaova) and modified by [Dan Milkie](https://github.com/dmilkie), at Janelia Research campus.  This package makes use of a shared library interface that I wrote for cudaDecon while developing [LLSpy](https://github.com/tlambert03/LLSpy), that adds a couple additional kernels for affine transformations and camera corrections.  The code here is mostly extracted from that package to allow it to be used independently of LLSpy.
+
+[![Documentation Status](https://readthedocs.org/projects/pycudadecon/badge/?version=latest)](https://pycudadecon.readthedocs.io/en/latest/?badge=latest) [![Python 3.6](https://img.shields.io/badge/python-3.6-green.svg)](https://www.python.org/downloads/release/python-360/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+    
+
+This package provides a python wrapper and convenience functions for [cudaDeconv](https://github.com/dmilkie/cudaDecon) (which is a CUDA/C++ implementation of an accelerated Richardson Lucy Deconvolution<sup>1</sup>).  cudaDeconv was originally written by [Lin Shao](https://github.com/linshaova) and modified by [Dan Milkie](https://github.com/dmilkie), at Janelia Research campus.  This package makes use of a shared library interface that I wrote for cudaDecon while developing [LLSpy](https://github.com/tlambert03/LLSpy) (a Lattice light-sheet post-processing utility), that adds a couple additional kernels for affine transformations and camera corrections.  The code here is mostly extracted from that package to allow it to be used independently of LLSpy.
 
 The main features are:
 * radially averaged OTF generation
@@ -9,6 +13,9 @@ The main features are:
 * CUDA-based camera-correction for [sCMOS artifact correction](https://llspy.readthedocs.io/en/latest/camera.html)
 * a few context managers for setup/breakdown of GPU-I/O-heavy tasks and convenience functions
 * windows, linux, mac
+
+[Documentation](https://pycudadecon.readthedocs.io/en/latest/index.html)
+
 
 ### Why do we need yet another python package for deconvolution?
 Honestly, we probably don't.  But since cudaDecon was recently open-sourced, and I had mostly already written this wrapper, it seemed appropriate to release it.  I do think the C++ backbone is well done, and it's relatively mature and tested at this point.  That said, there are some other good python deconvolution packages out there such as [flowdec](https://github.com/hammerlab/flowdec), and probably many others.
@@ -39,8 +46,7 @@ The underlying libraries (llspylibs) have been compiled against different versio
 ...where `<version>` is the version of llspylibs you'd like to install (use `conda search llspylibs` to see available versions)
 
 ## Usage
-I'll try to write up better examples eventually, but for now take a look through the tests for examples on use.
-
+I'll try to write up better examples eventually, but for now take a look through the tests for examples on use, or have a look at the [documentation](https://pycudadecon.readthedocs.io/en/latest/index.html)
 ___
 
 <sup>1</sup> D.S.C. Biggs and M. Andrews, Acceleration of iterative image restoration algorithms, Applied Optics, Vol. 36, No. 8, 1997.
