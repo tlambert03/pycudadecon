@@ -1,16 +1,11 @@
-from .util import load_lib
+from .util import load_lib, is_otf
+import tempfile
+import numpy as np
+import tifffile as tf
+import os
 import ctypes
 import logging
 logger = logging.getLogger(__name__)
-
-
-try:
-    import pathlib as plib
-    plib.Path()
-except (ImportError, AttributeError):
-    import pathlib2 as plib
-except (ImportError, AttributeError):
-    raise ImportError('no pathlib detected. For python2: pip install pathlib2')
 
 
 otflib = load_lib('libradialft')
@@ -53,11 +48,29 @@ def requireOTFlib(func, *args, **kwargs):
     return dec
 
 
-def makeotf(psf, outpath=None, wavelength=520, dxpsf=0.1, dzpsf=0.1, na=1.25,
+def makeotf(psf, outpath=None, dzpsf=0.1, dxpsf=0.1, wavelength=520, na=1.25,
             nimm=1.3, otf_bgrd=None, krmax=0, fixorigin=10, cleanup_otf=False,
             **kwargs):
-    """
-    Generate a radially averaged OTF file from a PSF file, at outpath
+    """ Generate a radially averaged OTF file from a PSF file
+
+    Args:
+        psf (str): Filepath of 3D PSF TIF
+        outpath (str): Destination filepath for the output OTF
+            (default: appends "_otf.tif" to filename)
+        dzpsf: Z-step size in microns (default: {0.1})
+        dxpsf: XY-Pixel size in microns (default: {0.1})
+        wavelength: Emission wavelength in nm (default: {520})
+        na: Numerical Aperture (default: {1.25})
+        nimm: Refractive indez of immersion medium (default: {1.3})
+        otf_bgrd: Background to subtract. "None" = autodetect. (default: {None})
+        krmax: pixels outside this limit will be zeroed (overwriting
+            estimated value from NA and NIMM) (default: {0})
+        fixorigin: for all kz, extrapolate using pixels kr=1 to this pixel
+            to get value for kr=0 (default: {10})
+        cleanup_otf: clean-up outside OTF support (default: {False})
+
+    Returns:
+        str: Path of output file
     """
     # krmax => "pixels outside this limit will be zeroed (overwriting estimated value from NA and NIMM)")
     if outpath is None:
@@ -74,3 +87,62 @@ def makeotf(psf, outpath=None, wavelength=520, dxpsf=0.1, dzpsf=0.1, na=1.25,
                    fixorigin, bUserBackground, background, na, nimm, dxpsf,
                    krmax, cleanup_otf)
     return outpath
+
+
+class TemporaryOTF(object):
+    """Context manager to read OTF file or generate a temporary OTF from a PSF.
+
+    Normalizes the input PSF to always provide the path to an OTF file,
+    converting the PSF to a temporary file if necessary.
+
+    ``self.path`` can be used within the context to get the filepath to
+    the temporary OTF filepath.
+
+    Args:
+        psf (str, np.ndarray): 3D PSF numpy array, or a filepath to a 3D PSF
+            or 2D complex OTF file.
+        **kwargs: optional keyword arguments will be passed to the :func:`pycudadecon.otf.makeotf` function
+
+    Note:
+        OTF files cannot currently be provided directly as 2D complex np.ndarrays
+
+    Raises:
+        ValueError: If the PSF/OTF is an unexpected type
+        NotImplementedError: if the PSF/OTF is a complex 2D numpy array
+
+    Example:
+        >>> with TemporaryOTF(psf, **kwargs) as otf:
+                print(otf.path)
+        /tmp/...
+    """
+    def __init__(self, psf, **kwargs):
+        self.psf = psf
+        self.kwargs = kwargs
+
+    def __enter__(self):
+        if not is_otf(self.psf):
+            self.temp = tempfile.NamedTemporaryFile()
+            if isinstance(self.psf, np.ndarray):
+                with tempfile.NamedTemporaryFile() as tpsf:
+                    tf.imsave(tpsf.name, self.psf)
+                    makeotf(tpsf.name, self.temp.name, **self.kwargs)
+            elif isinstance(self.psf, str) and os.path.isfile(self.psf):
+                makeotf(self.psf, self.temp.name, **self.kwargs)
+            else:
+                raise ValueError('Did not expect PSF file as {}'
+                                 .format(type(self.psf)))
+            self.path = self.temp.name
+        elif is_otf(self.psf) and os.path.isfile(self.psf):
+            self.path = self.psf
+        elif is_otf(self.psf) and isinstance(self.psf, np.ndarray):
+            raise NotImplementedError('cannot yet handle OTFs as numpy arrays')
+        else:
+            raise ValueError('Unrecognized input for otf')
+        return self
+
+    def __exit__(self, typ, val, traceback):
+        try:
+            self.temp.close()
+        except Exception:
+            pass
+

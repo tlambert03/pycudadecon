@@ -1,7 +1,7 @@
 import unittest
 import os
 import numpy as np
-from pycudadecon.otf import makeotf
+from pycudadecon import makeotf
 from pycudadecon.util import imread, is_otf
 
 
@@ -51,6 +51,7 @@ class TestMakeOTF(unittest.TestCase):
             os.remove(self.dest)
         except Exception:
             pass
+
 
 if __name__ == '__main__':
     unittest.main()

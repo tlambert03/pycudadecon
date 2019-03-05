@@ -1,10 +1,8 @@
-from .util import is_otf
 from .libcudawrapper import RLContext, rl_decon
-from .otf import makeotf
+from .otf import TemporaryOTF
 import os
 import tifffile as tf
 from fnmatch import fnmatch
-import tempfile
 import numpy as np
 
 
@@ -32,64 +30,6 @@ def _yield_arrays(images, fpattern='*.tif'):
     elif isinstance(images, (list, tuple)):
         for item in images:
             yield from _yield_arrays(item)  # noqa
-
-
-class TemporaryOTF(object):
-    """Context manager to read OTF file or generate a temporary OTF from a PSF.
-
-    Normalizes the input PSF to always provide the path to an OTF file,
-    converting the PSF to a temporary file if necessary.
-
-    ``self.path`` can be used within the context to get the filepath to
-    the temporary OTF filepath.
-
-    Args:
-        psf (str, np.ndarray): 3D PSF numpy array, or a filepath to a 3D PSF
-            or 2D complex OTF file.
-        **kwargs: optional keyword arguments will be passed to the :func:`pycudadecon.otf.makeotf` function
-
-    Note:
-        OTF files cannot currently be provided directly as 2D complex np.ndarrays
-
-    Raises:
-        ValueError: If the PSF/OTF is an unexpected type
-        NotImplementedError: if the PSF/OTF is a complex 2D numpy array
-
-    Example:
-        >>> with TemporaryOTF(psf, **kwargs) as otf:
-                print(otf.path)
-        /tmp/...
-    """
-    def __init__(self, psf, **kwargs):
-        self.psf = psf
-        self.kwargs = kwargs
-
-    def __enter__(self):
-        if not is_otf(self.psf):
-            self.temp = tempfile.NamedTemporaryFile()
-            if isinstance(self.psf, np.ndarray):
-                with tempfile.NamedTemporaryFile() as tpsf:
-                    tf.imsave(tpsf.name, self.psf)
-                    makeotf(tpsf.name, self.temp.name, **self.kwargs)
-            elif isinstance(self.psf, str) and os.path.isfile(self.psf):
-                makeotf(self.psf, self.temp.name, **self.kwargs)
-            else:
-                raise ValueError('Did not expect PSF file as {}'
-                                          .format(type(self.psf)))
-            self.path = self.temp.name
-        elif is_otf(self.psf) and os.path.isfile(self.psf):
-            self.path = self.psf
-        elif is_otf(self.psf) and isinstance(self.psf, np.ndarray):
-            raise NotImplementedError('cannot yet handle OTFs as numpy arrays')
-        else:
-            raise ValueError('Unrecognized input for otf')
-        return self
-
-    def __exit__(self, typ, val, traceback):
-        try:
-            self.temp.close()
-        except Exception:
-            pass
 
 
 def decon(images, psf, fpattern='*.tif', **kwargs):

@@ -113,8 +113,102 @@ def camcor(imstack):
     return result
 
 
+def rl_init(rawdata_shape, otfpath, dzdata=0.5, dxdata=0.1, dzpsf=0.1,
+            dxpsf=0.1, deskew=0, rotate=0, width=0, **kwargs):
+    """Initialize GPU for deconvolution
+
+    prepares cuFFT plan for deconvolution with a given data shape and OTF.
+    Must be used prior to :func:`pycudadecon.rl_decon`
+
+
+    Args:
+        rawdata_shape (tuple, list): 3-tuple of data shape [nz, ny, nx]
+        otfpath (str): Path to OTF TIF
+
+        dzdata (float): Z-step size of data (default: {0.5})
+        dxdata (float): XY pixel size of data (default: {0.1})
+        dzpsf (float): Z-step size of the OTF (default: {0.1})
+        dxpsf (float): XY pixel size of the OTF (default: {0.1})
+        deskew (float): Deskew angle. If not 0.0 then deskewing will be
+            performed before deconv (default: {0})
+        rotate (float): Rotation angle; if not 0.0 then rotation will be
+            performed around Y axis after deconvolution (default: {0})
+        width (int): If deskewed, the output image's width (default: do not crop)
+
+    Example:
+        >>> rl_init(im.shape, otfpath)
+        >>> decon_result = rl_decon(im)
+        >>> rl_cleanup()
+    """
+    nz, ny, nx = rawdata_shape
+    RL_interface_init(nx, ny, nz, dxdata, dzdata, dxpsf, dzpsf, deskew, rotate,
+                      width, otfpath.encode())
+
+
+def rl_decon(im, background=80, n_iters=10, shift=0, save_deskewed=False,
+             output_shape=None, napodize=15, nz_blend=0,
+             pad_val=0.0, dup_rev_z=False, **kwargs):
+    """Perform Richardson Lucy Deconvolution
+
+    Performs actual deconvolution, after GPU has been initialized with
+    :func:`pycudadecon.rl_init`
+
+    Args:
+        im (np.ndarray): 3D image volume to deconvolve
+
+        background: User-supplied background to subtract. If 'auto', the
+            median value of the last Z plane will be used as background.
+            (default: {80})
+        n_iters: Number of decon iterations (default: {10})
+        shift: If deskewed, the output image's extra shift in X
+            (positive->left). (default: {0})
+        save_deskewed: Save deskewed raw data as well as deconvolution
+            result (default: {False})
+        output_shape: Specify the output shape after deskewing.  Usually this
+            is unnecessary and will be autodetected.  Mostly intended for
+            use within a :class:`pycudadecon.RLContext` context. (default: autodetect)
+        napodize: [description] (default: {15})
+        nz_blend: [description] (default: {0})
+        pad_val: [description] (default: {0.0})
+        dup_rev_z: [description] (default: {False})
+    """
+    nz, ny, nx = im.shape
+    if output_shape is None:
+        output_shape = (get_output_nz(), get_output_ny(), get_output_nx())
+    else:
+        assert len(output_shape) == 3, 'Decon output shape must have length==3'
+    decon_result = np.empty(tuple(output_shape), dtype=np.float32)
+
+    if save_deskewed:
+        deskew_result = np.empty_like(decon_result)
+    else:
+        deskew_result = np.empty(1, dtype=np.float32)
+
+    # must be 16 bit going in
+    if not np.issubdtype(im.dtype, np.uint16):
+        im = im.astype(np.uint16)
+
+    if isinstance(background, str) and background == 'auto':
+        background = np.median(im[-1])
+
+    rescale = False  # not sure if this works yet...
+
+    if not im.flags['C_CONTIGUOUS']:
+        im = np.ascontiguousarray(im)
+    RL_interface(im, nx, ny, nz, decon_result, deskew_result,
+                 background, rescale, save_deskewed, n_iters, shift,
+                 napodize, nz_blend, pad_val, dup_rev_z)
+
+    if save_deskewed:
+        return decon_result, deskew_result
+    else:
+        return decon_result
+
+
 def quickDecon(im, otfpath, save_deskewed=False, **kwargs):
     """Perform deconvolution of im with otf at otfpath
+
+    Not currently used...
 
     kwargs can be:
         dxdata      float
@@ -139,21 +233,15 @@ def quickDecon(im, otfpath, save_deskewed=False, **kwargs):
         return decon_result
 
 
-def rl_init(rawdata_shape, otfpath, dzdata=0.5, dxdata=0.1, dxpsf=0.1,
-            dzpsf=0.1, deskew=0, rotate=0, width=0, **kwargs):
-    nz, ny, nx = rawdata_shape
-    RL_interface_init(nx, ny, nz, dxdata, dzdata, dxpsf, dzpsf, deskew, rotate,
-                      width, otfpath.encode())
-
-
 class RLContext(object):
     """ Context manager to setup the GPU for RL decon
 
-    Takes care of handing the OTF to the GPU and cleaning up after decon
+    Takes care of handing the OTF to the GPU, preparing a cuFFT plane,
+    and cleaning up after decon
 
-    EXAMPLE:
-    with RLContext(data.shape, otfpath, dz) as ctx:
-        return rl_decon(data, ctx.out_shape)
+    Example:
+        >>> with RLContext(data.shape, otfpath, dz) as ctx:
+                result = rl_decon(data, ctx.out_shape)
 
     """
     def __init__(self, shape, otfpath, **kwargs):
@@ -173,37 +261,3 @@ class RLContext(object):
         # exit receives a tuple with any exceptions raised during processing
         # if __exit__ returns True, exceptions will be supressed
         rl_cleanup()
-
-
-def rl_decon(im, background=80, n_iters=10, shift=0, save_deskewed=False,
-             rescale=False, output_shape=None, napodize=15, nz_blend=0,
-             pad_val=0.0, dup_rev_z=False, **kwargs):
-    nz, ny, nx = im.shape
-    if output_shape is None:
-        output_shape = (get_output_nz(), get_output_ny(), get_output_nx())
-    else:
-        assert len(output_shape) == 3, 'Decon output shape must have length==3'
-    decon_result = np.empty(tuple(output_shape), dtype=np.float32)
-
-    if save_deskewed:
-        deskew_result = np.empty_like(decon_result)
-    else:
-        deskew_result = np.empty(1, dtype=np.float32)
-
-    # must be 16 bit going in
-    if not np.issubdtype(im.dtype, np.uint16):
-        im = im.astype(np.uint16)
-
-    if isinstance(background, str) and background == 'auto':
-        background = np.median(im[-1])
-
-    if not im.flags['C_CONTIGUOUS']:
-        im = np.ascontiguousarray(im)
-    RL_interface(im, nx, ny, nz, decon_result, deskew_result,
-                 background, rescale, save_deskewed, n_iters, shift,
-                 napodize, nz_blend, pad_val, dup_rev_z)
-
-    if save_deskewed:
-        return decon_result, deskew_result
-    else:
-        return decon_result

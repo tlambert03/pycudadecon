@@ -119,7 +119,26 @@ def affineGPU(im, tmat, dzyx=None):
 
 
 def rotateGPU(im, dzdata, dxdata=0.1, angle=31.5, reverse=False):
-    # TODO: crop smarter
+    """Rotate image around Y axis by some angle
+
+    This is a convenience function that will apply the appropriate affine
+    transformation for rotating a volume around the Y axis by some angle.
+    This is typically done with images acquired on inverted light sheet
+    microscopes where the image plane is not parallel to the coverslip
+    (such as lattice light sheet, or diSPIM microscopes), in order to change
+    the coordinate system of the image volume such that the Z axis is
+    orthogonal to the coverslip
+
+    Args:
+        im (np.ndarray): 3D volume to be rotated
+        dzdata (float): Z-step size in microns of the image volume
+        dxdata (float): XY pixel size of the volume (default: {0.1})
+        angle (float): Angle to rotate around Y axis (default: {31.5})
+        reverse (bool): Rotate in the opposite direction. (default: {False})
+
+    Returns:
+        np.ndarray: Rotated 3D volume
+    """
     angle = float(angle)
     xzRatio = dxdata / (np.deg2rad(angle) * dzdata)
 
