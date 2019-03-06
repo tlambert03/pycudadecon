@@ -8,7 +8,6 @@ python:
 branches:
   only:
   - master
-  - develop
 
 install:
   - echo "TRAVIS_PYTHON_VERSION=$TRAVIS_PYTHON_VERSION"
