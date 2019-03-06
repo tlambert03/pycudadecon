@@ -3,6 +3,9 @@ environment:
   # Workaround for https://github.com/conda/conda-build/issues/636
   PYTHONIOENCODING: "UTF-8"
 
+  LABEL: 'main'
+  BRANCH: 'master'
+
   matrix:
     # Note: Because we have to separate the py2 and py3 components due to compiler version, we have a race condition for non-python packages.
     # Not sure how to resolve this, but maybe we should be tracking the VS version in the build string anyway?
@@ -26,10 +29,6 @@ platform:
 branches:
   only:
     - master
-
-environment:
-  LABEL: 'main'
-  BRANCH: 'master'
 
 
 install:
