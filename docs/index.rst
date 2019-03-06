@@ -56,9 +56,11 @@ If you have a 3D PSF volume, the :class:`pycudadecon.TemporaryOTF` context manag
    :maxdepth: 2
    :caption: Contents:
 
+   installation
    deconvolution
    otf
    affine
+   cli
    
 .. rubric:: Footnotes
 
