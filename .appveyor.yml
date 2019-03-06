@@ -27,6 +27,8 @@ for:
   branches:
     only:
       - master
+    except:
+      - develop
   environment:
     LABEL: 'main'
     BRANCH: 'master'
