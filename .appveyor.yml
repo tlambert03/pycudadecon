@@ -22,16 +22,14 @@ artifacts:
 platform:
     - x64
 
-for:
--
-  branches:
-    only:
-      - master
-    except:
-      - develop
-  environment:
-    LABEL: 'main'
-    BRANCH: 'master'
+
+branches:
+  only:
+    - master
+
+environment:
+  LABEL: 'main'
+  BRANCH: 'master'
 
 
 install:
