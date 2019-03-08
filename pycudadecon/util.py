@@ -29,12 +29,17 @@ def array_is_otf(arr):
     """
     if arr.dtype != "float32":
         return False
-    if arr.shape[0] > arr.shape[1]:
-        return False
+    # if arr.shape[0] > arr.shape[1]:
+    #    return False
 
     # the first pixel of an OTF will always be 1.0 and the second column 0s
-    if arr[0, 0] == 1 and (not arr[:, 1].any()):
+    # too strict? arr[0, 0] == 1
+    if not arr[:, 1].any():
         return True
+    else:
+        print(arr)
+    print("FALSE 4")
+    return False
 
 
 def path_is_otf(fpath):
