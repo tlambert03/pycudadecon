@@ -17,7 +17,7 @@ The ``cudaDeconv`` command runs deconvolution (with deskewing and rotation if de
     $ cudaDeconv /folder/of/images 488nm /path/to/488nm_otf.tif -z 0.3
 
     # a typical lattice experiment might also add the deskew flag and maybe MIPs
-    $ cudaDeconv /folder/of/images 488nm /path/to/488nm_otf.tif -z 0.3 -D 31.5 - M 0 0 1
+    $ cudaDeconv /folder/of/images 488nm /path/to/488nm_otf.tif -z 0.3 -D 31.5 -M 0 0 1
 
 
 Run ``cudaDeconv --help`` at the command prompt for the full menu of options
