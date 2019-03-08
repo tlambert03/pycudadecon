@@ -147,16 +147,16 @@ class TemporaryOTF(object):
 
     def __enter__(self):
         if not is_otf(self.psf):
-            self.temp = tempfile.NamedTemporaryFile()
+            self.tempotf = tempfile.NamedTemporaryFile(suffix=".tif")
             if isinstance(self.psf, np.ndarray):
-                with tempfile.NamedTemporaryFile() as tpsf:
-                    tf.imsave(tpsf.name, self.psf)
-                    make_otf(tpsf.name, self.temp.name, **self.kwargs)
+                with tempfile.NamedTemporaryFile(suffix=".tif") as temp_psf:
+                    tf.imsave(temp_psf.name, self.psf)
+                    make_otf(temp_psf.name, self.tempotf.name, **self.kwargs)
             elif isinstance(self.psf, str) and os.path.isfile(self.psf):
-                make_otf(self.psf, self.temp.name, **self.kwargs)
+                make_otf(self.psf, self.tempotf.name, **self.kwargs)
             else:
                 raise ValueError("Did not expect PSF file as {}".format(type(self.psf)))
-            self.path = self.temp.name
+            self.path = self.tempotf.name
         elif is_otf(self.psf) and os.path.isfile(self.psf):
             self.path = self.psf
         elif is_otf(self.psf) and isinstance(self.psf, np.ndarray):
@@ -167,7 +167,7 @@ class TemporaryOTF(object):
 
     def __exit__(self, typ, val, traceback):
         try:
-            self.temp.close()
+            self.tempotf.close()
         except Exception:
             pass
 
