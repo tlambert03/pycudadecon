@@ -3,13 +3,14 @@ from .util import load_lib
 import ctypes
 import numpy as np
 import logging
+
 logger = logging.getLogger(__name__)
 
 
-cudaLib = load_lib('libcudaDeconv')
+cudaLib = load_lib("libcudaDeconv")
 
 if not cudaLib:
-    logger.error('Could not load libcudaDeconv!')
+    logger.error("Could not load libcudaDeconv!")
 else:
     try:
         # https://stackoverflow.com/questions/5862915/passing-numpy-arrays-to-a-c-function-for-input-and-output
@@ -26,7 +27,7 @@ else:
             np.ctypeslib.ndpointer(ctypes.c_float, flags="C_CONTIGUOUS"),
             ctypes.c_int,
             ctypes.c_int,
-            ctypes.c_float
+            ctypes.c_float,
         ]
 
         # Full Affine transformation
@@ -38,7 +39,7 @@ else:
             ctypes.c_int,
             ctypes.c_int,
             np.ctypeslib.ndpointer(ctypes.c_float, flags="C_CONTIGUOUS"),
-            np.ctypeslib.ndpointer(ctypes.c_float, flags="C_CONTIGUOUS")
+            np.ctypeslib.ndpointer(ctypes.c_float, flags="C_CONTIGUOUS"),
         ]
 
         # Affine transformation with a spatial referencing object
@@ -53,15 +54,15 @@ else:
             ctypes.c_float,
             ctypes.c_float,
             np.ctypeslib.ndpointer(ctypes.c_float, flags="C_CONTIGUOUS"),
-            np.ctypeslib.ndpointer(ctypes.c_float, flags="C_CONTIGUOUS")
+            np.ctypeslib.ndpointer(ctypes.c_float, flags="C_CONTIGUOUS"),
         ]
 
     except AttributeError as e:
-        logger.warning('Failed to properly import libcudaDeconv')
+        logger.warning("Failed to properly import libcudaDeconv")
         print(e)
 
 
-def deskewGPU(im, dxdata=0.1, dzdata=0.5, angle=31.5, width=0, shift=0, pad_val='auto'):
+def deskewGPU(im, dxdata=0.1, dzdata=0.5, angle=31.5, width=0, shift=0, pad_val="auto"):
     """Deskew data acquired in stage-scanning mode on GPU
 
     Simple affine transform variant to perform a shear operation to correct
@@ -85,7 +86,7 @@ def deskewGPU(im, dxdata=0.1, dzdata=0.5, angle=31.5, width=0, shift=0, pad_val=
     Returns:
         np.ndarray: Deskewed volume
     """
-    if isinstance(pad_val, str) and pad_val == 'auto':
+    if isinstance(pad_val, str) and pad_val == "auto":
         pad_val = np.median(im[-1])
     assert isinstance(pad_val, (int, float))
 
@@ -96,12 +97,16 @@ def deskewGPU(im, dxdata=0.1, dzdata=0.5, angle=31.5, width=0, shift=0, pad_val=
 
     # have to calculate this here to know the size of the return array
     if width == 0:
-        deskewedNx = np.int(nx + np.floor(nz * dzdata * abs(np.cos(angle * np.pi / 180)) / dxdata))
+        deskewedNx = np.int(
+            nx + np.floor(nz * dzdata * abs(np.cos(angle * np.pi / 180)) / dxdata)
+        )
     else:
         deskewedNx = width
 
     result = np.empty((nz, ny, deskewedNx), dtype=np.float32)
-    Deskew_interface(im, nx, ny, nz, dzdata, dxdata, angle, result, deskewedNx, shift, pad_val)
+    Deskew_interface(
+        im, nx, ny, nz, dzdata, dxdata, angle, result, deskewedNx, shift, pad_val
+    )
     return result.astype(_dtype)
 
 
@@ -179,18 +184,20 @@ def affineGPU(im, tmat, dzyx=None):
 
     """
     if not tmat.shape == tuple([im.ndim + 1] * 2):
-        raise ValueError('{} dimensional transform matrix used on {} dimensional image'
-                         .format(tmat.shape[0] - 1, im.ndim))
+        raise ValueError(
+            "{} dimensional transform matrix used on {} dimensional image".format(
+                tmat.shape[0] - 1, im.ndim
+            )
+        )
 
     nz, ny, nx = im.shape
-    if not np.issubdtype(im.dtype, np.float32) or not im.flags['C_CONTIGUOUS']:
+    if not np.issubdtype(im.dtype, np.float32) or not im.flags["C_CONTIGUOUS"]:
         im = np.ascontiguousarray(im, dtype=np.float32)
     if not np.issubdtype(tmat.dtype, np.float32):
         tmat = tmat.astype(np.float32)
     # have to calculate this here to know the size of the return array
     result = np.empty((nz, ny, nx), dtype=np.float32)
-    if (isinstance(dzyx, (tuple, list)) and
-            len(dzyx) == 3):
+    if isinstance(dzyx, (tuple, list)) and len(dzyx) == 3:
         dzyx = [float(i) for i in dzyx]
         # note, dzyx coordinate order is flipped when handing to Affine_interface_RA
         Affine_interface_RA(im, nx, ny, nz, dzyx[2], dzyx[1], dzyx[0], result, tmat)
@@ -224,32 +231,31 @@ def rotateGPU(im, dzdata, dxdata=0.1, angle=31.5, reverse=False):
     xzRatio = dxdata / (np.deg2rad(angle) * dzdata)
 
     npad = ((0, 0), (0, 0), (0, 0))
-    im = np.pad(im, pad_width=npad, mode='constant', constant_values=0)
+    im = np.pad(im, pad_width=npad, mode="constant", constant_values=0)
 
     theta = angle * np.pi / 180
     theta = theta if not reverse else -theta
 
     nz, ny, nx = im.shape
     # first translate the middle of the image to the origin
-    T1 = np.array([[1, 0, 0, nx / 2],
-                   [0, 1, 0, ny / 2],
-                   [0, 0, 1, nz / 2],
-                   [0, 0, 0, 1]])
+    T1 = np.array(
+        [[1, 0, 0, nx / 2], [0, 1, 0, ny / 2], [0, 0, 1, nz / 2], [0, 0, 0, 1]]
+    )
     # then scale (resample) the Z axis the dz/dx ratio
-    S = np.array([[1, 0, 0, 0],
-                  [0, 1, 0, 0],
-                  [0, 0, xzRatio, 0],
-                  [0, 0, 0, 1]])
+    S = np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, xzRatio, 0], [0, 0, 0, 1]])
     # then rotate theta degrees about the Y axis
-    R = np.array([[np.cos(theta), 0, -np.sin(theta), 0],
-                  [0, 1, 0, 0],
-                  [np.sin(theta), 0, np.cos(theta), 0],
-                  [0, 0, 0, 1]])
+    R = np.array(
+        [
+            [np.cos(theta), 0, -np.sin(theta), 0],
+            [0, 1, 0, 0],
+            [np.sin(theta), 0, np.cos(theta), 0],
+            [0, 0, 0, 1],
+        ]
+    )
     # then translate back to the original origin
-    T2 = np.array([[1, 0, 0, -nx / 2],
-                   [0, 1, 0, -ny / 2],
-                   [0, 0, 1, -nz / 2],
-                   [0, 0, 0, 1]])
+    T2 = np.array(
+        [[1, 0, 0, -nx / 2], [0, 1, 0, -ny / 2], [0, 0, 1, -nz / 2], [0, 0, 0, 1]]
+    )
     T = np.eye(4)
     T = np.dot(np.dot(np.dot(np.dot(T, T1), S), R), T2)
 

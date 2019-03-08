@@ -3,13 +3,14 @@ from .util import load_lib
 import ctypes
 import numpy as np
 import logging
+
 logger = logging.getLogger(__name__)
 
 
-cudaLib = load_lib('libcudaDeconv')
+cudaLib = load_lib("libcudaDeconv")
 
 if not cudaLib:
-    logger.error('Could not load libcudaDeconv!')
+    logger.error("Could not load libcudaDeconv!")
 else:
     try:
         # setup
@@ -19,7 +20,7 @@ else:
             ctypes.c_int,
             ctypes.c_int,
             ctypes.c_int,
-            np.ctypeslib.ndpointer(ctypes.c_float, flags="C_CONTIGUOUS")
+            np.ctypeslib.ndpointer(ctypes.c_float, flags="C_CONTIGUOUS"),
         ]
 
         # execute camcor
@@ -30,24 +31,24 @@ else:
             ctypes.c_int,
             ctypes.c_int,
             ctypes.c_int,
-            np.ctypeslib.ndpointer(ctypes.c_uint16, flags="C_CONTIGUOUS")
+            np.ctypeslib.ndpointer(ctypes.c_uint16, flags="C_CONTIGUOUS"),
         ]
 
         # RL_interface_init must be used before using RL_interface
         RL_interface_init = cudaLib.RL_interface_init
         RL_interface_init.restype = ctypes.c_int
         RL_interface_init.argtypes = [
-            ctypes.c_int,     # nx
-            ctypes.c_int,               # ny
-            ctypes.c_int,               # nz
-            ctypes.c_float,             # dxdata
-            ctypes.c_float,             # dzdata
-            ctypes.c_float,             # dxpsf
-            ctypes.c_float,             # dzpsf
-            ctypes.c_float,             # angle
-            ctypes.c_float,             # rotate
-            ctypes.c_int,               # outputwidth
-            ctypes.c_char_p,            # otfpath.encode()
+            ctypes.c_int,  # nx
+            ctypes.c_int,  # ny
+            ctypes.c_int,  # nz
+            ctypes.c_float,  # dxdata
+            ctypes.c_float,  # dzdata
+            ctypes.c_float,  # dxpsf
+            ctypes.c_float,  # dzpsf
+            ctypes.c_float,  # angle
+            ctypes.c_float,  # rotate
+            ctypes.c_int,  # outputwidth
+            ctypes.c_char_p,  # otfpath.encode()
         ]
 
         # used between init and RL_interface to retrieve the post-deskewed image dimensions
@@ -60,24 +61,24 @@ else:
         RL_interface.restype = ctypes.c_int
         RL_interface.argtypes = [
             np.ctypeslib.ndpointer(ctypes.c_ushort, flags="C_CONTIGUOUS"),  # im
-            ctypes.c_int,                                                   # nx
-            ctypes.c_int,                                                   # ny
-            ctypes.c_int,                                                   # nz
+            ctypes.c_int,  # nx
+            ctypes.c_int,  # ny
+            ctypes.c_int,  # nz
             np.ctypeslib.ndpointer(ctypes.c_float, flags="C_CONTIGUOUS"),
-            np.ctypeslib.ndpointer(ctypes.c_float, flags="C_CONTIGUOUS"),   # result
-            ctypes.c_float,                                                 # background
-            ctypes.c_bool,                                                  # doRescale
-            ctypes.c_bool,                                                  # save_deskeweded
-            ctypes.c_int,                                                   # n_iters
-            ctypes.c_int,                                                   # shift
-            ctypes.c_int,   # napodize
-            ctypes.c_int,   # nz_blend
-            ctypes.c_float, # pad_val
-            ctypes.c_bool, # bDupRevStack
+            np.ctypeslib.ndpointer(ctypes.c_float, flags="C_CONTIGUOUS"),  # result
+            ctypes.c_float,  # background
+            ctypes.c_bool,  # doRescale
+            ctypes.c_bool,  # save_deskeweded
+            ctypes.c_int,  # n_iters
+            ctypes.c_int,  # shift
+            ctypes.c_int,  # napodize
+            ctypes.c_int,  # nz_blend
+            ctypes.c_float,  # pad_val
+            ctypes.c_bool,  # bDupRevStack
         ]
 
     except AttributeError as e:
-        logger.warning('Failed to properly import libcudaDeconv')
+        logger.warning("Failed to properly import libcudaDeconv")
         print(e)
 
 
@@ -106,8 +107,18 @@ def camcor(imstack):
     return result
 
 
-def rl_init(rawdata_shape, otfpath, dzdata=0.5, dxdata=0.1, dzpsf=0.1,
-            dxpsf=0.1, deskew=0, rotate=0, width=0, **kwargs):
+def rl_init(
+    rawdata_shape,
+    otfpath,
+    dzdata=0.5,
+    dxdata=0.1,
+    dzpsf=0.1,
+    dxpsf=0.1,
+    deskew=0,
+    rotate=0,
+    width=0,
+    **kwargs
+):
     """Initialize GPU for deconvolution
 
     prepares cuFFT plan for deconvolution with a given data shape and OTF.
@@ -134,13 +145,34 @@ def rl_init(rawdata_shape, otfpath, dzdata=0.5, dxdata=0.1, dzpsf=0.1,
         >>> rl_cleanup()
     """
     nz, ny, nx = rawdata_shape
-    RL_interface_init(nx, ny, nz, dxdata, dzdata, dxpsf, dzpsf, deskew, rotate,
-                      width, otfpath.encode())
+    RL_interface_init(
+        nx,
+        ny,
+        nz,
+        dxdata,
+        dzdata,
+        dxpsf,
+        dzpsf,
+        deskew,
+        rotate,
+        width,
+        otfpath.encode(),
+    )
 
 
-def rl_decon(im, background=80, n_iters=10, shift=0, save_deskewed=False,
-             output_shape=None, napodize=15, nz_blend=0,
-             pad_val=0.0, dup_rev_z=False, **kwargs):
+def rl_decon(
+    im,
+    background=80,
+    n_iters=10,
+    shift=0,
+    save_deskewed=False,
+    output_shape=None,
+    napodize=15,
+    nz_blend=0,
+    pad_val=0.0,
+    dup_rev_z=False,
+    **kwargs
+):
     """Perform Richardson Lucy Deconvolution
 
     Performs actual deconvolution, after GPU has been initialized with
@@ -172,7 +204,7 @@ def rl_decon(im, background=80, n_iters=10, shift=0, save_deskewed=False,
     if output_shape is None:
         output_shape = (get_output_nz(), get_output_ny(), get_output_nx())
     else:
-        assert len(output_shape) == 3, 'Decon output shape must have length==3'
+        assert len(output_shape) == 3, "Decon output shape must have length==3"
     decon_result = np.empty(tuple(output_shape), dtype=np.float32)
 
     if save_deskewed:
@@ -184,16 +216,30 @@ def rl_decon(im, background=80, n_iters=10, shift=0, save_deskewed=False,
     if not np.issubdtype(im.dtype, np.uint16):
         im = im.astype(np.uint16)
 
-    if isinstance(background, str) and background == 'auto':
+    if isinstance(background, str) and background == "auto":
         background = np.median(im[-1])
 
     rescale = False  # not sure if this works yet...
 
-    if not im.flags['C_CONTIGUOUS']:
+    if not im.flags["C_CONTIGUOUS"]:
         im = np.ascontiguousarray(im)
-    RL_interface(im, nx, ny, nz, decon_result, deskew_result,
-                 background, rescale, save_deskewed, n_iters, shift,
-                 napodize, nz_blend, pad_val, dup_rev_z)
+    RL_interface(
+        im,
+        nx,
+        ny,
+        nz,
+        decon_result,
+        deskew_result,
+        background,
+        rescale,
+        save_deskewed,
+        n_iters,
+        shift,
+        napodize,
+        nz_blend,
+        pad_val,
+        dup_rev_z,
+    )
 
     if save_deskewed:
         return decon_result, deskew_result
@@ -268,6 +314,7 @@ class RLContext(object):
         ...     result = rl_decon(data, ctx.out_shape)
 
     """
+
     def __init__(self, shape, otfpath, **kwargs):
         self.shape = shape
         self.otfpath = otfpath

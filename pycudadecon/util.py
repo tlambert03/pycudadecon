@@ -8,10 +8,10 @@ from contextlib import contextmanager
 
 
 PLAT = sys.platform
-if PLAT == 'linux2':
-    PLAT = 'linux'
-elif PLAT == 'cygwin':
-    PLAT = 'win32'
+if PLAT == "linux2":
+    PLAT = "linux"
+elif PLAT == "cygwin":
+    PLAT = "win32"
 
 
 def imread(fpath, **kwargs):
@@ -27,7 +27,7 @@ def array_is_otf(arr):
     of complex valued... so the second column is almost always 0
     Does this always work?
     """
-    if arr.dtype != 'float32':
+    if arr.dtype != "float32":
         return False
     if arr.shape[0] > arr.shape[1]:
         return False
@@ -56,8 +56,9 @@ def is_otf(arr_or_fpath):
         if os.path.isfile(arr_or_fpath):
             return path_is_otf(arr_or_fpath)
         else:
-            raise FileNotFoundError('file path does not exist: {}'  # noqa
-                                    .format(arr_or_fpath))
+            raise FileNotFoundError(
+                "file path does not exist: {}".format(arr_or_fpath)  # noqa
+            )
     elif isinstance(arr_or_fpath, np.ndarray):
         return array_is_otf(arr_or_fpath)
     return False
@@ -73,13 +74,13 @@ def getAbsoluteResourcePath(relativePath):
         # If not running as a PyInstaller created binary, try to find the data file as
         # an installed Python egg
         try:
-            basePath = os.path.dirname(sys.modules['llspy'].__file__)
+            basePath = os.path.dirname(sys.modules["llspy"].__file__)
         except Exception:
-            basePath = ''
+            basePath = ""
 
         # If the egg path does not exist, assume we're running as non-packaged
         if not os.path.exists(os.path.join(basePath, relativePath)):
-            basePath = 'llspy'
+            basePath = "llspy"
 
     path = os.path.join(basePath, relativePath)
     # If the path still doesn't exist, this function won't help you
@@ -94,16 +95,16 @@ def load_lib(libname):
     """
     # first just try to find it on the search path
 
-    searchlist = [os.path.join(os.environ.get('CONDA_PREFIX', '.'), 'Library', 'bin'),
-                  os.path.join(os.environ.get('CONDA_PREFIX', '.'), 'lib'),
-                  './lib',
-                  '.']
+    searchlist = [
+        os.path.join(os.environ.get("CONDA_PREFIX", "."), "Library", "bin"),
+        os.path.join(os.environ.get("CONDA_PREFIX", "."), "lib"),
+        "./lib",
+        ".",
+    ]
 
-    ext = {'linux': '.so',
-           'win32': '.dll',
-           'darwin': '.dylib'}
+    ext = {"linux": ".so", "win32": ".dll", "darwin": ".dylib"}
 
-    if not libname.endswith(('.so', '.dll', '.dylib')):
+    if not libname.endswith((".so", ".dll", ".dylib")):
         libname += ext[PLAT]
 
     for f in searchlist:
@@ -113,7 +114,7 @@ def load_lib(libname):
         except Exception:
             continue
 
-    #last resort, chdir into each dir
+    # last resort, chdir into each dir
     curdir = os.path.abspath(os.curdir)
     for f in searchlist:
         try:
@@ -123,7 +124,7 @@ def load_lib(libname):
                 lib = ctypes.CDLL(libname)
                 os.chdir(curdir)
                 return lib
-            raise Exception('didn\'t find it')
+            raise Exception("didn't find it")
         except Exception:
             continue
 
@@ -131,29 +132,29 @@ def load_lib(libname):
 # https://stackoverflow.com/questions/5081657/how-do-i-prevent-a-c-shared-library-to-print-on-stdout-in-python/17954769#17954769
 @contextmanager
 def stdout_redirected(to=os.devnull):
-    '''
+    """
     import os
 
     with stdout_redirected(to=filename):
         print("from Python")
         os.system("echo non-Python applications are also supported")
-    '''
+    """
     fd = sys.stdout.fileno()
 
     # assert that Python and C stdio write using the same file descriptor
     # assert libc.fileno(ctypes.c_void_p.in_dll(libc, "stdout")) == fd == 1
 
     def _redirect_stdout(to):
-        sys.stdout.close() # + implicit flush()
-        os.dup2(to.fileno(), fd) # fd writes to 'to' file
-        sys.stdout = os.fdopen(fd, 'w') # Python writes to fd
+        sys.stdout.close()  # + implicit flush()
+        os.dup2(to.fileno(), fd)  # fd writes to 'to' file
+        sys.stdout = os.fdopen(fd, "w")  # Python writes to fd
 
-    with os.fdopen(os.dup(fd), 'w') as old_stdout:
-        with open(to, 'w') as file:
+    with os.fdopen(os.dup(fd), "w") as old_stdout:
+        with open(to, "w") as file:
             _redirect_stdout(to=file)
         try:
-            yield # allow code to be run with the redirected stdout
+            yield  # allow code to be run with the redirected stdout
         finally:
-            _redirect_stdout(to=old_stdout) # restore stdout.
-                                            # buffering and flags such as
-                                            # CLOEXEC may be different
+            _redirect_stdout(to=old_stdout)  # restore stdout.
+            # buffering and flags such as
+            # CLOEXEC may be different

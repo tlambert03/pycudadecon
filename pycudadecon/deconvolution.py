@@ -6,7 +6,7 @@ from fnmatch import fnmatch
 import numpy as np
 
 
-def _yield_arrays(images, fpattern='*.tif'):
+def _yield_arrays(images, fpattern="*.tif"):
     """Accepts a numpy array, a filepath, a directory, or a list of these
     and returns a generator that yields numpy arrays.
 
@@ -22,8 +22,11 @@ def _yield_arrays(images, fpattern='*.tif'):
         elif os.path.isdir(images):
             imfiles = [f for f in os.listdir(images) if fnmatch(f, fpattern)]
             if not len(imfiles):
-                raise IOError('No files matching pattern "{}" found in directory: {}'
-                              .format(fpattern, images))
+                raise IOError(
+                    'No files matching pattern "{}" found in directory: {}'.format(
+                        fpattern, images
+                    )
+                )
             for fpath in imfiles:
                 yield tf.imread(os.path.join(images, fpath))
 
@@ -32,7 +35,7 @@ def _yield_arrays(images, fpattern='*.tif'):
             yield from _yield_arrays(item)  # noqa
 
 
-def decon(images, psf, fpattern='*.tif', **kwargs):
+def decon(images, psf, fpattern="*.tif", **kwargs):
     """Deconvolve an image or images with a PSF or OTF file
 
     If `images` is a directory, use the `fpattern` argument to select files
@@ -57,19 +60,26 @@ def decon(images, psf, fpattern='*.tif', **kwargs):
             Defaults to 0
         ** pad_val (int): Value to pad edges with when deskewing. Should be
             zero when ``background`` is 'auto' Defaults to 0
-        ** rotate (float): Degrees to rotate volume in Y axis (to make Z axis orthogonal to coverslip). Defaults to 0
+        ** rotate (float): Degrees to rotate volume in Y axis (to make Z axis
+            orthogonal to coverslip). Defaults to 0
         ** width (int): Width of output image (0 = full). Defaults to 0
         ** n_iters (int): Number of iterations in deconvolution Defaults to 10
-        ** save_deskewed (bool): Save raw deskewed files (if deskew > 0). Defaults to False
+        ** save_deskewed (bool): Save raw deskewed files (if deskew > 0).
+            Defaults to False
         ** napodize (int): Number of pixels to soften edge with. Defaults to 15
-        ** nz_blend (int): Number of top and bottom sections to blend in to reduce axial ringing. Defaults to 0
-        ** dup_rev_z (bool): Duplicate reversed stack prior to decon to reduce axial ringing. Defaults to False
+        ** nz_blend (int): Number of top and bottom sections to blend in to reduce
+            axial ringing. Defaults to 0
+        ** dup_rev_z (bool): Duplicate reversed stack prior to decon to reduce axial
+            ringing. Defaults to False
         ** wavelength (int): Wavelength in nanometers (for OTF cleanup). Defaults to 520
-        ** fixorigin (int):  For all kz, extrapolate using pixels kr=1 to this pixel to get value for kr=0. Defaults to 10
-        ** otf_bgrd (None, int): Background to subtract in PSF (None = autodetect). Defaults to None
+        ** fixorigin (int):  For all kz, extrapolate using pixels kr=1 to this pixel to
+            get value for kr=0. Defaults to 10
+        ** otf_bgrd (None, int): Background to subtract in PSF (None = autodetect).
+            Defaults to None
         ** na (float): Numerical aperture (for OTF cleanup). Defaults to 1.25]
         ** nimm (float): Refractive index of medium (for OTF cleanup). Defaults to 1.3
-        ** krmax (int): Pixels outside this limit will be zeroed (overwriting estimated value from ``na`` and ``nimm``). Defaults to 0
+        ** krmax (int): Pixels outside this limit will be zeroed (overwriting estimated
+            value from ``na`` and ``nimm``). Defaults to 0
         ** cleanup_otf (bool): Clean up OTF outside of OTF support. Defaults to False
 
     Raises:
@@ -119,11 +129,11 @@ def decon(images, psf, fpattern='*.tif', **kwargs):
 
 
     """
-    if kwargs.get('save_deskewed'):
-        if kwargs.get('deskew', 1) == 0:
-            raise ValueError('Cannot use save_deskewed=True with deskew=0')
-        if kwargs.get('deskew', 0) == 0:
-            raise ValueError('Must set deskew != 0 when using save_deskewed=True')
+    if kwargs.get("save_deskewed"):
+        if kwargs.get("deskew", 1) == 0:
+            raise ValueError("Cannot use save_deskewed=True with deskew=0")
+        if kwargs.get("deskew", 0) == 0:
+            raise ValueError("Must set deskew != 0 when using save_deskewed=True")
 
     out = []
     with TemporaryOTF(psf, **kwargs) as otf:

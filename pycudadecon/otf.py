@@ -5,13 +5,14 @@ import tifffile as tf
 import os
 import ctypes
 import logging
+
 logger = logging.getLogger(__name__)
 
 
-otflib = load_lib('libradialft')
+otflib = load_lib("libradialft")
 
 if not otflib:
-    logger.error('Could not load libradialft!')
+    logger.error("Could not load libradialft!")
 else:
     try:
         shared_makeotf = otflib.makeOTF
@@ -28,10 +29,10 @@ else:
             ctypes.c_float,
             ctypes.c_float,
             ctypes.c_int,
-            ctypes.c_bool
+            ctypes.c_bool,
         ]
     except AttributeError as e:
-        logger.warn('Failed to properly import libradialft')
+        logger.warn("Failed to properly import libradialft")
         logger.error(e)
 
 
@@ -41,16 +42,30 @@ def requireOTFlib(func, *args, **kwargs):
             return func(*args, **kwargs)
         except Exception as e:
             if not otflib:
-                raise Exception("Could not find libradialft library! OTF generation "
-                                "will not be available:")
+                raise Exception(
+                    "Could not find libradialft library! OTF generation "
+                    "will not be available:"
+                )
             else:
                 raise e
+
     return dec
 
 
-def make_otf(psf, outpath=None, dzpsf=0.1, dxpsf=0.1, wavelength=520, na=1.25,
-            nimm=1.3, otf_bgrd=None, krmax=0, fixorigin=10, cleanup_otf=False,
-            **kwargs):
+def make_otf(
+    psf,
+    outpath=None,
+    dzpsf=0.1,
+    dxpsf=0.1,
+    wavelength=520,
+    na=1.25,
+    nimm=1.3,
+    otf_bgrd=None,
+    krmax=0,
+    fixorigin=10,
+    cleanup_otf=False,
+    **kwargs
+):
     """ Generate a radially averaged OTF file from a PSF file
 
     Args:
@@ -72,9 +87,8 @@ def make_otf(psf, outpath=None, dzpsf=0.1, dxpsf=0.1, wavelength=520, na=1.25,
     Returns:
         str: Path of output file
     """
-    # krmax => "pixels outside this limit will be zeroed (overwriting estimated value from NA and NIMM)")
     if outpath is None:
-        outpath = psf.replace('.tif', '_otf.tif')
+        outpath = psf.replace(".tif", "_otf.tif")
 
     if otf_bgrd and isinstance(otf_bgrd, (int, float)):
         bUserBackground = True
@@ -83,9 +97,20 @@ def make_otf(psf, outpath=None, dzpsf=0.1, dxpsf=0.1, wavelength=520, na=1.25,
         bUserBackground = False
         background = 0.0
 
-    shared_makeotf(str.encode(psf), str.encode(outpath), wavelength, dzpsf,
-                   fixorigin, bUserBackground, background, na, nimm, dxpsf,
-                   krmax, cleanup_otf)
+    shared_makeotf(
+        str.encode(psf),
+        str.encode(outpath),
+        wavelength,
+        dzpsf,
+        fixorigin,
+        bUserBackground,
+        background,
+        na,
+        nimm,
+        dxpsf,
+        krmax,
+        cleanup_otf,
+    )
     return outpath
 
 
@@ -115,6 +140,7 @@ class TemporaryOTF(object):
                 print(otf.path)
         /tmp/...
     """
+
     def __init__(self, psf, **kwargs):
         self.psf = psf
         self.kwargs = kwargs
@@ -129,15 +155,14 @@ class TemporaryOTF(object):
             elif isinstance(self.psf, str) and os.path.isfile(self.psf):
                 make_otf(self.psf, self.temp.name, **self.kwargs)
             else:
-                raise ValueError('Did not expect PSF file as {}'
-                                 .format(type(self.psf)))
+                raise ValueError("Did not expect PSF file as {}".format(type(self.psf)))
             self.path = self.temp.name
         elif is_otf(self.psf) and os.path.isfile(self.psf):
             self.path = self.psf
         elif is_otf(self.psf) and isinstance(self.psf, np.ndarray):
-            raise NotImplementedError('cannot yet handle OTFs as numpy arrays')
+            raise NotImplementedError("cannot yet handle OTFs as numpy arrays")
         else:
-            raise ValueError('Unrecognized input for otf')
+            raise ValueError("Unrecognized input for otf")
         return self
 
     def __exit__(self, typ, val, traceback):
