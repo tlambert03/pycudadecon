@@ -36,7 +36,7 @@ def _yield_arrays(images, fpattern="*.tif"):
 
 
 def decon(images, psf, fpattern="*.tif", **kwargs):
-    """Deconvolve an image or images with a PSF or OTF file
+    r"""Deconvolve an image or images with a PSF or OTF file
 
     If `images` is a directory, use the `fpattern` argument to select files
     by filename pattern.
