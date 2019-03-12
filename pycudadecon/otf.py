@@ -81,7 +81,7 @@ def predict_otf_size(psf):
 
 def cap_psf_size(psf, max_otf_size=60000, min_xy=200, min_nz=20):
     """crop PSF to a size that will yield an OTF with a maximum specified size
-    
+
     Args:
         psf (np.ndarray): 3D PSF to be turned into an OTF
         max_otf_size (int, optional): Maximum output OTF size. Defaults to 60000.
@@ -119,9 +119,9 @@ def cap_psf_size(psf, max_otf_size=60000, min_xy=200, min_nz=20):
 
 
 class CappedPSF(object):
-    """Context manager that provides the path to a 3D PSF that is guaranteed to 
+    """Context manager that provides the path to a 3D PSF that is guaranteed to
     yield an OTF that is smaller than the specified value.
-    
+
     Args:
         psf (str, np.ndarray): Path to a PSF or a numpy array with a 3D PSF
         max_otf_size (int, None): maximum allowable size in bytes of the OTF.  If None,
@@ -147,7 +147,7 @@ class CappedPSF(object):
             else:
                 self.psf = tf.imread(self.psf)
         if isinstance(self.psf, np.ndarray):
-            self.temp_psf = tempfile.NamedTemporaryFile(suffix=".tif")
+            self.temp_psf = tempfile.NamedTemporaryFile(suffix=".tif", delete=False)
             tf.imsave(self.temp_psf.name, cap_psf_size(self.psf, self.max_otf_size))
             self.path = self.temp_psf.name
         return self
@@ -155,7 +155,8 @@ class CappedPSF(object):
     def __exit__(self, typ, val, traceback):
         try:
             self.temp_psf.close()
-        except AttributeError:
+            os.remove(self.temp_psf)
+        except Exception:
             pass
 
 
@@ -206,12 +207,6 @@ def make_otf(
     else:
         bUserBackground = False
         background = 0.0
-
-    temp_psf = None
-    if isinstance(psf, np.ndarray):
-        temp_psf = tempfile.NamedTemporaryFile(suffix=".tif")
-        tf.imsave(temp_psf.name, psf)
-        psf = temp_psf.name
 
     with CappedPSF(psf, max_otf_size) as _psf:
         shared_makeotf(
@@ -266,11 +261,16 @@ class TemporaryOTF(object):
 
     def __enter__(self):
         if not is_otf(self.psf):
-            self.tempotf = tempfile.NamedTemporaryFile(suffix=".tif")
+            self.tempotf = tempfile.NamedTemporaryFile(suffix=".tif", delete=False)
             if isinstance(self.psf, np.ndarray):
-                with tempfile.NamedTemporaryFile(suffix=".tif") as temp_psf:
-                    tf.imsave(temp_psf.name, self.psf)
-                    make_otf(temp_psf.name, self.tempotf.name, **self.kwargs)
+                temp_psf = tempfile.NamedTemporaryFile(suffix=".tif", delete=False)
+                tf.imsave(temp_psf.name, self.psf)
+                make_otf(temp_psf.name, self.tempotf.name, **self.kwargs)
+                try:
+                    temp_psf.close()
+                    os.remove(temp_psf)
+                except Exception:
+                    pass
             elif isinstance(self.psf, str) and os.path.isfile(self.psf):
                 make_otf(self.psf, self.tempotf.name, **self.kwargs)
             else:
@@ -287,6 +287,7 @@ class TemporaryOTF(object):
     def __exit__(self, typ, val, traceback):
         try:
             self.tempotf.close()
+            os.remove(self.tempotf)
         except Exception:
             pass
 
