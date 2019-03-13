@@ -31,7 +31,14 @@ Install [anaconda](https://www.anaconda.com/distribution/#download-section) or [
 ```bash
 $ conda config --add channels conda-forge
 $ conda config --add channels talley
-$ conda install pycudadecon
+
+# in some cases, installing into the base environment has prevented pycudadecon from 
+# functioning properly... best to install into a clean environment along with 
+# whatever other dependencies you want (e.g. ipython, jupyter, etc)
+$ conda create -n decon_env pycudadecon
+
+# then activate that environment each time before using
+$ conda activate decon_env
 ```
 
 ### GPU requirements
