@@ -31,7 +31,7 @@ For finer-tuned control, you may wish to make an OTF file from your PSF using :f
     >>> with RLContext(imshape, otf_path, dz) as ctx:
     ...     for impath in imlist:
     ...         image = tifffile.imread(impath)
-    ...         result = rl_decon(image, ctx.out_shape)
+    ...         result = rl_decon(image, output_shape=ctx.out_shape)
     ...         # do something with result...
 
 If you have a 3D PSF volume, the :class:`pycudadecon.TemporaryOTF` context manager facilitates temporary OTF generation...
@@ -44,7 +44,7 @@ If you have a 3D PSF volume, the :class:`pycudadecon.TemporaryOTF` context manag
     ...     with RLContext(imshape, otf.path, dz) as ctx:
     ...         for impath in imlist:
     ...             image = tifffile.imread(impath)
-    ...             result = rl_decon(image, ctx.out_shape)
+    ...             result = rl_decon(image, output_shape=ctx.out_shape)
     ...             # do something with result...
 
 ... and that bit of code is essentially what the :func:`pycudadecon.decon` function is doing, with a little bit of additional conveniences added in.
