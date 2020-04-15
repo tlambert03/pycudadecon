@@ -12,7 +12,8 @@ The main features are:
 * Deskew, Rotation, and general affine transformations
 * CUDA-based camera-correction for [sCMOS artifact correction](https://llspy.readthedocs.io/en/latest/camera.html)
 * a few context managers for setup/breakdown of GPU-I/O-heavy tasks and convenience functions
-* windows, linux, mac
+* windows, linux
+* mac supported only on OS X ≤ 10.3, with an NVIDIA card.  open an issue if you need support.
 
 #### Documentation
 [Documentation](https://pycudadecon.readthedocs.io/en/latest/index.html) generously hosted by [Read the Docs](https://readthedocs.org/)
