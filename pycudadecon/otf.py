@@ -1,55 +1,11 @@
-from .util import load_lib, is_otf
+import os
 import tempfile
+
 import numpy as np
 import tifffile as tf
-import os
-import ctypes
-import logging
 
-logger = logging.getLogger(__name__)
-
-
-OTFLIB = load_lib("libradialft")
-
-if not OTFLIB:
-    logger.error("Could not load libradialft!")
-else:
-    try:
-        shared_makeotf = OTFLIB.makeOTF
-        shared_makeotf.restype = ctypes.c_int
-        shared_makeotf.argtypes = [
-            ctypes.c_char_p,
-            ctypes.c_char_p,
-            ctypes.c_int,
-            ctypes.c_float,
-            ctypes.c_int,
-            ctypes.c_bool,
-            ctypes.c_float,
-            ctypes.c_float,
-            ctypes.c_float,
-            ctypes.c_float,
-            ctypes.c_int,
-            ctypes.c_bool,
-        ]
-    except AttributeError as e:
-        logger.warn("Failed to properly import libradialft")
-        logger.error(e)
-
-
-def requireOTFlib(func, *args, **kwargs):
-    def dec(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except Exception as e:
-            if not OTFLIB:
-                raise Exception(
-                    "Could not find libradialft library! OTF generation "
-                    "will not be available:"
-                )
-            else:
-                raise e
-
-    return dec
+from ._libwrap import makeOTF
+from .util import is_otf
 
 
 def predict_otf_size(psf):
@@ -175,7 +131,7 @@ def make_otf(
     max_otf_size=60000,
     **kwargs
 ):
-    """ Generate a radially averaged OTF file from a PSF file
+    """Generate a radially averaged OTF file from a PSF file
 
     Args:
         psf (str): Filepath of 3D PSF TIF
@@ -209,7 +165,7 @@ def make_otf(
         background = 0.0
 
     with CappedPSF(psf, max_otf_size) as _psf:
-        shared_makeotf(
+        makeOTF(
             str.encode(_psf.path),
             str.encode(outpath),
             wavelength,
@@ -290,4 +246,3 @@ class TemporaryOTF(object):
             os.remove(self.tempotf)
         except Exception:
             pass
-
