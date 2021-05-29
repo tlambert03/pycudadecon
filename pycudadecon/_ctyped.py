@@ -12,9 +12,14 @@ from typing_extensions import Annotated, get_args, get_origin
 class Library:
     def __init__(self, name: str):
         self.name = name
-        self.lib = ctypes.CDLL(
-            name if os.path.exists(name) else find_library(name.replace("lib", "", 1))
-        )
+
+        _file = name
+        if not _file or not os.path.exists(_file):
+            _file = find_library(name.replace("lib", "", 1))
+            if not _file or not os.path.exists(_file):
+                _file = find_library(name)
+
+        self.lib = ctypes.CDLL(_file)
         if not self.lib._name:
             raise FileNotFoundError(f"Unable to find library: {self.name}")
 
