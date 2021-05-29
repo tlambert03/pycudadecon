@@ -37,5 +37,5 @@ setup(
         "Topic :: Scientific/Engineering",
     ],
     python_requires=">=3.7",
-    install_requires=["numpy", "tifffile"],
+    install_requires=["numpy", "tifffile", "typing_extensions"],
 )
