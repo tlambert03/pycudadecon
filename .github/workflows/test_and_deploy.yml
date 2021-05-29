@@ -1,61 +1,63 @@
-name: tests
+name: test and deploy
 
-on: push
-  # push:
-  #   branches:
-  #     - master
-  #   tags:
-  #     - "v*" # Push events to matching v*, i.e. v1.0, v20.15.10
-  # pull_request:
-  #   branches:
-  #     - master
-  # workflow_dispatch:
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - "v*" # Push events to matching v*, i.e. v1.0, v20.15.10
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
 
 jobs:
-  test:
-    name: ${{ matrix.platform }} (${{ matrix.python-version }})
-    runs-on: ${{ matrix.platform }}
-    defaults:
-      run:
-        shell: bash -l {0}
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: [3.7, 3.8, 3.9]
-        platform: [ubuntu-latest, windows-latest]
-    steps:
-      - uses: actions/checkout@v2
+  # Won't work without GPU
 
-      - uses: conda-incubator/setup-miniconda@v2
-        with:
-          mamba-version: "*"
-          channels: conda-forge,defaults
-          channel-priority: true
-          python-version: ${{ matrix.python-version }}
+  # test:
+  #   name: ${{ matrix.platform }} (${{ matrix.python-version }})
+  #   runs-on: ${{ matrix.platform }}
+  #   defaults:
+  #     run:
+  #       shell: bash -l {0}
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       python-version: [3.7, 3.8, 3.9]
+  #       platform: [ubuntu-latest, windows-latest]
+  #   steps:
+  #     - uses: actions/checkout@v2
 
-      - name: Print info
-        run: |
-          conda info
-          conda list
-          conda config --show-sources
-          conda config --show
-          printenv | sort
+  #     - uses: conda-incubator/setup-miniconda@v2
+  #       with:
+  #         mamba-version: "*"
+  #         channels: conda-forge,defaults
+  #         channel-priority: true
+  #         python-version: ${{ matrix.python-version }}
 
-      - name: Install
-        run: |
-          mamba install cudadecon pytest
-          pip install -e .
+  #     - name: Print info
+  #       run: |
+  #         conda info
+  #         conda list
+  #         conda config --show-sources
+  #         conda config --show
+  #         printenv | sort
 
-      - name: Test
-        run: pytest
+  #     - name: Install
+  #       run: |
+  #         mamba install cudadecon>=0.0.11 pytest
+  #         pip install -e .
 
-      # - name: Coverage
-      #   uses: codecov/codecov-action@v1
+  #     - name: Test
+  #       run: pytest
+
+  # - name: Coverage
+  #   uses: codecov/codecov-action@v1
 
   deploy:
-    needs: test
+    # needs: test
     runs-on: ubuntu-latest
-    if: ${{ github.repository == 'napari/magicgui' && contains(github.ref, 'tags') }}
+    if: ${{ github.repository == 'tlambert03/pycudadecon' && contains(github.ref, 'tags') }}
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
