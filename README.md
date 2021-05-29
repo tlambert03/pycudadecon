@@ -1,14 +1,14 @@
 # pyCUDAdecon
 
 [![Documentation Status](https://readthedocs.org/projects/pycudadecon/badge/?version=latest)](https://pycudadecon.readthedocs.io/en/latest/?badge=latest) [![Python 3.6](https://img.shields.io/badge/python-3.6-green.svg)](https://www.python.org/downloads/release/python-360/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-    
+
 
 This package provides a python wrapper and convenience functions for [cudaDeconv](https://github.com/dmilkie/cudaDecon), which is a CUDA/C++ implementation of an accelerated Richardson Lucy Deconvolution algorithm<sup>1</sup>, suitable for general applications, but designed particularly for stage-scanning light sheet applications such as Lattice Light Sheet.  cudaDeconv was originally written by [Lin Shao](https://github.com/linshaova) and modified by [Dan Milkie](https://github.com/dmilkie), at Janelia Research campus.  This package makes use of a cross-platform shared library interface that I wrote for cudaDecon while developing [LLSpy](https://github.com/tlambert03/LLSpy) (a Lattice light-sheet post-processing utility), that adds a couple additional kernels for affine transformations and camera corrections.  The code here is mostly extracted from that package and cleaned up to allow it to be used independently of LLSpy.
 
 The main features are:
 * radially averaged OTF generation
 * OTF interpolation for voxel size independence between PSF and data volumes
-* CUDA accelerated deconvolution with a handful of artifact-reducing features. 
+* CUDA accelerated deconvolution with a handful of artifact-reducing features.
 * Deskew, Rotation, and general affine transformations
 * CUDA-based camera-correction for [sCMOS artifact correction](https://llspy.readthedocs.io/en/latest/camera.html)
 * a few context managers for setup/breakdown of GPU-I/O-heavy tasks and convenience functions
@@ -26,15 +26,15 @@ Honestly, we probably don't.  But since cudaDecon was recently open-sourced, and
 Similarly, if you've stumbled upon this looking for GPU-accelerated affine transformations, then feel free to try these out, but don't miss the fantastic [gputools](https://github.com/maweigert/gputools) package, which provides OpenCL-acceleration for a number of image processing algorithms including affine transforms (and much more).
 
 ## Installation
-Precompiled libraries are available for windows, linux, and mac via conda.  
+Precompiled libraries are available for windows, linux, and mac via conda.
 Install [anaconda](https://www.anaconda.com/distribution/#download-section) or [miniconda](https://docs.conda.io/en/latest/miniconda.html), add a couple channels to your config, then install pycudadecon:
 
 ```bash
 $ conda config --add channels conda-forge
 $ conda config --add channels talley
 
-# in some cases, installing into the base environment has prevented pycudadecon from 
-# functioning properly... best to install into a clean environment along with 
+# in some cases, installing into the base environment has prevented pycudadecon from
+# functioning properly... best to install into a clean environment along with
 # whatever other dependencies you want (e.g. ipython, jupyter, etc)
 $ conda create -n decon_env pycudadecon
 
@@ -44,7 +44,7 @@ $ conda activate decon_env
 
 ### GPU requirements
 
-This software requires a CUDA-compatible NVIDIA GPU.  
+This software requires a CUDA-compatible NVIDIA GPU.
 The underlying libraries (llspylibs) have been compiled against different versions of the CUDA toolkit.  The required CUDA libraries are bundled in the conda distributions so you don't need to install the CUDA toolkit separately.  If desired, you can pick which version of CUDA you'd like based on your needs, but please note that different versions of the CUDA toolkit have different GPU driver requirements (the OS X build has only been compiled for CUDA 9.0).  To see which version you have installed currently, use `conda list llspylibs`, and to manually select a specific version of llspylibs:
 
 | CUDA  | Linux driver | Win driver | Install With |

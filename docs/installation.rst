@@ -14,8 +14,8 @@ Install `anaconda <https://www.anaconda.com/distribution/#download-section>`_ or
     $ conda config --add channels talley
 
     # in some cases, installing into the base environment has
-    # prevented pycudadecon from functioning properly... 
-    # best to install into a clean environment along with 
+    # prevented pycudadecon from functioning properly...
+    # best to install into a clean environment along with
     # whatever other packges you want (e.g. ipython, jupyter, etc)
     $ conda create -n decon_env pycudadecon
 
@@ -26,14 +26,14 @@ Install `anaconda <https://www.anaconda.com/distribution/#download-section>`_ or
 GPU requirements
 ----------------
 
-This software requires a CUDA-compatible NVIDIA GPU.  
+This software requires a CUDA-compatible NVIDIA GPU.
 The underlying libraries (llspylibs) have been compiled against different versions of the CUDA toolkit.  The required CUDA libraries are bundled in the conda distributions so you don't need to install the CUDA toolkit separately.  If desired, you can pick which version of CUDA you'd like based on your needs, but please note that different versions of the CUDA toolkit have different GPU driver requirements (the OS X build has only been compiled for CUDA 9.0).  To see which version you have installed currently, use `conda list llspylibs`, and to manually select a specific version of llspylibs:
 
 ======  ============  ==========  ============
  CUDA   Linux driver  Win driver  Install With
 ======  ============  ==========  ============
- 10.0   ≥ 410.48      ≥ 411.31    ``conda install llspylibs=<version>=cu10.0``  
-  9.0   ≥ 384.81      ≥ 385.54    ``conda install llspylibs=<version>=cu9.0``  
+ 10.0   ≥ 410.48      ≥ 411.31    ``conda install llspylibs=<version>=cu10.0``
+  9.0   ≥ 384.81      ≥ 385.54    ``conda install llspylibs=<version>=cu9.0``
 ======  ============  ==========  ============
 
 ...where ``<version>`` is the version of llspylibs you'd like to install (use ``conda search llspylibs`` to list available versions)

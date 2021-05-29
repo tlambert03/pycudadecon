@@ -9,7 +9,7 @@ Quickstart
 If you have a PSF and an image volume and you just want to get started, check out the :func:`pycudadecon.decon` function, which should be able to handle most basic applications.
 
 .. code-block:: python
-    
+
     >>> from pycudadecon import decon
     >>> image_path = '/path/to/some_image.tif'
     >>> psf_path = '/path/to/psf_3D.tif'
@@ -19,7 +19,7 @@ If you have a PSF and an image volume and you just want to get started, check ou
 For finer-tuned control, you may wish to make an OTF file from your PSF using :func:`pycudadecon.make_otf`, and then use the :class:`pycudadecon.RLContext` context manager to setup the GPU for use with the :func:`pycudadecon.rl_decon` function.  (Note all images processed in the same context must have the same input shape).
 
 .. code-block:: python
-    
+
     >>> from pycudadecon import RLContext, rl_decon
     >>> from glob import glob
     >>> import tifffile
@@ -37,7 +37,7 @@ For finer-tuned control, you may wish to make an OTF file from your PSF using :f
 If you have a 3D PSF volume, the :class:`pycudadecon.TemporaryOTF` context manager facilitates temporary OTF generation...
 
 .. code-block:: python
-    
+
     >>> # continuing with the variables from the previous example...
     >>> psf_path = "/path/to/psf_3D.tif"
     >>> with TemporaryOTF(psf) as otf:
@@ -61,7 +61,7 @@ If you have a 3D PSF volume, the :class:`pycudadecon.TemporaryOTF` context manag
    otf
    affine
    cli
-   
+
 .. rubric:: Footnotes
 
 .. [#f1] D.S.C. Biggs and M. Andrews, Acceleration of iterative image restoration algorithms, Applied Optics, Vol. 36, No. 8, 1997. https://doi.org/10.1364/AO.36.001766
