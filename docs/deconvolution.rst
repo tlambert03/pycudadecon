@@ -12,7 +12,7 @@ The setup and breakdown for the GPU-deconvolution can also be performed manually
     As a convenience, the :class:`pycudadecon.RLContext` context manager will perform the setup and breakdown automatically:
 
     .. code-block:: python
-        
+
         data = tiffile.imread('some_file.tif')
         otf = 'path_to_otf.tif'
         with RLContext(data.shape, otf) as ctx:

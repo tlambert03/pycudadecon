@@ -1,9 +1,11 @@
 # pip install pims_nd2
-from pims import ND2_Reader
-from pycudadecon.affine import affineGPU
-from skimage.io import imsave
-import numpy as np
 import os
+
+import numpy as np
+from pims import ND2_Reader
+from skimage.io import imsave
+
+from pycudadecon.affine import affineGPU
 
 # needed to flip the sign on the transform
 DEFAULT_TMAT = np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0.70711, 0, 1, 0], [0, 0, 0, 1]])
