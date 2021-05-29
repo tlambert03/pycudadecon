@@ -302,7 +302,8 @@ def decon(images, psf, fpattern="*.tif", **kwargs):
         ValueError: If save_deskewed is True and deskew is unset or 0
         IOError: If a directory is provided as input and ``fpattern`` yields no files
         NotImplementedError: If ``psf`` is provided as a complex, 2D numpy array
-            (OTFs can only be provided as filenames created with :func:`pycudadecon.make_otf`)
+            (OTFs can only be provided as filenames created with
+            :func:`pycudadecon.make_otf`)
 
     Returns:
         np.ndarray, list: numpy array or list of arrays (deconvolved images)

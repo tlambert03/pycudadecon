@@ -1,20 +1,23 @@
+try:
+    from ._version import version as __version__
+except ImportError:
+    __version__ = "unknown"
+
 from ._libwrap import RL_cleanup as rl_cleanup
 from .affine import affineGPU, deskewGPU, rotateGPU
 from .deconvolution import RLContext, decon, rl_decon, rl_init
 from .otf import TemporaryOTF, make_otf
 
-__version__ = "0.1.2"
-
 __all__ = [
+    "__version__",
+    "affineGPU",
     "decon",
-    "TemporaryOTF",
-    "RLContext",
+    "deskewGPU",
+    "make_otf",
+    "rl_cleanup",
     "rl_decon",
     "rl_init",
-    "rl_cleanup",
-    "affineGPU",
-    "deskewGPU",
+    "RLContext",
     "rotateGPU",
-    "make_otf",
     "TemporaryOTF",
 ]

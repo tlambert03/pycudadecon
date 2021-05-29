@@ -1,4 +1,3 @@
-import ctypes
 import os
 import sys
 import warnings
@@ -67,70 +66,6 @@ def is_otf(arr_or_fpath):
     elif isinstance(arr_or_fpath, np.ndarray):
         return array_is_otf(arr_or_fpath)
     return False
-
-
-def getAbsoluteResourcePath(relativePath):
-    """Load relative path, in an environment agnostic way"""
-
-    try:
-        # PyInstaller stores data files in a tmp folder refered to as _MEIPASS
-        basePath = sys._MEIPASS
-    except Exception:
-        # If not running as a PyInstaller created binary, try to find the data file as
-        # an installed Python egg
-        try:
-            basePath = os.path.dirname(sys.modules["llspy"].__file__)
-        except Exception:
-            basePath = ""
-
-        # If the egg path does not exist, assume we're running as non-packaged
-        if not os.path.exists(os.path.join(basePath, relativePath)):
-            basePath = "llspy"
-
-    path = os.path.join(basePath, relativePath)
-    # If the path still doesn't exist, this function won't help you
-    if not os.path.exists(path):
-        return None
-
-    return path
-
-
-def load_lib(libname):
-    """load shared library, searching a number of likely paths"""
-    # first just try to find it on the search path
-
-    searchlist = [
-        os.path.join(os.environ.get("CONDA_PREFIX", "."), "Library", "bin"),
-        os.path.join(os.environ.get("CONDA_PREFIX", "."), "lib"),
-        "./lib",
-        ".",
-    ]
-
-    ext = {"linux": ".so", "win32": ".dll", "darwin": ".dylib"}
-
-    if not libname.endswith((".so", ".dll", ".dylib")):
-        libname += ext[PLAT]
-
-    for f in searchlist:
-        try:
-            d = getAbsoluteResourcePath(f)
-            return ctypes.CDLL(os.path.abspath(os.path.join(d, libname)))
-        except Exception:
-            continue
-
-    # last resort, chdir into each dir
-    curdir = os.path.abspath(os.curdir)
-    for f in searchlist:
-        try:
-            d = os.path.abspath(getAbsoluteResourcePath(f))
-            if os.path.isdir(d):
-                os.chdir(d)
-                lib = ctypes.CDLL(libname)
-                os.chdir(curdir)
-                return lib
-            raise Exception("didn't find it")
-        except Exception:
-            continue
 
 
 # https://stackoverflow.com/questions/5081657/how-do-i-prevent-a-c-shared-library-to-print-on-stdout-in-python/17954769#17954769

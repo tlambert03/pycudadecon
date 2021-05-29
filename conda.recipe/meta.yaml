@@ -23,19 +23,17 @@ requirements:
   build:
     - python
     - setuptools
+    - setuptools_scm
   run:
-    - python
+    - python >=3.7
     - numpy
+    - typing_extensions
     - tifffile >=0.14.0
-    - llspylibs >=0.2.0
+    - cudadecon
 
 test:
-  requires:
-    # - pytest
-    # - pytest-qt
-    # - llscd
   imports:
-    - pycudadecon # [not py2k]
+    - pycudadecon
 
 about:
   home: {{ setupdata.get('url') }}
