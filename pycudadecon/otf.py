@@ -62,11 +62,12 @@ def cap_psf_size(psf, max_otf_size=60000, min_xy=200, min_nz=20):
         outnx = min_xy
         outnz = max_otf_size // ((1 + min_xy // 2) * 8)
 
-    psf = psf[
-        np.maximum(0, z_center - outnz // 2) : z_center + 1 * outnz // 2,
-        np.maximum(0, y_center - outnx // 2) : y_center + 1 * outnx // 2,
-        np.maximum(0, x_center - outnx // 2) : x_center + 1 * outnx // 2,
-    ]
+    idx = tuple(
+        slice(np.maximum(0, i - outnz // 2), i + 1 * outnz // 2)
+        for i in (z_center, y_center, x_center)
+    )
+    psf = psf[idx]
+
     _nz, _ny, _nx = psf.shape
     assert (_nx // 2 + 1) * 2 * _nz * 4 <= max_otf_size, "Cap PSF failed...{}".format(
         psf.shape
@@ -109,11 +110,12 @@ class CappedPSF(object):
         return self
 
     def __exit__(self, typ, val, traceback):
-        try:
-            self.temp_psf.close()
-            os.remove(self.temp_psf)
-        except Exception:
-            pass
+        if self.temp_psf is not None:
+            try:
+                self.temp_psf.close()
+                os.remove(self.temp_psf)
+            except Exception:
+                pass
 
 
 def make_otf(
@@ -142,7 +144,8 @@ def make_otf(
         wavelength (int): Emission wavelength in nm (default: {520})
         na (float): Numerical Aperture (default: {1.25})
         nimm (float): Refractive indez of immersion medium (default: {1.3})
-        otf_bgrd (int, None): Background to subtract. "None" = autodetect. (default: {None})
+        otf_bgrd (int, None): Background to subtract. "None" = autodetect.
+            (default: {None})
         krmax (int): pixels outside this limit will be zeroed (overwriting
             estimated value from NA and NIMM) (default: {0})
         fixorigin (int): for all kz, extrapolate using pixels kr=1 to this pixel
@@ -224,7 +227,6 @@ class TemporaryOTF(object):
                 make_otf(temp_psf.name, self.tempotf.name, **self.kwargs)
                 try:
                     temp_psf.close()
-                    os.remove(temp_psf)
                 except Exception:
                     pass
             elif isinstance(self.psf, str) and os.path.isfile(self.psf):
@@ -243,6 +245,6 @@ class TemporaryOTF(object):
     def __exit__(self, typ, val, traceback):
         try:
             self.tempotf.close()
-            os.remove(self.tempotf)
+            os.remove(self.tempotf.name)
         except Exception:
             pass

@@ -120,3 +120,4 @@ dmypy.json
 # ignore VScode
 .vscode/
 cov.xml
+pycudadecon/_version.py
