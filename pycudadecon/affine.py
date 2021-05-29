@@ -38,7 +38,7 @@ def deskewGPU(im, dxdata=0.1, dzdata=0.5, angle=31.5, width=0, shift=0, pad_val=
 
     # have to calculate this here to know the size of the return array
     if width == 0:
-        deskewedNx = np.int(
+        deskewedNx = int(
             nx + np.floor(nz * dzdata * abs(np.cos(angle * np.pi / 180)) / dxdata)
         )
     else:
