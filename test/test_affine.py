@@ -22,7 +22,7 @@ def test_affine_raises(raw_image):
 
 
 def test_affine_eye(raw_image):
-    """test that an affine transform with the identity matrix does not change the input"""
+    """test that an affine transform with identity matrix does not change the input"""
     result = affineGPU(raw_image, np.eye(4))
     npt.assert_allclose(result, raw_image)
 
