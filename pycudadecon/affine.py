@@ -1,6 +1,6 @@
 import numpy as np
 
-from ._libwrap import Deskew_interface, Affine_interface, Affine_interface_RA
+from ._libwrap import Affine_interface, Affine_interface_RA, Deskew_interface
 
 
 def deskewGPU(im, dxdata=0.1, dzdata=0.5, angle=31.5, width=0, shift=0, pad_val="auto"):

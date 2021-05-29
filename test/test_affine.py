@@ -1,14 +1,18 @@
-import unittest
 import os
+import unittest
+
 import numpy as np
-from pycudadecon import deskewGPU, rotateGPU, affineGPU
+
+from pycudadecon import affineGPU, deskewGPU, rotateGPU
 from pycudadecon.util import imread
 
 
 class TestAffine(unittest.TestCase):
     def setUp(self):
-        self.raw = os.path.join(os.path.dirname(__file__), 'test_data', 'im_raw.tif')
-        self.deskewed = os.path.join(os.path.dirname(__file__), 'test_data', 'im_deskewed.tif')
+        self.raw = os.path.join(os.path.dirname(__file__), "test_data", "im_raw.tif")
+        self.deskewed = os.path.join(
+            os.path.dirname(__file__), "test_data", "im_deskewed.tif"
+        )
 
         self.raw = imread(self.raw)
         self.deskewed = imread(self.deskewed)
@@ -46,14 +50,11 @@ class TestAffine(unittest.TestCase):
         xpix = -50
         ypix = -100
         zpix = -3
-        T = np.array([[1, 0, 0, xpix],
-                      [0, 1, 0, ypix],
-                      [0, 0, 1, zpix],
-                      [0, 0, 0, 1]])
+        T = np.array([[1, 0, 0, xpix], [0, 1, 0, ypix], [0, 0, 1, zpix], [0, 0, 0, 1]])
         result = affineGPU(self.raw, T)
         self.assertFalse(np.allclose(self.raw, result))
         self.assertTrue(np.alltrue(result[:-zpix] == 0))
-        self.assertFalse(np.alltrue(result[:-zpix + 1] == 0))
+        self.assertFalse(np.alltrue(result[: -zpix + 1] == 0))
         self.assertTrue(np.alltrue(result[:, :-xpix, :-zpix] == 0))
 
     def test_affine_translate_RA(self):
@@ -64,27 +65,25 @@ class TestAffine(unittest.TestCase):
         xpix = -50
         ypix = -100
         zpix = -3
-        T = np.array([[1, 0, 0, xpix],
-                      [0, 1, 0, ypix],
-                      [0, 0, 1, zpix],
-                      [0, 0, 0, 1]])
+        T = np.array([[1, 0, 0, xpix], [0, 1, 0, ypix], [0, 0, 1, zpix], [0, 0, 0, 1]])
         voxsize = [0.5, 0.5, 0.5]
         result = affineGPU(self.raw, T, voxsize)
         self.assertFalse(np.allclose(self.raw, result))
-        self.assertTrue(np.alltrue(result[:-zpix * 2] == 0))
-        self.assertFalse(np.alltrue(result[:(-zpix * 2) + 1] == 0))
-        self.assertTrue(np.alltrue(result[:, :-xpix * 2, :-zpix * 2] == 0))
+        self.assertTrue(np.alltrue(result[: -zpix * 2] == 0))
+        self.assertFalse(np.alltrue(result[: (-zpix * 2) + 1] == 0))
+        self.assertTrue(np.alltrue(result[:, : -xpix * 2, : -zpix * 2] == 0))
 
     def test_rotate(self):
         """
         test that rotateGPU rotates the image on the Y axis by some angle
         """
         rotated = rotateGPU(self.deskewed, 0.3, dxdata=0.1, angle=31.5)
-        stored_rot = os.path.join(os.path.dirname(__file__), 'test_data', 'im_rotated.tif')
+        stored_rot = os.path.join(
+            os.path.dirname(__file__), "test_data", "im_rotated.tif"
+        )
         stored_rot = imread(stored_rot)
         self.assertTrue(np.allclose(rotated, stored_rot))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
-

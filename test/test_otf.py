@@ -1,15 +1,17 @@
-import unittest
 import os
+import unittest
+
 import numpy as np
+
 from pycudadecon import make_otf
 from pycudadecon.util import imread, is_otf
 
 
 class TestMakeOTF(unittest.TestCase):
     def setUp(self):
-        self.psf = os.path.join(os.path.dirname(__file__), 'test_data', 'psf.tif')
-        self.otf = os.path.join(os.path.dirname(__file__), 'test_data', 'otf.tif')
-        self.dest = os.path.join(os.path.dirname(__file__), 'test_data', 'otf_test.tif')
+        self.psf = os.path.join(os.path.dirname(__file__), "test_data", "psf.tif")
+        self.otf = os.path.join(os.path.dirname(__file__), "test_data", "otf.tif")
+        self.dest = os.path.join(os.path.dirname(__file__), "test_data", "otf_test.tif")
 
     def test_make_otf(self):
         """
@@ -27,7 +29,7 @@ class TestMakeOTF(unittest.TestCase):
         """
         Test that it can make an otf file from a psf
         """
-        result = make_otf(self.psf, self.dest, otf_bgrd='auto')
+        result = make_otf(self.psf, self.dest, otf_bgrd="auto")
         self.assertTrue(os.path.isfile(result))
         os.remove(self.dest)
 
@@ -53,5 +55,5 @@ class TestMakeOTF(unittest.TestCase):
             pass
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

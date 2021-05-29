@@ -1,6 +1,7 @@
-from ._ctyped import Library
 import numpy as np
 from typing_extensions import Annotated
+
+from ._ctyped import Library
 
 try:
     lib = Library("libcudaDecon")

@@ -1,7 +1,7 @@
-from .deconvolution import decon, RLContext, rl_decon, rl_init
 from ._libwrap import RL_cleanup as rl_cleanup
-from .otf import make_otf, TemporaryOTF
 from .affine import affineGPU, deskewGPU, rotateGPU
+from .deconvolution import RLContext, decon, rl_decon, rl_init
+from .otf import TemporaryOTF, make_otf
 
 __version__ = "0.1.2"
 

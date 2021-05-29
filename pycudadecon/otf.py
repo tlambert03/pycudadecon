@@ -1,10 +1,11 @@
-from .util import is_otf
+import os
 import tempfile
+
 import numpy as np
 import tifffile as tf
-import os
 
 from ._libwrap import makeOTF
+from .util import is_otf
 
 
 def predict_otf_size(psf):

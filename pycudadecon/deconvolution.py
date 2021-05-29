@@ -4,8 +4,8 @@ from fnmatch import fnmatch
 import numpy as np
 import tifffile as tf
 
-
 from ._libwrap import (
+    RL_cleanup,
     RL_interface,
     RL_interface_init,
     get_output_nx,

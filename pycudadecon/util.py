@@ -1,11 +1,11 @@
+import ctypes
 import os
 import sys
-import ctypes
-import tifffile as tf
-import numpy as np
 import warnings
 from contextlib import contextmanager
 
+import numpy as np
+import tifffile as tf
 
 PLAT = sys.platform
 if PLAT == "linux2":
@@ -70,7 +70,7 @@ def is_otf(arr_or_fpath):
 
 
 def getAbsoluteResourcePath(relativePath):
-    """ Load relative path, in an environment agnostic way"""
+    """Load relative path, in an environment agnostic way"""
 
     try:
         # PyInstaller stores data files in a tmp folder refered to as _MEIPASS
@@ -96,8 +96,7 @@ def getAbsoluteResourcePath(relativePath):
 
 
 def load_lib(libname):
-    """load shared library, searching a number of likely paths
-    """
+    """load shared library, searching a number of likely paths"""
     # first just try to find it on the search path
 
     searchlist = [
