@@ -1,110 +1,91 @@
-import os
-import unittest
+from pathlib import Path
 
-import numpy as np
+import numpy.testing as npt
+import pytest
 
 from pycudadecon import RLContext, decon, rl_cleanup, rl_decon, rl_init
 from pycudadecon.util import imread
 
+ATOL = 0.05  # tolerance for np.allclose
 
-class TestDecon(unittest.TestCase):
-    def setUp(self):
-        self.raw = os.path.join(os.path.dirname(__file__), "test_data", "im_raw.tif")
-        self.deskewed = os.path.join(
-            os.path.dirname(__file__), "test_data", "im_deskewed.tif"
-        )
-        self.stored_decon = os.path.join(
-            os.path.dirname(__file__), "test_data", "im_decon.tif"
-        )
-        self.otf = os.path.join(os.path.dirname(__file__), "test_data", "otf.tif")
-        self.psf = os.path.join(os.path.dirname(__file__), "test_data", "psf.tif")
-
-        self.raw = imread(self.raw)
-        self.deskewed = imread(self.deskewed)
-        self.stored_decon = imread(self.stored_decon)
-
-        self.config = {
-            "dzdata": 0.3,
-            "deskew": 0,
-            "n_iters": 10,
-            "background": 98,
-        }
-
-    def test_decon(self):
-        """
-        test that we can deconvolve an image
-        """
-        rl_init(self.deskewed.shape, self.otf, **self.config)
-        decon_result = rl_decon(self.deskewed, **self.config)
-        self.assertTrue(np.allclose(decon_result, self.stored_decon, atol=0.05))
-        rl_cleanup()
-
-    def test_decon_context(self):
-        """
-        test that we can deconvolve an image using the context manager
-        """
-        with RLContext(self.deskewed.shape, self.otf, **self.config) as ctx:
-            decon_result = rl_decon(
-                self.deskewed, output_shape=ctx.out_shape, **self.config
-            )
-        self.assertTrue(np.allclose(decon_result, self.stored_decon, atol=0.05))
-
-    def test_decon_wrapper_with_otf(self):
-        """
-        test that the
-        """
-        decon_result = decon(self.deskewed, self.otf, **self.config)
-        self.assertTrue(np.allclose(decon_result, self.stored_decon, atol=0.05))
-
-    def test_decon_wrapper_with_psf(self):
-        """
-        test that we can deconvolve an image
-        """
-        decon_result = decon(self.deskewed, self.psf, **self.config)
-        self.assertTrue(np.allclose(decon_result, self.stored_decon, atol=0.05))
-
-    def test_decon_wrapper_with_psf_array(self):
-        """
-        test that we can deconvolve an image
-        """
-        psf = imread(self.psf)
-        decon_result = decon(self.deskewed, psf, **self.config)
-        self.assertTrue(np.allclose(decon_result, self.stored_decon, atol=0.05))
-
-    def test_decon_wrapper_with_many_inputs(self):
-        """
-        test that the
-        """
-        images = [self.deskewed, self.deskewed, self.deskewed]
-        decon_results = decon(images, self.otf, **self.config)
-        self.assertTrue(
-            all([np.allclose(d, self.stored_decon, atol=0.05) for d in decon_results])
-        )
-
-    def test_decon_wrapper_with_variable_shapes(self):
-        """
-        test that the
-        """
-        images = [
-            self.deskewed,
-            self.deskewed[:, 4:-4, 4:-4],
-            self.deskewed[2:-2, 16:-16, 16:-16],
-        ]
-        decon(images, self.otf, **self.config)
-
-    def test_decon_wrapper_save_deskewed(self):
-        """
-        test that the
-        """
-        config = dict(self.config)
-        config["deskew"] = 31.5
-        decon_result = decon(self.raw, self.otf, save_deskewed=True, **config)
-        self.assertTrue(len(decon_result) == 2)
-        # self.assertTrue(np.allclose(self.stored_decon, decon_result[1]))
-
-    def tearDown(self):
-        rl_cleanup()
+DATA = Path(__file__).parent / "test_data"
+PSF_PATH = str(DATA / "psf.tif")
+OTF_PATH = str(DATA / "otf.tif")
 
 
-if __name__ == "__main__":
-    unittest.main()
+@pytest.fixture(scope="session")
+def deskewed_image():
+    return imread(str(DATA / "im_deskewed.tif"))
+
+
+@pytest.fixture(scope="session")
+def decon_image():
+    return imread(str(DATA / "im_decon.tif"))
+
+
+@pytest.fixture
+def config():
+    return {
+        "dzdata": 0.3,
+        "deskew": 0,
+        "n_iters": 10,
+        "background": 98,
+    }
+
+
+def test_decon(deskewed_image, decon_image, config):
+    """test that we can deconvolve an image"""
+    rl_init(deskewed_image.shape, OTF_PATH, **config)
+    decon_result = rl_decon(deskewed_image, **config)
+    npt.assert_allclose(decon_result, decon_image, atol=ATOL)
+    rl_cleanup()
+
+
+def test_decon_context(deskewed_image, decon_image, config):
+    """test that we can deconvolve an image using the context manager"""
+    with RLContext(deskewed_image.shape, OTF_PATH, **config) as ctx:
+        decon_result = rl_decon(deskewed_image, output_shape=ctx.out_shape, **config)
+    npt.assert_allclose(decon_result, decon_image, atol=ATOL)
+
+
+def test_decon_wrapper_with_otf(deskewed_image, decon_image, config):
+    """test that we can deconvolve when provided OTF directly"""
+    decon_result = decon(deskewed_image, OTF_PATH, **config)
+    npt.assert_allclose(decon_result, decon_image, atol=ATOL)
+
+
+def test_decon_wrapper_with_psf(deskewed_image, decon_image, config):
+    """test that we can deconvolve an image with psf as string"""
+    decon_result = decon(deskewed_image, PSF_PATH, **config)
+    npt.assert_allclose(decon_result, decon_image, atol=ATOL)
+
+
+def test_decon_wrapper_with_psf_array(deskewed_image, decon_image, config):
+    """test that we can deconvolve an image with psf as array"""
+    decon_result = decon(deskewed_image, imread(PSF_PATH), **config)
+    npt.assert_allclose(decon_result, decon_image, atol=ATOL)
+
+
+def test_decon_wrapper_with_many_inputs(deskewed_image, decon_image, config):
+    """test passing a list of images to decon"""
+    images = [deskewed_image, deskewed_image, deskewed_image]
+
+    for d in decon(images, OTF_PATH, **config):
+        npt.assert_allclose(d, decon_image, atol=ATOL)
+
+
+def test_decon_wrapper_with_variable_shapes(deskewed_image, config):
+    """test passing a list of variabel shape images to decon"""
+    im = deskewed_image
+    images = [im, im[:, 4:-4, 4:-4], im[2:-2, 16:-16, 16:-16]]
+    decon(images, OTF_PATH, **config)
+
+
+def test_decon_wrapper_save_deskewed(config):
+    """test that save_deskewed includes deskewed when passing raw image"""
+    raw_image = imread(str(DATA / "im_raw.tif"))
+
+    config["deskew"] = 31.5
+    decon_result = decon(raw_image, OTF_PATH, save_deskewed=True, **config)
+    assert len(decon_result) == 2
+    # npt.assert_allclose(decon_image, decon_result[1], atol=ATOL)
