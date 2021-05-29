@@ -9,16 +9,16 @@ from .deconvolution import RLContext, decon, rl_decon, rl_init
 from .otf import TemporaryOTF, make_otf
 
 __all__ = [
+    "__version__",
+    "affineGPU",
     "decon",
-    "TemporaryOTF",
-    "RLContext",
+    "deskewGPU",
+    "make_otf",
+    "rl_cleanup",
     "rl_decon",
     "rl_init",
-    "rl_cleanup",
-    "affineGPU",
-    "deskewGPU",
+    "RLContext",
     "rotateGPU",
-    "make_otf",
     "TemporaryOTF",
-    "__version__",
+    "TemporaryOTF",
 ]
