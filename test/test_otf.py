@@ -22,7 +22,7 @@ class TestMakeOTF(unittest.TestCase):
         known = imread(self.otf)
 
         # make sure it matches the known OTF
-        self.assertTrue(np.allclose(imread(result), known))
+        self.assertTrue(np.allclose(imread(result), known, atol=0.05))
         os.remove(self.dest)
 
     def test_make_otf_auto(self):

@@ -36,7 +36,7 @@ class TestDecon(unittest.TestCase):
         """
         rl_init(self.deskewed.shape, self.otf, **self.config)
         decon_result = rl_decon(self.deskewed, **self.config)
-        self.assertTrue(np.allclose(decon_result, self.stored_decon))
+        self.assertTrue(np.allclose(decon_result, self.stored_decon, atol=0.05))
         rl_cleanup()
 
     def test_decon_context(self):
@@ -47,21 +47,21 @@ class TestDecon(unittest.TestCase):
             decon_result = rl_decon(
                 self.deskewed, output_shape=ctx.out_shape, **self.config
             )
-        self.assertTrue(np.allclose(decon_result, self.stored_decon))
+        self.assertTrue(np.allclose(decon_result, self.stored_decon, atol=0.05))
 
     def test_decon_wrapper_with_otf(self):
         """
         test that the
         """
         decon_result = decon(self.deskewed, self.otf, **self.config)
-        self.assertTrue(np.allclose(decon_result, self.stored_decon))
+        self.assertTrue(np.allclose(decon_result, self.stored_decon, atol=0.05))
 
     def test_decon_wrapper_with_psf(self):
         """
         test that we can deconvolve an image
         """
         decon_result = decon(self.deskewed, self.psf, **self.config)
-        self.assertTrue(np.allclose(decon_result, self.stored_decon))
+        self.assertTrue(np.allclose(decon_result, self.stored_decon, atol=0.05))
 
     def test_decon_wrapper_with_psf_array(self):
         """
@@ -69,7 +69,7 @@ class TestDecon(unittest.TestCase):
         """
         psf = imread(self.psf)
         decon_result = decon(self.deskewed, psf, **self.config)
-        self.assertTrue(np.allclose(decon_result, self.stored_decon))
+        self.assertTrue(np.allclose(decon_result, self.stored_decon, atol=0.05))
 
     def test_decon_wrapper_with_many_inputs(self):
         """
@@ -77,7 +77,9 @@ class TestDecon(unittest.TestCase):
         """
         images = [self.deskewed, self.deskewed, self.deskewed]
         decon_results = decon(images, self.otf, **self.config)
-        self.assertTrue(all([np.allclose(d, self.stored_decon) for d in decon_results]))
+        self.assertTrue(
+            all([np.allclose(d, self.stored_decon, atol=0.05) for d in decon_results])
+        )
 
     def test_decon_wrapper_with_variable_shapes(self):
         """
