@@ -13,16 +13,6 @@ PSF_PATH = str(DATA / "psf.tif")
 OTF_PATH = str(DATA / "otf.tif")
 
 
-@pytest.fixture(scope="session")
-def deskewed_image():
-    return imread(str(DATA / "im_deskewed.tif"))
-
-
-@pytest.fixture(scope="session")
-def decon_image():
-    return imread(str(DATA / "im_decon.tif"))
-
-
 @pytest.fixture
 def config():
     return {
@@ -81,10 +71,8 @@ def test_decon_wrapper_with_variable_shapes(deskewed_image, config):
     decon(images, OTF_PATH, **config)
 
 
-def test_decon_wrapper_save_deskewed(config):
+def test_decon_wrapper_save_deskewed(raw_image, config):
     """test that save_deskewed includes deskewed when passing raw image"""
-    raw_image = imread(str(DATA / "im_raw.tif"))
-
     config["deskew"] = 31.5
     decon_result = decon(raw_image, OTF_PATH, save_deskewed=True, **config)
     assert len(decon_result) == 2
