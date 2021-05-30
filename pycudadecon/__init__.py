@@ -5,7 +5,7 @@ except ImportError:
 
 from ._libwrap import RL_cleanup as rl_cleanup
 from .affine import affineGPU, deskewGPU, rotateGPU
-from .deconvolution import RLContext, rl_context, decon, rl_decon, rl_init
+from .deconvolution import RLContext, decon, rl_context, rl_decon, rl_init
 from .otf import TemporaryOTF, make_otf
 
 __all__ = [
@@ -18,7 +18,7 @@ __all__ = [
     "rl_decon",
     "rl_init",
     "RLContext",
-    'rl_context',
+    "rl_context",
     "rotateGPU",
     "TemporaryOTF",
 ]
