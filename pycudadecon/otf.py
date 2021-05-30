@@ -1,11 +1,12 @@
 import os
 import tempfile
+from typing import Optional
 
 import numpy as np
 import tifffile as tf
 
 from ._libwrap import makeOTF
-from .util import is_otf
+from .util import is_otf, imread
 
 
 def predict_otf_size(psf):
@@ -102,7 +103,7 @@ class CappedPSF:
             if predict_otf_size(self.psf) <= self.max_otf_size:
                 self.path = self.psf
             else:
-                self.psf = tf.imread(self.psf)
+                self.psf = imread(self.psf)
         if isinstance(self.psf, np.ndarray):
             self.temp_psf = tempfile.NamedTemporaryFile(suffix=".tif", delete=False)
             tf.imsave(self.temp_psf.name, cap_psf_size(self.psf, self.max_otf_size))
@@ -119,18 +120,18 @@ class CappedPSF:
 
 
 def make_otf(
-    psf,
-    outpath=None,
-    dzpsf=0.1,
-    dxpsf=0.1,
-    wavelength=520,
-    na=1.25,
-    nimm=1.3,
-    otf_bgrd=None,
-    krmax=0,
-    fixorigin=10,
-    cleanup_otf=False,
-    max_otf_size=60000,
+    psf: str,
+    outpath: Optional[str] = None,
+    dzpsf: float = 0.1,
+    dxpsf: float = 0.1,
+    wavelength: int = 520,
+    na: float = 1.25,
+    nimm: float = 1.3,
+    otf_bgrd: Optional[int] = None,
+    krmax: int = 0,
+    fixorigin: int = 10,
+    cleanup_otf: bool = False,
+    max_otf_size: int = 60000,
     **kwargs,
 ):
     """Generate a radially averaged OTF file from a PSF file

@@ -1,16 +1,24 @@
+import logging
 import os
 import sys
 import warnings
 from contextlib import contextmanager
+from inspect import signature
 
 import numpy as np
 import tifffile as tf
+
+logging.getLogger("tifffile").setLevel(logging.ERROR)
 
 PLAT = sys.platform
 if PLAT == "linux2":
     PLAT = "linux"
 elif PLAT == "cygwin":
     PLAT = "win32"
+
+
+def _kwargs_for(function, kwargs):
+    return {k: v for k, v in kwargs.items() if k in signature(function).parameters}
 
 
 def imread(fpath, **kwargs):
@@ -26,14 +34,9 @@ def array_is_otf(arr):
     of complex valued... so the second column is almost always 0
     Does this always work?
     """
-    if arr.dtype != "float32":
-        return False
-    # if arr.shape[0] > arr.shape[1]:
-    #    return False
-
     # the first pixel of an OTF will always be 1.0 and the second column 0s
     # too strict? arr[0, 0] == 1
-    return not arr[:, 1].any()
+    return False if arr.dtype != "float32" else not arr[:, 1].any()
 
 
 def path_is_otf(fpath):
