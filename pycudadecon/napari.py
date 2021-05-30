@@ -6,10 +6,11 @@ see: https://napari.org/docs/dev/plugins/hook_specifications.html
 
 Replace code below according to your needs.
 """
-from pycudadecon.deconvolution import decon
-from napari_plugin_engine import napari_hook_implementation
 from magicgui import magic_factory
+from napari_plugin_engine import napari_hook_implementation
+
 from napari.types import ImageData
+from pycudadecon.deconvolution import decon
 
 
 @magic_factory(call_button="Deconvolve")
@@ -29,7 +30,7 @@ def deconvolve(
         dzdata=image_zstep,
         dxpsf=psf_pixel_size,
         dzpsf=psf_zstep,
-        n_iters=iterations
+        n_iters=iterations,
     )
 
 
