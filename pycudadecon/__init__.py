@@ -1,7 +1,4 @@
-try:
-    from ._version import version as __version__
-except ImportError:
-    __version__ = "unknown"
+__version__ = "0.2.0"
 
 from ._libwrap import RL_cleanup as rl_cleanup
 from .affine import affineGPU, deskewGPU, rotateGPU
