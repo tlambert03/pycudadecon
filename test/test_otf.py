@@ -23,7 +23,7 @@ def test_make_otf(tmp_path):
 def test_make_otf_auto(tmp_path):
     """Test that it can make an otf file from a psf with autobackground"""
     dest = str(tmp_path / "otf_test.tif")
-    result = make_otf(PSF_PATH, dest, otf_bgrd="auto")
+    result = make_otf(PSF_PATH, dest, otf_bgrd=None)
     assert Path(result).exists()
 
 
