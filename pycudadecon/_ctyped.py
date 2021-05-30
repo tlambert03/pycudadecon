@@ -21,8 +21,8 @@ else:
             return Annotated
         if isinstance(tp, GenericMeta):
             return tp.__origin__
-        if tp is Generic:  # type: ignore
-            return Generic  # type: ignore
+        if tp is Generic:
+            return Generic
         return None
 
     def get_args(tp):
