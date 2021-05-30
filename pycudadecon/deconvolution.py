@@ -228,6 +228,7 @@ class RLContext:
         width: int = 0,
     ):
         self.kwargs = locals()
+        self.kwargs.pop("self")
         self.out_shape: Optional[Tuple[int, int, int]] = None
 
     def __enter__(self):
