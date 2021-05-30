@@ -23,18 +23,20 @@ def config():
     }
 
 
-def test_decon(deskewed_image, decon_image, config):
+def test_decon(deskewed_image, decon_image):
     """test that we can deconvolve an image"""
-    rl_init(deskewed_image.shape, OTF_PATH, **config)
-    decon_result = rl_decon(deskewed_image, **config)
+    rl_init(deskewed_image.shape, OTF_PATH, dzdata=0.3)
+    decon_result = rl_decon(deskewed_image, n_iters=10, background=98)
     npt.assert_allclose(decon_result, decon_image, atol=ATOL)
     rl_cleanup()
 
 
-def test_decon_context(deskewed_image, decon_image, config):
+def test_decon_context(deskewed_image, decon_image):
     """test that we can deconvolve an image using the context manager"""
-    with RLContext(deskewed_image.shape, OTF_PATH, **config) as ctx:
-        decon_result = rl_decon(deskewed_image, output_shape=ctx.out_shape, **config)
+    with RLContext(deskewed_image.shape, OTF_PATH, dzdata=0.3) as ctx:
+        decon_result = rl_decon(
+            deskewed_image, output_shape=ctx.out_shape, n_iters=10, background=98
+        )
     npt.assert_allclose(decon_result, decon_image, atol=ATOL)
 
 

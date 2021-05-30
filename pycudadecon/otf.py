@@ -1,11 +1,12 @@
 import os
 import tempfile
+from typing import Optional
 
 import numpy as np
 import tifffile as tf
 
 from ._libwrap import makeOTF
-from .util import is_otf
+from .util import imread, is_otf
 
 
 def predict_otf_size(psf):
@@ -75,7 +76,7 @@ def cap_psf_size(psf, max_otf_size=60000, min_xy=200, min_nz=20):
     return psf
 
 
-class CappedPSF(object):
+class CappedPSF:
     """Context manager that provides the path to a 3D PSF that is guaranteed to
     yield an OTF that is smaller than the specified value.
 
@@ -102,7 +103,7 @@ class CappedPSF(object):
             if predict_otf_size(self.psf) <= self.max_otf_size:
                 self.path = self.psf
             else:
-                self.psf = tf.imread(self.psf)
+                self.psf = imread(self.psf)
         if isinstance(self.psf, np.ndarray):
             self.temp_psf = tempfile.NamedTemporaryFile(suffix=".tif", delete=False)
             tf.imsave(self.temp_psf.name, cap_psf_size(self.psf, self.max_otf_size))
@@ -119,19 +120,19 @@ class CappedPSF(object):
 
 
 def make_otf(
-    psf,
-    outpath=None,
-    dzpsf=0.1,
-    dxpsf=0.1,
-    wavelength=520,
-    na=1.25,
-    nimm=1.3,
-    otf_bgrd=None,
-    krmax=0,
-    fixorigin=10,
-    cleanup_otf=False,
-    max_otf_size=60000,
-    **kwargs
+    psf: str,
+    outpath: Optional[str] = None,
+    dzpsf: float = 0.1,
+    dxpsf: float = 0.1,
+    wavelength: int = 520,
+    na: float = 1.25,
+    nimm: float = 1.3,
+    otf_bgrd: Optional[int] = None,
+    krmax: int = 0,
+    fixorigin: int = 10,
+    cleanup_otf: bool = False,
+    max_otf_size: int = 60000,
+    **kwargs,
 ):
     """Generate a radially averaged OTF file from a PSF file
 
@@ -186,7 +187,7 @@ def make_otf(
     return outpath
 
 
-class TemporaryOTF(object):
+class TemporaryOTF:
     """Context manager to read OTF file or generate a temporary OTF from a PSF.
 
     Normalizes the input PSF to always provide the path to an OTF file,
@@ -232,7 +233,7 @@ class TemporaryOTF(object):
             elif isinstance(self.psf, str) and os.path.isfile(self.psf):
                 make_otf(self.psf, self.tempotf.name, **self.kwargs)
             else:
-                raise ValueError("Did not expect PSF file as {}".format(type(self.psf)))
+                raise ValueError(f"Did not expect PSF file as {type(self.psf)}")
             self.path = self.tempotf.name
         elif is_otf(self.psf) and os.path.isfile(self.psf):
             self.path = self.psf
