@@ -33,12 +33,7 @@ def array_is_otf(arr):
 
     # the first pixel of an OTF will always be 1.0 and the second column 0s
     # too strict? arr[0, 0] == 1
-    if not arr[:, 1].any():
-        return True
-    else:
-        print(arr)
-    print("FALSE 4")
-    return False
+    return not arr[:, 1].any()
 
 
 def path_is_otf(fpath):
@@ -60,9 +55,7 @@ def is_otf(arr_or_fpath):
         if os.path.isfile(arr_or_fpath):
             return path_is_otf(arr_or_fpath)
         else:
-            raise FileNotFoundError(
-                "file path does not exist: {}".format(arr_or_fpath)  # noqa
-            )
+            raise FileNotFoundError(f"file path does not exist: {arr_or_fpath}")  # noqa
     elif isinstance(arr_or_fpath, np.ndarray):
         return array_is_otf(arr_or_fpath)
     return False

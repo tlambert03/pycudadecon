@@ -75,7 +75,7 @@ def cap_psf_size(psf, max_otf_size=60000, min_xy=200, min_nz=20):
     return psf
 
 
-class CappedPSF(object):
+class CappedPSF:
     """Context manager that provides the path to a 3D PSF that is guaranteed to
     yield an OTF that is smaller than the specified value.
 
@@ -131,7 +131,7 @@ def make_otf(
     fixorigin=10,
     cleanup_otf=False,
     max_otf_size=60000,
-    **kwargs
+    **kwargs,
 ):
     """Generate a radially averaged OTF file from a PSF file
 
@@ -186,7 +186,7 @@ def make_otf(
     return outpath
 
 
-class TemporaryOTF(object):
+class TemporaryOTF:
     """Context manager to read OTF file or generate a temporary OTF from a PSF.
 
     Normalizes the input PSF to always provide the path to an OTF file,
@@ -232,7 +232,7 @@ class TemporaryOTF(object):
             elif isinstance(self.psf, str) and os.path.isfile(self.psf):
                 make_otf(self.psf, self.tempotf.name, **self.kwargs)
             else:
-                raise ValueError("Did not expect PSF file as {}".format(type(self.psf)))
+                raise ValueError(f"Did not expect PSF file as {type(self.psf)}")
             self.path = self.tempotf.name
         elif is_otf(self.psf) and os.path.isfile(self.psf):
             self.path = self.psf

@@ -183,7 +183,7 @@ def quickDecon(im, otfpath, save_deskewed=False, **kwargs):
         return decon_result
 
 
-class RLContext(object):
+class RLContext:
     """Context manager to setup the GPU for RL decon
 
     Takes care of handing the OTF to the GPU, preparing a cuFFT plane,
@@ -238,7 +238,7 @@ def _yield_arrays(images, fpattern="*.tif"):
         elif os.path.isdir(images):
             imfiles = [f for f in os.listdir(images) if fnmatch(f, fpattern)]
             if not len(imfiles):
-                raise IOError(
+                raise OSError(
                     'No files matching pattern "{}" found in directory: {}'.format(
                         fpattern, images
                     )
@@ -368,7 +368,7 @@ def decon(images, psf, fpattern="*.tif", **kwargs):
                     next_im = next(arraygen)
                     # here we check to make sure that the images are still the same
                     # shape... if not, we'll continue below
-                    if not next_im.shape == shp:
+                    if next_im.shape != shp:
                         break
                 except StopIteration:
                     next_im = None
