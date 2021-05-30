@@ -1,10 +1,10 @@
 import logging
 import os
 import sys
-from typing import Callable, Union
 import warnings
 from contextlib import contextmanager
 from inspect import signature
+from typing import Callable, Union
 
 import numpy as np
 import tifffile as tf
