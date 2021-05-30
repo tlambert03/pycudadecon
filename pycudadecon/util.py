@@ -1,6 +1,7 @@
 import logging
 import os
 import sys
+from typing import Callable, Union
 import warnings
 from contextlib import contextmanager
 from inspect import signature
@@ -16,18 +17,20 @@ if PLAT == "linux2":
 elif PLAT == "cygwin":
     PLAT = "win32"
 
+PathOrArray = Union[str, np.ndarray]
 
-def _kwargs_for(function, kwargs):
+
+def _kwargs_for(function: Callable, kwargs: dict) -> dict:
     return {k: v for k, v in kwargs.items() if k in signature(function).parameters}
 
 
-def imread(fpath, **kwargs):
+def imread(fpath: str, **kwargs):
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         return tf.imread(fpath, **kwargs)
 
 
-def array_is_otf(arr):
+def array_is_otf(arr: np.ndarray) -> bool:
     """Check whether a numpy array is likely an OTF file
 
     tifffile reads the otf file as a real-valued float32, instead
@@ -39,7 +42,7 @@ def array_is_otf(arr):
     return False if arr.dtype != "float32" else not arr[:, 1].any()
 
 
-def path_is_otf(fpath):
+def path_is_otf(fpath: str):
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         with tf.TiffFile(fpath) as tif:
@@ -48,7 +51,7 @@ def path_is_otf(fpath):
             return array_is_otf(tif.series[0].asarray())
 
 
-def is_otf(arr_or_fpath):
+def is_otf(arr_or_fpath: PathOrArray) -> bool:
     """
     accepts either a numpy array or a string representing a filepath
     and returns True if the array or path represents an OTF file

@@ -2,7 +2,7 @@ import os
 from fnmatch import fnmatch
 from typing import Iterator, List, Optional, Sequence, Tuple, Union
 from typing_extensions import Literal
-from .util import _kwargs_for, imread
+from .util import _kwargs_for, imread, PathOrArray
 
 import numpy as np
 
@@ -15,8 +15,6 @@ from ._libwrap import (
     get_output_nz,
 )
 from .otf import TemporaryOTF
-
-PathOrArray = Union[str, np.ndarray]
 
 
 def rl_init(
