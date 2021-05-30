@@ -6,7 +6,34 @@ from inspect import Parameter, signature
 from typing import Callable, Optional, Type
 
 import numpy as np
-from typing_extensions import Annotated, get_args, get_origin
+import sys
+if sys.version_info >= (3, 7):
+    from typing_extensions import Annotated, get_args, get_origin
+else:
+    # TODO: remove when py3.6 support is dropped
+    from typing_extensions import Annotated, AnnotatedMeta
+    from typing import GenericMeta, Generic
+
+    def get_origin(tp):
+        if isinstance(tp, AnnotatedMeta):
+            return Annotated
+        if isinstance(tp, GenericMeta):
+            return tp.__origin__
+        if tp is Generic:  # type: ignore
+            return Generic  # type: ignore
+        return None
+
+    def get_args(tp):
+        """Get type arguments with all substitutions performed."""
+        if isinstance(tp, AnnotatedMeta):
+            return (tp.__args__[0],) + tp.__metadata__
+        if isinstance(tp, GenericMeta):
+            import collections
+            res = tp.__args__
+            if tp.__origin__ is collections.abc.Callable and res[0] is not Ellipsis:
+                res = (list(res[:-1]), res[-1])
+            return res
+        return ()
 
 
 class Library:
