@@ -1,13 +1,12 @@
 import os
 from fnmatch import fnmatch
 from typing import Iterator, List, Optional, Sequence, Tuple, Union
-from typing_extensions import Literal
-from .util import _kwargs_for, imread, PathOrArray
 
 import numpy as np
+from typing_extensions import Literal
 
+from ._libwrap import RL_cleanup as rl_cleanup
 from ._libwrap import (
-    RL_cleanup as rl_cleanup,
     RL_interface,
     RL_interface_init,
     get_output_nx,
@@ -15,6 +14,7 @@ from ._libwrap import (
     get_output_nz,
 )
 from .otf import TemporaryOTF
+from .util import PathOrArray, _kwargs_for, imread
 
 
 def rl_init(

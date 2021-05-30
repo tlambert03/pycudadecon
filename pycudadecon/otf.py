@@ -6,7 +6,7 @@ import numpy as np
 import tifffile as tf
 
 from ._libwrap import makeOTF
-from .util import is_otf, imread
+from .util import imread, is_otf
 
 
 def predict_otf_size(psf):
