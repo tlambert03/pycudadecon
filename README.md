@@ -1,68 +1,79 @@
 # pyCUDAdecon
 
+This package provides a python wrapper and convenience functions for
+[cudaDecon](https://github.com/scopetools/cudaDecon), which is a CUDA/C++
+implementation of an accelerated Richardson Lucy Deconvolution
+algorithm<sup>1</sup>.
 
-
-This package provides a python wrapper and convenience functions for [cudaDecon](https://github.com/scopetools/cudaDecon), which is a CUDA/C++ implementation of an accelerated Richardson Lucy Deconvolution algorithm<sup>1</sup>.
-
-It is suitable for general deconvolution of 3D microscopy data, but also has functionality for stage-scanning light sheet applications such as Lattice Light Sheet.  cudaDeconv was originally written by [Lin Shao](https://github.com/linshaova) and modified by [Dan Milkie](https://github.com/dmilkie), at Janelia Research campus.  This package makes use of a cross-platform shared library interface that I wrote for cudaDecon while developing [LLSpy](https://github.com/tlambert03/LLSpy) (a Lattice light-sheet post-processing utility), that adds a couple additional kernels for affine transformations and camera corrections.  The code here is mostly extracted from that package and cleaned up to allow it to be used independently of LLSpy.
-
-Features include:
-* radially averaged OTF generation
-* OTF interpolation for voxel size independence between PSF and data volumes
 * CUDA accelerated deconvolution with a handful of artifact-reducing features.
-* Deskew, Rotation, and general affine transformations
+* radially averaged OTF generation with interpolation for voxel size
+  independence between PSF and data volumes
+* 3D deskew, rotation, general affine transformations
 * CUDA-based camera-correction for [sCMOS artifact correction](https://llspy.readthedocs.io/en/latest/camera.html)
-* a few context managers for setup/breakdown of GPU-I/O-heavy tasks and convenience functions
-
-Supports: Windos and Linux (macOS support has been dropped)
-
-#### Documentation
-[Documentation](https://pycudadecon.readthedocs.io/en/latest/index.html) generously hosted by [Read the Docs](https://readthedocs.org/)
 
 
-## Installation
+### Install
 
-**WORK IN PROGRESS**: `pycudadecon` will be available at conda-forge soon...
-
-
-The precompiled C-libraries underlying this package are available for windows and linux, via conda-forge:
+The conda package includes the required pre-compiled libraries for Windows and Linux. See GPU driver requirements [below](#gpu-requirements)
 
 ```sh
-conda install -c conda-forge cudadecon
+conda install -c conda-forge pycudadecon
 ```
+
+*macOS is not supported*
+
+### 📖 Documentation
+[Documentation](https://pycudadecon.readthedocs.io/en/latest/index.html)
+generously hosted by [readthedocs](https://readthedocs.org/)
+
 
 ### GPU requirements
 
-This software requires a CUDA-compatible NVIDIA GPU.
-The underlying cudadecon libraries have been compiled against different versions of the CUDA toolkit.  The required CUDA libraries are bundled in the conda distributions so you don't need to install the CUDA toolkit separately.  If desired, you can pick which version of CUDA you'd like based on your needs, but please note that different versions of the CUDA toolkit have different GPU driver requirements:
+This software requires a CUDA-compatible NVIDIA GPU. The underlying cudadecon
+libraries have been compiled against different versions of the CUDA toolkit.
+The required CUDA libraries are bundled in the conda distributions so you don't
+need to install the CUDA toolkit separately.  If desired, you can pick which
+version of CUDA you'd like based on your needs, but please note that different
+versions of the CUDA toolkit have different GPU driver requirements:
 
-To specify a specific cudatoolkit version, install as follows (for instance, to use
-`cudatoolkit=10.2`)
+To specify a specific cudatoolkit version, install as follows (for instance, to
+use `cudatoolkit=10.2`)
 
 ```sh
 conda install -c conda-forge cudadecon cudatoolkit=10.2
 ```
 
-| CUDA  | Linux driver | Win driver |
-| ----- | ------------ | ---------- |
-| 10.2  | ≥ 440.33     | ≥ 441.22   |
-| 11.0  | ≥ 450.36.06  | ≥ 451.22   |
-| 11.1  | ≥ 455.23     | ≥ 456.38   |
-| 11.2  | ≥ 460.27.03  | ≥ 460.82   |
+| CUDA | Linux driver | Win driver |
+| ---- | ------------ | ---------- |
+| 10.2 | ≥ 440.33     | ≥ 441.22   |
+| 11.0 | ≥ 450.36.06  | ≥ 451.22   |
+| 11.1 | ≥ 455.23     | ≥ 456.38   |
+| 11.2 | ≥ 460.27.03  | ≥ 460.82   |
 
 
-If you run into trouble, feel free to [open an issue](https://github.com/tlambert03/pycudadecon/issues) and describe your setup.
+If you run into trouble, feel free to [open an
+issue](https://github.com/tlambert03/pycudadecon/issues) and describe your
+setup.
+
 
 ## Usage
 
-If you have a PSF and an image volume and you just want to get started, check out the [`pycudadecon.decon()`](https://pycudadecon.readthedocs.io/en/latest/deconvolution.html#pycudadecon.decon) function, which is designed be able to handle most basic applications.
+
+The [`pycudadecon.decon()`](https://pycudadecon.readthedocs.io/en/latest/deconvolution.html#pycudadecon.decon) function is designed be able to handle most basic applications:
 
 ```python
 from pycudadecon import decon
 
-image_path = '/path/to/some_image.tif'
-psf_path = '/path/to/psf_3D.tif'
-result = decon(image_path, psf_path)
+# pass filenames of an image and a PSF
+result = decon('/path/to/3D_image.tif', '/path/to/3D_psf.tif')
+
+# decon also accepts numpy arrays
+result = decon(img_array, psf_array)
+
+# the image source can also be a sequence of arrays or paths
+result = decon([img_array, '/path/to/3D_image.tif'], psf_array)
+
+# see docstrings for additional parameter options
 ```
 
 For finer-tuned control, you may wish to make an OTF file from your PSF using [`pycudadecon.make_otf()`](https://pycudadecon.readthedocs.io/en/latest/otf.html?highlight=make_otf#pycudadecon.make_otf), and then use the [`pycudadecon.RLContext`](https://pycudadecon.readthedocs.io/en/latest/deconvolution.html?highlight=RLContext#pycudadecon.RLContext) context manager to setup the GPU for use with the [`pycudadecon.rl_decon()`](https://pycudadecon.readthedocs.io/en/latest/deconvolution.html?highlight=RLContext#pycudadecon.rl_decon) function.  (Note all images processed in the same context must have the same input shape).
