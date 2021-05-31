@@ -1,12 +1,30 @@
 pyCUDAdecon
 ===========
 
-pyCUDAdecon is a python wrapper and set of convenience functions for `cudaDeconv <https://github.com/dmilkie/cudaDecon>`_ (which is a CUDA/C++ implementation of an accelerated Richardson Lucy Deconvolution [#f1]_).  cudaDeconv was originally written by `Lin Shao <https://github.com/linshaova>`_ and modified by `Dan Milkie <https://github.com/dmilkie>`_, at Janelia Research campus.  This package makes use of a shared library interface that I wrote for cudaDecon while developing `LLSpy <https://github.com/tlambert03/LLSpy>`_, that adds a couple additional kernels for affine transformations and camera corrections.
+This package provides a python wrapper and convenience functions for
+`cudaDeconv <https://github.com/scopetools/cudaDecon>`_, which is a CUDA/C++
+implementation of an accelerated Richardson Lucy Deconvolution
+algorithm [#f1]_. ``cudaDeconv`` was originally
+written by `Lin Shao <https://github.com/linshaova>`_ and modified by `Dan
+Milkie <https://github.com/dmilkie>`_, at Janelia Research campus.  This package
+makes use of a shared library interface that I wrote for cudaDecon while
+developing `LLSpy <https://github.com/tlambert03/LLSpy>`_, that adds a couple
+additional kernels for affine transformations and camera corrections.
+
+- CUDA accelerated deconvolution with a handful of artifact-reducing features.
+- radially averaged OTF generation with interpolation for voxel size
+  independence between PSF and data volumes
+- 3D deskew, rotation, general affine transformations
+- CUDA-based camera-correction for
+  `sCMOS artifact correction <https://llspy.readthedocs.io/en/latest/camera.html>`_
+
 
 Quickstart
 ----------
 
-If you have a PSF and an image volume and you just want to get started, check out the :func:`pycudadecon.decon` function, which should be able to handle most basic applications.
+If you have a PSF and an image volume and you just want to get started, check
+out the :func:`pycudadecon.decon` function, which should be able to handle most
+basic applications.
 
 .. code-block:: python
 
@@ -16,7 +34,11 @@ If you have a PSF and an image volume and you just want to get started, check ou
     >>> result = decon(image_path, psf_path)
 
 
-For finer-tuned control, you may wish to make an OTF file from your PSF using :func:`pycudadecon.make_otf`, and then use the :class:`pycudadecon.RLContext` context manager to setup the GPU for use with the :func:`pycudadecon.rl_decon` function.  (Note all images processed in the same context must have the same input shape).
+For finer-tuned control, you may wish to make an OTF file from your PSF using
+:func:`pycudadecon.make_otf`, and then use the :class:`pycudadecon.RLContext`
+context manager to setup the GPU for use with the :func:`pycudadecon.rl_decon`
+function.  (Note all images processed in the same context must have the same
+input shape).
 
 .. code-block:: python
 
