@@ -22,9 +22,7 @@ conda install -c conda-forge pycudadecon
 
 *macOS is not supported*
 
-### 📖 Documentation
-[Documentation](https://pycudadecon.readthedocs.io/en/latest/index.html)
-generously hosted by [readthedocs](https://readthedocs.org/)
+### 📖   &nbsp; [Documentation](http://www.talleylambert.com/pycudadecon)
 
 
 ### GPU requirements
