@@ -5,31 +5,48 @@ import numpy as np
 from . import lib
 
 
-def deskewGPU(im, dxdata=0.1, dzdata=0.5, angle=31.5, width=0, shift=0, pad_val="auto"):
+def deskewGPU(
+    im: np.ndarray,
+    dxdata: float = 0.1,
+    dzdata: float = 0.5,
+    angle: float = 31.5,
+    width: int = 0,
+    shift: int = 0,
+    pad_val: Optional[int] = None,
+):
     """Deskew data acquired in stage-scanning mode on GPU
 
     Simple affine transform variant to perform a shear operation to correct
     for volume shearing.
 
-    Args:
-        im (np.ndarray): Image volume to deskew
-        dxdata (float): XY Pixel size of image volume (default: {0.1})
-        dzdata (float): Z-step size in image volume.  In a typical light sheet
-            stage-scanning aquisition, this corresponds to the step
-            size that the stage takes between planes, NOT the final
-            Z-step size between planeds after deskewing along the optical
-            axis of the detection objective (default: {0.5})
-        angle (float): Deskew angle (usually, angle between sheet and axis of
-            stage motion) (default: {31.5})
-        width (int): If not 0, crop output image to specified width (default: {0})
-        shift (int): If not 0, shift image center by this value (default: {0})
-        pad_val (int): Value to pad image with when deskewing.  If 'auto'
-            the median value of the last Z plane will be used. (default: {'auto'})
+    Parameters
+    ----------
+    im : np.ndarray
+        Image volume to deskew
+    dxdata : float, optional
+        XY Pixel size of image volume, by default 0.1
+    dzdata : float, optional
+        Z-step size in image volume.  In a typical light sheet stage-scanning
+        aquisition, this corresponds to the step size that the stage takes between
+        planes, NOT the final Z-step size between planeds after deskewing along the
+        optical axis of the detection objective, by default 0.5
+    angle : float, optional
+        Deskew angle (usually, angle between sheet and axis of stage motion),
+        by default 31.5
+    width : int, optional
+        If not 0, crop output image to specified width, by default 0
+    shift : int, optional
+        If not 0, shift image center by this value, by default 0
+    pad_val : int, optional
+        Value to pad image with when deskewing.  If `None`
+        the median value of the last Z plane will be used, by default `None`
 
-    Returns:
-        np.ndarray: Deskewed volume
+    Returns
+    -------
+    np.ndarray
+        Deskewed volume
     """
-    if isinstance(pad_val, str) and pad_val == "auto":
+    if pad_val is None:
         pad_val = np.median(im[-1])
     assert isinstance(pad_val, (int, float))
 
@@ -169,15 +186,23 @@ def rotateGPU(im, dzdata, dxdata=0.1, angle=31.5, reverse=False):
     the coordinate system of the image volume such that the Z axis is
     orthogonal to the coverslip
 
-    Args:
-        im (np.ndarray): 3D volume to be rotated
-        dzdata (float): Z-step size in microns of the image volume
-        dxdata (float): XY pixel size of the volume (default: {0.1})
-        angle (float): Angle to rotate around Y axis (default: {31.5})
-        reverse (bool): Rotate in the opposite direction. (default: {False})
+    Parameters
+    ----------
+    im : np.ndarray
+        3D volume to be rotated
+    dzdata : float
+        Z-step size in microns of the image volume
+    dxdata : float
+        XY pixel size of the volume, by default 0.1
+    angle : float
+        Angle to rotate around Y axis, by default 31.5
+    reverse : bool
+        Rotate in the opposite direction, by default `False`
 
-    Returns:
-        np.ndarray: Rotated 3D volume
+    Returns
+    -------
+    np.ndarray
+        Rotated 3D volume
     """
     angle = float(angle)
     xzRatio = dxdata / (np.deg2rad(angle) * dzdata)
@@ -211,6 +236,4 @@ def rotateGPU(im, dzdata, dxdata=0.1, angle=31.5, reverse=False):
     T = np.eye(4)
     T = np.dot(np.dot(np.dot(np.dot(T, T1), S), R), T2)
 
-    rotated = affineGPU(im, T)
-
-    return rotated
+    return affineGPU(im, T)
