@@ -1,9 +1,32 @@
 __version__ = "0.2.0"
+from typing import Any
 
-from ._libwrap import RL_cleanup as rl_cleanup
-from .affine import affineGPU, deskewGPU, rotateGPU
-from .deconvolution import RLContext, decon, rl_context, rl_decon, rl_init
-from .otf import TemporaryOTF, make_otf
+lib: Any
+try:
+    from . import _libwrap as lib
+except FileNotFoundError as e:
+    import warnings
+
+    t = e
+    warnings.warn(f"\n{e}\n\nMost functionality will fail!\n")
+
+    class _stub:
+        def __getattr__(self, name):
+            raise t
+
+    lib = _stub()
+
+
+from .affine import affineGPU, deskewGPU, rotateGPU  # noqa
+from .deconvolution import (  # noqa
+    RLContext,
+    decon,
+    rl_cleanup,
+    rl_context,
+    rl_decon,
+    rl_init,
+)
+from .otf import TemporaryOTF, make_otf  # noqa
 
 __all__ = [
     "__version__",

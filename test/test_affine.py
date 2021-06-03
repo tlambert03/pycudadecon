@@ -52,7 +52,7 @@ def test_affine_translate_RA(raw_image):
     ypix = -100
     zpix = -3
     T = np.array([[1, 0, 0, xpix], [0, 1, 0, ypix], [0, 0, 1, zpix], [0, 0, 0, 1]])
-    voxsize = [0.5, 0.5, 0.5]
+    voxsize = (0.5, 0.5, 0.5)
     result = affineGPU(raw_image, T, voxsize)
     assert not np.allclose(raw_image, result, atol=10)
     assert np.all(result[: -zpix * 2] == 0)

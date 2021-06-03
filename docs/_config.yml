@@ -1,0 +1,53 @@
+title: pycudadecon
+author: Talley Lambert
+copyright: "2021"
+email: talley.lambert@gmail.com
+logo: logo.png
+
+# Force re-execution of notebooks on each build.
+# See https://jupyterbook.org/content/execute.html
+execute:
+  execute_notebooks: force
+
+latex:
+  latex_documents:
+    targetname: book.tex
+
+bibtex_bibfiles:
+  - references.bib
+
+repository:
+  url: https://github.com/tlambert03/pycudadecon
+  path_to_book: docs
+  branch: master
+
+# Add GitHub buttons to your book
+# See https://jupyterbook.org/customize/config.html#add-a-link-to-your-repository
+html:
+  use_issues_button: true
+  use_repository_button: true
+
+sphinx:
+  extra_extensions:
+    - sphinx.ext.viewcode
+    - sphinx.ext.napoleon
+    - sphinx.ext.autodoc
+    - sphinx_autodoc_typehints
+    - sphinx.ext.autosummary
+  config:
+    # set_type_checking_flag: True  # don't yet know how to add to path with jupyter-book
+    autosummary_generate: True
+    autosummary_imported_members: True
+    autodoc_default_options:
+      special-members: False
+      undoc-members: True
+      show-inheritance: True
+    html_theme: furo
+    intersphinx_mapping:
+      python:
+        - "https://docs.python.org/3"
+        - null
+      napari:
+        - "https://napari.org/docs/dev/"
+        - null
+    pygments_style: "material"

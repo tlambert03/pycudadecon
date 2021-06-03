@@ -1,0 +1,4 @@
+jupyter-book
+ghp-import
+sphinx-autodoc-typehints
+furo

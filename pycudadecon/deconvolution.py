@@ -5,16 +5,22 @@ from typing import Iterator, List, Optional, Sequence, Tuple, Union
 import numpy as np
 from typing_extensions import Literal
 
-from ._libwrap import RL_cleanup as rl_cleanup
-from ._libwrap import (
-    RL_interface,
-    RL_interface_init,
-    get_output_nx,
-    get_output_ny,
-    get_output_nz,
-)
+from . import lib
 from .otf import TemporaryOTF
 from .util import PathOrArray, _kwargs_for, imread
+
+
+def rl_cleanup():
+    """Release GPU buffer and cleanup after deconvolution
+
+    Call this before program quits to release global GPUBuffer d_interpOTF.
+
+    - Resets any bleach corrections
+    - Removes OTF from GPU buffer
+    - Destroys cuFFT plan
+    - Releases GPU buffers
+    """
+    return lib.RL_cleanup()
 
 
 def rl_init(
@@ -64,7 +70,7 @@ def rl_init(
 
     """
     nz, ny, nx = rawdata_shape
-    RL_interface_init(
+    lib.RL_interface_init(
         nx,
         ny,
         nz,
@@ -142,7 +148,7 @@ def rl_decon(
 
     nz, ny, nx = im.shape
     if output_shape is None:
-        output_shape = (get_output_nz(), get_output_ny(), get_output_nx())
+        output_shape = (lib.get_output_nz(), lib.get_output_ny(), lib.get_output_nx())
     elif len(output_shape) != 3:
         raise ValueError("Decon output shape must have length==3")
 
@@ -164,7 +170,7 @@ def rl_decon(
 
     if not im.flags["C_CONTIGUOUS"]:
         im = np.ascontiguousarray(im)
-    RL_interface(
+    lib.RL_interface(
         im,
         nx,
         ny,
@@ -195,7 +201,7 @@ def quickDecon(image: np.ndarray, otfpath: str, **kwargs):
     """
     rl_init(image.shape, otfpath, **_kwargs_for(rl_init, kwargs))
     result = rl_decon(image, **_kwargs_for(rl_decon, kwargs))
-    rl_cleanup()
+    lib.RL_cleanup()
     return result
 
 
@@ -234,13 +240,13 @@ class RLContext:
     def __enter__(self):
         """Setup the context and return the ZYX shape of the output image"""
         rl_init(**self.kwargs)
-        self.out_shape = (get_output_nz(), get_output_ny(), get_output_nx())
+        self.out_shape = (lib.get_output_nz(), lib.get_output_ny(), lib.get_output_nx())
         return self
 
     def __exit__(self, typ, val, traceback):
         # exit receives a tuple with any exceptions raised during processing
         # if __exit__ returns True, exceptions will be supressed
-        rl_cleanup()
+        lib.RL_cleanup()
 
 
 # alias
@@ -298,7 +304,7 @@ def decon(
     fpattern: str = "*.tif",
     **kwargs
 ) -> Union[np.ndarray, List[np.ndarray]]:
-    """Deconvolve an image or images with a PSF or OTF file
+    """Deconvolve an image or images with a PSF or OTF file.
 
     If `images` is a directory, use the `fpattern` argument to select files
     by filename pattern.
@@ -313,8 +319,8 @@ def decon(
         complex OTF.
     fpattern : str, optional
         Filepattern to use when a directory is provided in the `images` argument,
-        by default "*.tif"
-    **kwargs
+        by default `*.tif`
+    ** kwargs
         All other kwargs must be valid for either :func:`rl_init` or :func:`rl_decon`.
 
     Returns

@@ -1,0 +1,11 @@
+# Table of content
+# Learn more at https://jupyterbook.org/customize/toc.html
+#
+- file: index
+- file: installation
+- file: deconvolution
+- file: otf
+- file: affine
+- file: cli
+- title: Source Code
+  url: https://github.com/tlambert03/pycudadecon

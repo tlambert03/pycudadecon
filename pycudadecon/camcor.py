@@ -1,6 +1,6 @@
 import numpy as np
 
-from ._libwrap import camcor_interface, camcor_interface_init
+from . import lib
 
 
 def quickCamcor(imstack, camparams):
@@ -16,7 +16,7 @@ def camcor_init(rawdata_shape, camparams):
     nz, ny, nx = rawdata_shape
     if not np.issubdtype(camparams.dtype, np.float32):
         camparams = camparams.astype(np.float32)
-    camcor_interface_init(nx, ny, nz, camparams)
+    lib.camcor_interface_init(nx, ny, nz, camparams)
 
 
 def camcor(imstack):
@@ -24,5 +24,5 @@ def camcor(imstack):
         imstack = imstack.astype(np.uint16)
     nz, ny, nx = imstack.shape
     result = np.empty_like(imstack)
-    camcor_interface(imstack, nx, ny, nz, result)
+    lib.camcor_interface(imstack, nx, ny, nz, result)
     return result
