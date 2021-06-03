@@ -5,7 +5,7 @@ from typing import Optional
 import numpy as np
 import tifffile as tf
 
-from ._libwrap import makeOTF
+from . import lib
 from .util import imread, is_otf
 
 
@@ -169,7 +169,7 @@ def make_otf(
         background = 0.0
 
     with CappedPSF(psf, max_otf_size) as _psf:
-        makeOTF(
+        lib.makeOTF(
             str.encode(_psf.path),
             str.encode(outpath),
             wavelength,
@@ -211,8 +211,8 @@ class TemporaryOTF:
 
     Example:
         >>> with TemporaryOTF(psf, **kwargs) as otf:
-                print(otf.path)
-        /tmp/...
+        ...     print(otf.path)
+
     """
 
     def __init__(self, psf, **kwargs):
