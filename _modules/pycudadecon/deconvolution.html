@@ -1,0 +1,592 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
+
+    <meta name="generator" content="sphinx-3.5.4, furo 2021.04.11.beta34"/>
+        <title>pycudadecon.deconvolution - pycudadecon</title>
+      <link rel="stylesheet" href="../../_static/styles/furo.css?digest=59ab60ac09ea94ccfe6deddff6d715cce948a6fc">
+    <link rel="stylesheet" href="../../_static/pygments.css">
+    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../../_static/pygments_dark.css">
+    
+
+
+<style>
+  :root {
+    --color-code-background: #263238;
+  --color-code-foreground: #EEFFFF;
+  
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+  }
+
+  /* For allowing end-user-specific overrides */
+  .override-light {
+    --color-code-background: #263238;
+  --color-code-foreground: #EEFFFF;
+  
+  }
+  .override-dark {
+    --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+  }
+</style><link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <link rel="stylesheet" href="../../_static/styles/furo-extensions.css?digest=d391b54134226e4196576da3bdb6dddb7e05ba2b"></head>
+  <body dir="">
+    
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke-width="1.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z"/>
+      <line x1="4" y1="6" x2="20" y2="6" />
+      <line x1="10" y1="12" x2="20" y2="12" />
+      <line x1="6" y1="18" x2="20" y2="18" />
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">pycudadecon</div></a>
+    </div>
+    <div class="header-right">
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand centered" href="../../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../_static/logo.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">pycudadecon</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html">
+  <input class="sidebar-search" placeholder=Search name="q">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deconvolution.html">Deconvolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../otf.html">Optical Transfer Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../affine.html">Affine Transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line Interface</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/tlambert03/pycudadecon">Source Code</a></li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <main class="main">
+    <div class="content">
+      <article role="main">
+        <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+        </label>
+        <h1>Source code for pycudadecon.deconvolution</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">fnmatch</span> <span class="kn">import</span> <span class="n">fnmatch</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Literal</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">lib</span>
+<span class="kn">from</span> <span class="nn">.otf</span> <span class="kn">import</span> <span class="n">TemporaryOTF</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">PathOrArray</span><span class="p">,</span> <span class="n">_kwargs_for</span><span class="p">,</span> <span class="n">imread</span>
+
+
+<div class="viewcode-block" id="rl_cleanup"><a class="viewcode-back" href="../../deconvolution.html#pycudadecon.rl_cleanup">[docs]</a><span class="k">def</span> <span class="nf">rl_cleanup</span><span class="p">():</span>
+    <span class="sd">"""Release GPU buffer and cleanup after deconvolution</span>
+
+<span class="sd">    Call this before program quits to release global GPUBuffer d_interpOTF.</span>
+
+<span class="sd">    - Resets any bleach corrections</span>
+<span class="sd">    - Removes OTF from GPU buffer</span>
+<span class="sd">    - Destroys cuFFT plan</span>
+<span class="sd">    - Releases GPU buffers</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="n">lib</span><span class="o">.</span><span class="n">RL_cleanup</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="rl_init"><a class="viewcode-back" href="../../deconvolution.html#pycudadecon.rl_init">[docs]</a><span class="k">def</span> <span class="nf">rl_init</span><span class="p">(</span>
+    <span class="n">rawdata_shape</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+    <span class="n">otfpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">dzdata</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">dxdata</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">dzpsf</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">dxpsf</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">deskew</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">rotate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">"""Initialize GPU for deconvolution.</span>
+
+<span class="sd">    Prepares cuFFT plan for deconvolution with a given data shape and OTF.</span>
+<span class="sd">    Must be used prior to :func:`pycudadecon.rl_decon`</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    rawdata_shape : Tuple[int, int, int]</span>
+<span class="sd">        3-tuple of data shape</span>
+<span class="sd">    otfpath : str</span>
+<span class="sd">        Path to OTF TIF</span>
+<span class="sd">    dzdata : float, optional</span>
+<span class="sd">        Z-step size of data, by default 0.5</span>
+<span class="sd">    dxdata : float, optional</span>
+<span class="sd">        XY pixel size of data, by default 0.1</span>
+<span class="sd">    dzpsf : float, optional</span>
+<span class="sd">        Z-step size of the OTF, by default 0.1</span>
+<span class="sd">    dxpsf : float, optional</span>
+<span class="sd">        XY pixel size of the OTF, by default 0.1</span>
+<span class="sd">    deskew : float, optional</span>
+<span class="sd">        Deskew angle. If not 0.0 then deskewing will be performed before</span>
+<span class="sd">        deconvolution, by default 0</span>
+<span class="sd">    rotate : float, optional</span>
+<span class="sd">        Rotation angle; if not 0.0 then rotation will be performed around Y</span>
+<span class="sd">        axis after deconvolution, by default 0</span>
+<span class="sd">    width : int, optional</span>
+<span class="sd">        If deskewed, the output image's width, by default 0 (do not crop)</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; rl_init(im.shape, otfpath)</span>
+<span class="sd">    &gt;&gt;&gt; decon_result = rl_decon(im)</span>
+<span class="sd">    &gt;&gt;&gt; rl_cleanup()</span>
+
+<span class="sd">    """</span>
+    <span class="n">nz</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nx</span> <span class="o">=</span> <span class="n">rawdata_shape</span>
+    <span class="n">lib</span><span class="o">.</span><span class="n">RL_interface_init</span><span class="p">(</span>
+        <span class="n">nx</span><span class="p">,</span>
+        <span class="n">ny</span><span class="p">,</span>
+        <span class="n">nz</span><span class="p">,</span>
+        <span class="n">dxdata</span><span class="p">,</span>
+        <span class="n">dzdata</span><span class="p">,</span>
+        <span class="n">dxpsf</span><span class="p">,</span>
+        <span class="n">dzpsf</span><span class="p">,</span>
+        <span class="n">deskew</span><span class="p">,</span>
+        <span class="n">rotate</span><span class="p">,</span>
+        <span class="n">width</span><span class="p">,</span>
+        <span class="n">otfpath</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="rl_decon"><a class="viewcode-back" href="../../deconvolution.html#pycudadecon.rl_decon">[docs]</a><span class="k">def</span> <span class="nf">rl_decon</span><span class="p">(</span>
+    <span class="n">im</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">background</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"auto"</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">80</span><span class="p">,</span>
+    <span class="n">n_iters</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">shift</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">save_deskewed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">output_shape</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">napodize</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span>
+    <span class="n">nz_blend</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">pad_val</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">dup_rev_z</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]:</span>
+    <span class="sd">"""Perform Richardson Lucy Deconvolution.</span>
+
+<span class="sd">    Performs actual deconvolution. GPU must first be initialized with</span>
+<span class="sd">    :func:`pycudadecon.rl_init`</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    im : np.ndarray</span>
+<span class="sd">        3D image volume to deconvolve</span>
+<span class="sd">    background : int or 'auto'</span>
+<span class="sd">        User-supplied background to subtract. If 'auto', the median value of the</span>
+<span class="sd">        last Z plane will be used as background. by default 80</span>
+<span class="sd">    n_iters : int, optional</span>
+<span class="sd">        Number of iterations, by default 10</span>
+<span class="sd">    shift : int, optional</span>
+<span class="sd">        If deskewed, the output image's extra shift in X (positive-&gt;left),</span>
+<span class="sd">        by default 0</span>
+<span class="sd">    save_deskewed : bool, optional</span>
+<span class="sd">        Save deskewed raw data as well as deconvolution result, by default False</span>
+<span class="sd">    output_shape : tuple of int, optional</span>
+<span class="sd">        Specify the output shape after deskewing.  Usually this is unnecessary and</span>
+<span class="sd">        can be autodetected.  Mostly intended for use within a</span>
+<span class="sd">        :class:`pycudadecon.RLContext` context, by default None</span>
+<span class="sd">    napodize : int, optional</span>
+<span class="sd">        Number of pixels to soften edge with, by default 15</span>
+<span class="sd">    nz_blend : int, optional</span>
+<span class="sd">        Number of top and bottom sections to blend in to reduce axial ringing,</span>
+<span class="sd">        by default 0</span>
+<span class="sd">    pad_val : float, optional</span>
+<span class="sd">        Value with which to pad image when deskewing, by default 0.0</span>
+<span class="sd">    dup_rev_z : bool, optional</span>
+<span class="sd">        Duplicate reversed stack prior to decon to reduce axial ringing,</span>
+<span class="sd">        by default False</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    np.ndarray or 2-tuple of np.ndarray</span>
+<span class="sd">        The deconvolved result.  If `save_deskewed` is `True`, returns</span>
+<span class="sd">        `(decon_result, deskew_result)`</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If im.ndim is not 3, or `output_shape` is provided but not length 3</span>
+<span class="sd">    """</span>
+
+    <span class="k">if</span> <span class="n">im</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Only 3D arrays supported"</span><span class="p">)</span>
+
+    <span class="n">nz</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nx</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">shape</span>
+    <span class="k">if</span> <span class="n">output_shape</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">output_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">lib</span><span class="o">.</span><span class="n">get_output_nz</span><span class="p">(),</span> <span class="n">lib</span><span class="o">.</span><span class="n">get_output_ny</span><span class="p">(),</span> <span class="n">lib</span><span class="o">.</span><span class="n">get_output_nx</span><span class="p">())</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">output_shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Decon output shape must have length==3"</span><span class="p">)</span>
+
+    <span class="n">decon_result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">output_shape</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">save_deskewed</span><span class="p">:</span>
+        <span class="n">deskew_result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">decon_result</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">deskew_result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+    <span class="c1"># must be 16 bit going in</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">im</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">):</span>
+        <span class="n">im</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">background</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">background</span> <span class="o">==</span> <span class="s2">"auto"</span><span class="p">:</span>
+        <span class="n">background</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">im</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="n">rescale</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># not sure if this works yet...</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">im</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="s2">"C_CONTIGUOUS"</span><span class="p">]:</span>
+        <span class="n">im</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+    <span class="n">lib</span><span class="o">.</span><span class="n">RL_interface</span><span class="p">(</span>
+        <span class="n">im</span><span class="p">,</span>
+        <span class="n">nx</span><span class="p">,</span>
+        <span class="n">ny</span><span class="p">,</span>
+        <span class="n">nz</span><span class="p">,</span>
+        <span class="n">decon_result</span><span class="p">,</span>
+        <span class="n">deskew_result</span><span class="p">,</span>
+        <span class="n">background</span><span class="p">,</span>
+        <span class="n">rescale</span><span class="p">,</span>
+        <span class="n">save_deskewed</span><span class="p">,</span>
+        <span class="n">n_iters</span><span class="p">,</span>
+        <span class="n">shift</span><span class="p">,</span>
+        <span class="n">napodize</span><span class="p">,</span>
+        <span class="n">nz_blend</span><span class="p">,</span>
+        <span class="n">pad_val</span><span class="p">,</span>
+        <span class="n">dup_rev_z</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">save_deskewed</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">decon_result</span><span class="p">,</span> <span class="n">deskew_result</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">decon_result</span></div>
+
+
+<span class="k">def</span> <span class="nf">quickDecon</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">otfpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">"""Perform deconvolution of `image` with otf at `otfpath`.</span>
+
+<span class="sd">    Not currently used...</span>
+<span class="sd">    """</span>
+    <span class="n">rl_init</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">otfpath</span><span class="p">,</span> <span class="o">**</span><span class="n">_kwargs_for</span><span class="p">(</span><span class="n">rl_init</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">rl_decon</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="o">**</span><span class="n">_kwargs_for</span><span class="p">(</span><span class="n">rl_decon</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
+    <span class="n">lib</span><span class="o">.</span><span class="n">RL_cleanup</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<div class="viewcode-block" id="RLContext"><a class="viewcode-back" href="../../deconvolution.html#pycudadecon.RLContext">[docs]</a><span class="k">class</span> <span class="nc">RLContext</span><span class="p">:</span>
+    <span class="sd">"""Context manager to setup the GPU for RL decon</span>
+
+<span class="sd">    Takes care of handing the OTF to the GPU, preparing a cuFFT plane,</span>
+<span class="sd">    and cleaning up after decon.  Internally, this calls :func:`rl_init`,</span>
+<span class="sd">    stores the shape of the expected output volume after any deskew/decon,</span>
+<span class="sd">    then calls :func:`rl_cleanup` when exiting the context.</span>
+
+<span class="sd">    For parameters, see :func:`rl_init`.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; with RLContext(data.shape, otfpath, dz) as ctx:</span>
+<span class="sd">    ...     result = rl_decon(data, ctx.out_shape)</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">rawdata_shape</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+        <span class="n">otfpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">dzdata</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">dxdata</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">dzpsf</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">dxpsf</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">deskew</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">rotate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="nb">locals</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"self"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_shape</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Setup the context and return the ZYX shape of the output image"""</span>
+        <span class="n">rl_init</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">lib</span><span class="o">.</span><span class="n">get_output_nz</span><span class="p">(),</span> <span class="n">lib</span><span class="o">.</span><span class="n">get_output_ny</span><span class="p">(),</span> <span class="n">lib</span><span class="o">.</span><span class="n">get_output_nx</span><span class="p">())</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+        <span class="c1"># exit receives a tuple with any exceptions raised during processing</span>
+        <span class="c1"># if __exit__ returns True, exceptions will be supressed</span>
+        <span class="n">lib</span><span class="o">.</span><span class="n">RL_cleanup</span><span class="p">()</span></div>
+
+
+<span class="c1"># alias</span>
+<span class="n">rl_context</span> <span class="o">=</span> <span class="n">RLContext</span>
+
+
+<span class="k">def</span> <span class="nf">_yield_arrays</span><span class="p">(</span>
+    <span class="n">images</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">PathOrArray</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">PathOrArray</span><span class="p">]],</span> <span class="n">fpattern</span><span class="o">=</span><span class="s2">"*.tif"</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+    <span class="sd">"""Yield arrays from an array, path, or sequence of either.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    images : Union[PathOrArray, Sequence[PathOrArray]]</span>
+<span class="sd">        an array, path, or sequence of either</span>
+<span class="sd">    fpattern : str, optional</span>
+<span class="sd">        used to filter files in a directory, by default "*.tif"</span>
+
+<span class="sd">    Yields</span>
+<span class="sd">    -------</span>
+<span class="sd">    Iterator[np.ndarray]</span>
+<span class="sd">        Arrays (read from paths if necessary)</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    OSError</span>
+<span class="sd">        If a directory is provided and no files match fpattern.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">images</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">images</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">imread</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">images</span><span class="p">):</span>
+            <span class="n">imfiles</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">images</span><span class="p">)</span> <span class="k">if</span> <span class="n">fnmatch</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">fpattern</span><span class="p">)]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">imfiles</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span>
+                    <span class="s1">'No files matching pattern "</span><span class="si">{}</span><span class="s1">" found in directory: </span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">fpattern</span><span class="p">,</span> <span class="n">images</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">for</span> <span class="n">fpath</span> <span class="ow">in</span> <span class="n">imfiles</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">imread</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">fpath</span><span class="p">))</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">images</span><span class="p">:</span>
+            <span class="k">yield from</span> <span class="n">_yield_arrays</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="decon"><a class="viewcode-back" href="../../deconvolution.html#pycudadecon.decon">[docs]</a><span class="k">def</span> <span class="nf">decon</span><span class="p">(</span>
+    <span class="n">images</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">PathOrArray</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">PathOrArray</span><span class="p">]],</span>
+    <span class="n">psf</span><span class="p">:</span> <span class="n">PathOrArray</span><span class="p">,</span>
+    <span class="n">fpattern</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"*.tif"</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]:</span>
+    <span class="sd">"""Deconvolve an image or images with a PSF or OTF file.</span>
+
+<span class="sd">    If `images` is a directory, use the `fpattern` argument to select files</span>
+<span class="sd">    by filename pattern.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    images : str, np.ndarray, or sequence of either</span>
+<span class="sd">        The array, filepath, directory, or list/tuple thereof to deconvolve</span>
+<span class="sd">    psf : str or np.ndarray</span>
+<span class="sd">        a filepath of a PSF or OTF file, or a 3D numpy PSF array.  Function will</span>
+<span class="sd">        auto-detect whether the file is a 3D PSF or a filepath representing a 2D</span>
+<span class="sd">        complex OTF.</span>
+<span class="sd">    fpattern : str, optional</span>
+<span class="sd">        Filepattern to use when a directory is provided in the `images` argument,</span>
+<span class="sd">        by default `*.tif`</span>
+<span class="sd">    ** kwargs</span>
+<span class="sd">        All other kwargs must be valid for either :func:`rl_init` or :func:`rl_decon`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    np.ndarray or list of array</span>
+<span class="sd">        The deconvolved image(s)</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If save_deskewed is True and deskew is unset or 0</span>
+<span class="sd">    IOError</span>
+<span class="sd">        If a directory is provided as input and ``fpattern`` yields no files</span>
+<span class="sd">    NotImplementedError</span>
+<span class="sd">        If ``psf`` is provided as a complex, 2D numpy array (OTFs can only be</span>
+<span class="sd">        provided as filenames created with :func:`pycudadecon.make_otf`)</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    deconvolve a 3D TIF volume with a 3D PSF volume (e.g. a single bead stack)</span>
+
+<span class="sd">    &gt;&gt;&gt; result = decon('/path/to/image.tif', '/path/to/psf.tif')</span>
+
+<span class="sd">    deconvolve all TIF files in a specific directory that match a certain</span>
+<span class="sd">    `filename pattern &lt;https://docs.python.org/3.6/library/fnmatch.html&gt;`_,</span>
+<span class="sd">    (in this example, all TIFs with the string '560nm' in their name)</span>
+
+<span class="sd">    &gt;&gt;&gt; result = decon(</span>
+<span class="sd">    ...     '/directory/with/images', '/path/to/psf.tif', fpattern='*560nm*.tif'</span>
+<span class="sd">    ... )</span>
+
+<span class="sd">    deconvolve a list of images, provided either as np.ndarrays, filepaths,</span>
+<span class="sd">    or directories</span>
+
+<span class="sd">    &gt;&gt;&gt; imarray = tifffile.imread('some_other_image.tif')</span>
+<span class="sd">    &gt;&gt;&gt; inputs = ['/directory/with/images', '/path/to/image.tif', imarray]</span>
+<span class="sd">    &gt;&gt;&gt; result = decon(inputs, '/path/to/psf.tif', fpattern='*560nm*.tif')</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"save_deskewed"</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"deskew"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Cannot use save_deskewed=True with deskew=0"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"deskew"</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Must set deskew != 0 when using save_deskewed=True"</span><span class="p">)</span>
+
+    <span class="n">init_kwargs</span> <span class="o">=</span> <span class="n">_kwargs_for</span><span class="p">(</span><span class="n">rl_init</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">decon_kwargs</span> <span class="o">=</span> <span class="n">_kwargs_for</span><span class="p">(</span><span class="n">rl_decon</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">with</span> <span class="n">TemporaryOTF</span><span class="p">(</span><span class="n">psf</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">as</span> <span class="n">otf</span><span class="p">:</span>
+        <span class="n">arraygen</span> <span class="o">=</span> <span class="n">_yield_arrays</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">fpattern</span><span class="p">)</span>
+        <span class="c1"># first, assume that all of the images are the same shape...</span>
+        <span class="c1"># in which case we can prevent a lot of GPU IO</span>
+        <span class="c1"># grab and store the shape of the first item in the generator</span>
+        <span class="n">next_im</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">arraygen</span><span class="p">)</span>
+        <span class="n">shp</span> <span class="o">=</span> <span class="n">next_im</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="k">with</span> <span class="n">RLContext</span><span class="p">(</span><span class="n">shp</span><span class="p">,</span> <span class="n">otf</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">init_kwargs</span><span class="p">)</span> <span class="k">as</span> <span class="n">ctx</span><span class="p">:</span>
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">rl_decon</span><span class="p">(</span><span class="n">next_im</span><span class="p">,</span> <span class="n">output_shape</span><span class="o">=</span><span class="n">ctx</span><span class="o">.</span><span class="n">out_shape</span><span class="p">,</span> <span class="o">**</span><span class="n">decon_kwargs</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">next_im</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">arraygen</span><span class="p">)</span>
+                    <span class="c1"># here we check to make sure that the images are still the same</span>
+                    <span class="c1"># shape... if not, we'll continue below</span>
+                    <span class="k">if</span> <span class="n">next_im</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">shp</span><span class="p">:</span>
+                        <span class="k">break</span>
+                <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+                    <span class="n">next_im</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="k">break</span>
+
+        <span class="c1"># if we had a shape mismatch, there will still be images left to process</span>
+        <span class="c1"># process them the slow way here...</span>
+        <span class="k">if</span> <span class="n">next_im</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">imarray</span> <span class="ow">in</span> <span class="p">[</span><span class="n">next_im</span><span class="p">,</span> <span class="o">*</span><span class="n">arraygen</span><span class="p">]:</span>
+                <span class="k">with</span> <span class="n">RLContext</span><span class="p">(</span><span class="n">imarray</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">otf</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">init_kwargs</span><span class="p">)</span> <span class="k">as</span> <span class="n">ctx</span><span class="p">:</span>
+                    <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">rl_decon</span><span class="p">(</span><span class="n">imarray</span><span class="p">,</span> <span class="n">output_shape</span><span class="o">=</span><span class="n">ctx</span><span class="o">.</span><span class="n">out_shape</span><span class="p">,</span> <span class="o">**</span><span class="n">decon_kwargs</span><span class="p">)</span>
+                    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">images</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">out</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">out</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+</pre></div>
+      </article>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+
+        <div class="related-information">
+              Copyright &#169; 2021
+            |
+            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a>
+              and
+              <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+              <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </main>
+</div>
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script src="../../_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></body>
+</html>

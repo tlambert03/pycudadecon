@@ -1,0 +1,328 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Installation" href="installation.html" />
+
+    <meta name="generator" content="sphinx-3.5.4, furo 2021.04.11.beta34"/>
+        <title>Home - pycudadecon</title>
+      <link rel="stylesheet" href="_static/styles/furo.css?digest=59ab60ac09ea94ccfe6deddff6d715cce948a6fc">
+    <link rel="stylesheet" href="_static/pygments.css">
+    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="_static/pygments_dark.css">
+    
+
+
+<style>
+  :root {
+    --color-code-background: #263238;
+  --color-code-foreground: #EEFFFF;
+  
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+  }
+
+  /* For allowing end-user-specific overrides */
+  .override-light {
+    --color-code-background: #263238;
+  --color-code-foreground: #EEFFFF;
+  
+  }
+  .override-dark {
+    --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+  }
+</style><link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <link rel="stylesheet" href="_static/styles/furo-extensions.css?digest=d391b54134226e4196576da3bdb6dddb7e05ba2b"></head>
+  <body dir="">
+    
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke-width="1.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z"/>
+      <line x1="4" y1="6" x2="20" y2="6" />
+      <line x1="10" y1="12" x2="20" y2="12" />
+      <line x1="6" y1="18" x2="20" y2="18" />
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="#"><div class="brand">pycudadecon</div></a>
+    </div>
+    <div class="header-right">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand centered" href="#">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="_static/logo.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">pycudadecon</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html">
+  <input class="sidebar-search" placeholder=Search name="q">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deconvolution.html">Deconvolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="otf.html">Optical Transfer Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="affine.html">Affine Transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line Interface</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/tlambert03/pycudadecon">Source Code</a></li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <main class="main">
+    <div class="content">
+      <article role="main">
+        <label class="toc-overlay-icon toc-content-icon" for="__toc">
+          <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+        </label>
+        <div class="section" id="pycudadecon">
+<h1>pyCUDAdecon<a class="headerlink" href="#pycudadecon" title="Permalink to this headline">¶</a></h1>
+<p>This package provides a python wrapper and convenience functions for
+<a class="reference external" href="https://github.com/scopetools/cudaDecon">cudaDeconv</a>, which is a CUDA/C++
+implementation of an accelerated Richardson Lucy Deconvolution
+algorithm <span id="id1">[<a class="reference internal" href="#id3"><span>1</span></a>]</span>. <code class="docutils literal notranslate"><span class="pre">cudaDeconv</span></code> was originally
+written by <a class="reference external" href="https://github.com/linshaova">Lin Shao</a> and modified by <a class="reference external" href="https://github.com/dmilkie">Dan Milkie</a>, at Janelia Research campus.  This package
+makes use of a shared library interface that I wrote for cudaDecon while
+developing <a class="reference external" href="https://github.com/tlambert03/LLSpy">LLSpy</a>, that adds a couple
+additional kernels for affine transformations and camera corrections.</p>
+<ul class="simple">
+<li><p>CUDA accelerated deconvolution with a handful of artifact-reducing features.</p></li>
+<li><p>radially averaged OTF generation with interpolation for voxel size
+independence between PSF and data volumes</p></li>
+<li><p>3D deskew, rotation, general affine transformations</p></li>
+<li><p>CUDA-based camera-correction for
+<a class="reference external" href="https://llspy.readthedocs.io/en/latest/camera.html">sCMOS artifact correction</a></p></li>
+</ul>
+<div class="section" id="install">
+<h2>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h2>
+<p>Install (Linux and Windows) from conda forge:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda install -c conda-forge pycudadecon
+</pre></div>
+</div>
+<p>see GPU requirements in <a class="reference internal" href="installation.html"><span class="doc std std-doc">Installation</span></a>.</p>
+</div>
+<div class="section" id="quickstart">
+<h2>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h2>
+<p>If you have a PSF and an image volume and you just want to get started, check
+out the <a class="reference internal" href="deconvolution.html#pycudadecon.decon" title="pycudadecon.decon"><code class="xref py py-func docutils literal notranslate"><span class="pre">pycudadecon.decon()</span></code></a> function, which should be able to handle most
+basic applications.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pycudadecon</span> <span class="kn">import</span> <span class="n">decon</span>
+
+<span class="n">image_path</span> <span class="o">=</span> <span class="s1">'/path/to/some_image.tif'</span>
+<span class="n">psf_path</span> <span class="o">=</span> <span class="s1">'/path/to/psf_3D.tif'</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">decon</span><span class="p">(</span><span class="n">image_path</span><span class="p">,</span> <span class="n">psf_path</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For finer-tuned control, you may wish to make an OTF file from your PSF using
+<a class="reference internal" href="otf.html#pycudadecon.make_otf" title="pycudadecon.make_otf"><code class="xref py py-func docutils literal notranslate"><span class="pre">make_otf()</span></code></a>, and then use the <a class="reference internal" href="deconvolution.html#pycudadecon.RLContext" title="pycudadecon.RLContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">RLContext</span></code></a>
+context manager to setup the GPU for use with the <a class="reference internal" href="deconvolution.html#pycudadecon.rl_decon" title="pycudadecon.rl_decon"><code class="xref py py-func docutils literal notranslate"><span class="pre">rl_decon()</span></code></a>
+function.  (Note all images processed in the same context must have the same
+input shape).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pycudadecon</span> <span class="kn">import</span> <span class="n">RLContext</span><span class="p">,</span> <span class="n">rl_decon</span>
+<span class="kn">from</span> <span class="nn">glob</span> <span class="kn">import</span> <span class="n">glob</span>
+<span class="kn">import</span> <span class="nn">tifffile</span>
+
+<span class="n">image_folder</span> <span class="o">=</span> <span class="s1">'/path/to/some_images/'</span>
+<span class="n">imlist</span> <span class="o">=</span> <span class="n">glob</span><span class="p">(</span><span class="n">image_folder</span> <span class="o">+</span> <span class="s1">'*488*.tif'</span><span class="p">)</span>
+<span class="n">otf_path</span> <span class="o">=</span> <span class="s1">'/path/to/pregenerated_otf.tif'</span>
+
+<span class="k">with</span> <span class="n">tifffile</span><span class="o">.</span><span class="n">TiffFile</span><span class="p">(</span><span class="n">imlist</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">as</span> <span class="n">tf</span><span class="p">:</span>
+    <span class="n">imshape</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">series</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+
+<span class="k">with</span> <span class="n">RLContext</span><span class="p">(</span><span class="n">imshape</span><span class="p">,</span> <span class="n">otf_path</span><span class="p">,</span> <span class="n">dz</span><span class="p">)</span> <span class="k">as</span> <span class="n">ctx</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">impath</span> <span class="ow">in</span> <span class="n">imlist</span><span class="p">:</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">tifffile</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">impath</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">rl_decon</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">output_shape</span><span class="o">=</span><span class="n">ctx</span><span class="o">.</span><span class="n">out_shape</span><span class="p">)</span>
+        <span class="c1"># do something with result...</span>
+</pre></div>
+</div>
+<p>If you have a 3D PSF volume, the <a class="reference internal" href="otf.html#pycudadecon.TemporaryOTF" title="pycudadecon.TemporaryOTF"><code class="xref py py-class docutils literal notranslate"><span class="pre">TemporaryOTF</span></code></a> context
+manager facilitates temporary OTF generation…</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># continuing with the variables from the previous example...</span>
+<span class="n">psf_path</span> <span class="o">=</span> <span class="s2">"/path/to/psf_3D.tif"</span>
+
+<span class="k">with</span> <span class="n">TemporaryOTF</span><span class="p">(</span><span class="n">psf</span><span class="p">)</span> <span class="k">as</span> <span class="n">otf</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">RLContext</span><span class="p">(</span><span class="n">imshape</span><span class="p">,</span> <span class="n">otf</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">dz</span><span class="p">)</span> <span class="k">as</span> <span class="n">ctx</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">impath</span> <span class="ow">in</span> <span class="n">imlist</span><span class="p">:</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">tifffile</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">impath</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">rl_decon</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">output_shape</span><span class="o">=</span><span class="n">ctx</span><span class="o">.</span><span class="n">out_shape</span><span class="p">)</span>
+            <span class="c1"># do something with result...</span>
+</pre></div>
+</div>
+<p>… and that bit of code is essentially what the <a class="reference internal" href="deconvolution.html#pycudadecon.decon" title="pycudadecon.decon"><code class="xref py py-func docutils literal notranslate"><span class="pre">decon()</span></code></a>
+function is doing, with a little bit of additional conveniences added in.</p>
+<p><em>Each of these functions has many options and accepts multiple keyword
+arguments. For further information, see the documentation for the respective
+functions.</em></p>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p id="id2"><dl class="citation">
+<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>David S. C. Biggs and Mark Andrews. Acceleration of iterative image restoration algorithms. <em>Appl. Opt.</em>, 36(8):1766–1775, Mar 1997. URL: <a class="reference external" href="http://ao.osa.org/abstract.cfm?URI=ao-36-8-1766">http://ao.osa.org/abstract.cfm?URI=ao-36-8-1766</a>, <a class="reference external" href="https://doi.org/10.1364/AO.36.001766">doi:10.1364/AO.36.001766</a>.</p>
+</dd>
+</dl>
+</p>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+</div>
+<script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+<script>kernelName = 'python3'</script>
+      </article>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="installation.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Installation</div>
+              </div>
+              <svg><use href="#svg-arrow-right"></use></svg>
+            </a>
+          
+        </div>
+
+        <div class="related-information">
+              Copyright &#169; 2021
+            |
+            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a>
+              and
+              <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+              <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
+            |
+            <a class="muted-link" href="_sources/index.md"
+               rel="nofollow">
+              Show Source
+            </a>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">pyCUDAdecon</a><ul>
+<li><a class="reference internal" href="#install">Install</a></li>
+<li><a class="reference internal" href="#quickstart">Quickstart</a></li>
+<li><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </main>
+</div>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script src="_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></body>
+</html>
