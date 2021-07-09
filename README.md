@@ -38,7 +38,7 @@ To specify a specific cudatoolkit version, install as follows (for instance, to
 use `cudatoolkit=10.2`)
 
 ```sh
-conda install -c conda-forge cudadecon cudatoolkit=10.2
+conda install -c conda-forge pycudadecon cudatoolkit=10.2
 ```
 
 | CUDA | Linux driver | Win driver |
