@@ -1,0 +1,11 @@
+name: pycudadecon
+display_name: pyCUDAdecon
+contributions:
+  commands:
+    - id: pycudadecon.deconvolve
+      python_name: pycudadecon.napari:deconvolve
+      title: Deconvolve
+  widgets:
+    - command: pycudadecon.deconvolve
+      display_name: CUDA-Deconvolution
+      autogenerate: True
