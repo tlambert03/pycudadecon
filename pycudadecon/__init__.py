@@ -1,4 +1,13 @@
-__version__ = "0.2.0"
+try:
+    from importlib.metadata import PackageNotFoundError, version
+except ImportError:
+    from importlib_metadata import PackageNotFoundError, version
+
+try:
+    __version__ = version("pycudadecon")
+except PackageNotFoundError:
+    __version__ = "uninstalled"
+
 from typing import Any
 
 lib: Any

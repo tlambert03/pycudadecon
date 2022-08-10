@@ -1,28 +1,44 @@
-"""
-This module is an example of a barebones QWidget plugin for napari
+from typing import TYPE_CHECKING
 
-It implements the ``napari_experimental_provide_dock_widget`` hook specification.
-see: https://napari.org/docs/dev/plugins/hook_specifications.html
-
-Replace code below according to your needs.
-"""
-from magicgui import magic_factory
-from napari_plugin_engine import napari_hook_implementation
-
-from napari.types import ImageData
-from pycudadecon.deconvolution import decon
+if TYPE_CHECKING:
+    import napari.types
 
 
-@magic_factory(call_button="Deconvolve")
 def deconvolve(
-    image: ImageData,
-    psf: ImageData,
+    image: "napari.types.ImageData",
+    psf: "napari.types.ImageData",
     image_pixel_size=0.1,
     image_zstep=0.5,
     psf_pixel_size=0.1,
     psf_zstep=0.1,
     iterations=10,
-) -> ImageData:
+) -> "napari.types.ImageData":
+    """Deconvolve `image` using `psf`.
+
+    Parameters
+    ----------
+    image : ImageData
+        image array
+    psf : ImageData
+        psf array
+    image_pixel_size : float, optional
+        image pixel size in microns, by default 0.1
+    image_zstep : float, optional
+        image z step in microns, by default 0.5
+    psf_pixel_size : float, optional
+        psf pixel size in microns, by default 0.1
+    psf_zstep : float, optional
+        psf z step size in microns, by default 0.1
+    iterations : int, optional
+        number of iterations, by default 10
+
+    Returns
+    -------
+    ImageData
+        deconvolved image.
+    """
+    from pycudadecon.deconvolution import decon
+
     return decon(
         image,
         psf,
@@ -32,9 +48,3 @@ def deconvolve(
         dzpsf=psf_zstep,
         n_iters=iterations,
     )
-
-
-@napari_hook_implementation
-def napari_experimental_provide_dock_widget():
-    # you can return either a single widget, or a sequence of widgets
-    return deconvolve, {"name": "CUDA-Deconvolution"}
