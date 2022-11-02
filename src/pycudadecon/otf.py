@@ -106,7 +106,7 @@ class CappedPSF:
                 self.psf = imread(self.psf)
         if isinstance(self.psf, np.ndarray):
             self.temp_psf = tempfile.NamedTemporaryFile(suffix=".tif", delete=False)
-            tf.imsave(self.temp_psf.name, cap_psf_size(self.psf, self.max_otf_size))
+            tf.imwrite(self.temp_psf.name, cap_psf_size(self.psf, self.max_otf_size))
             self.path = self.temp_psf.name
         return self
 
@@ -224,7 +224,7 @@ class TemporaryOTF:
             self.tempotf = tempfile.NamedTemporaryFile(suffix=".tif", delete=False)
             if isinstance(self.psf, np.ndarray):
                 temp_psf = tempfile.NamedTemporaryFile(suffix=".tif", delete=False)
-                tf.imsave(temp_psf.name, self.psf)
+                tf.imwrite(temp_psf.name, self.psf)
                 make_otf(temp_psf.name, self.tempotf.name, **self.kwargs)
                 try:
                     temp_psf.close()
