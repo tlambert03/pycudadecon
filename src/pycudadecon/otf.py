@@ -1,33 +1,37 @@
 import os
 import tempfile
-from typing import Optional
+from typing import Optional, Any
 
 import numpy as np
 import tifffile as tf
 
 from . import lib
-from .util import imread, is_otf
+from .util import imread, is_otf, PathOrArray
 
 
-def predict_otf_size(psf):
+def predict_otf_size(psf: PathOrArray) -> int:
     """Calculate the file size of the OTF that would result from this psf.
 
-    Note: this does not actually generate an OTF
+    Parameters
+    ----------
+    psf : PathOrArray
+        psf that would be used to make the otf
 
-    Args:
-        psf (str, np.ndarray): psf that would be used to make the otf
+    Returns
+    -------
+    int
+        number of bytes that the OTF file would be
 
-    Returns:
-        int: number of bytes that the OTF file would be
-
-    Raises:
-        ValueError: if the input is neither an existing filepath or numpy array
+    Raises
+    ------
+    ValueError
+        if the input is neither an existing filepath or numpy array
     """
-    if isinstance(psf, str) and os.path.isfile(psf):
+    if isinstance(psf, np.ndarray):
+        nz, _, nx = psf.shape
+    elif isinstance(psf, str) and os.path.isfile(psf):
         with tf.TiffFile(psf) as file:
             nz, _, nx = file.series[0].shape
-    elif isinstance(psf, np.ndarray):
-        nz, _, nx = psf.shape
     else:
         raise ValueError("psf argument must be filepath or numpy array")
     # the radially averaged OTF only cares about the x
@@ -36,12 +40,26 @@ def predict_otf_size(psf):
     return 251 + otfpix * 32 // 8
 
 
-def cap_psf_size(psf, max_otf_size=60000, min_xy=200, min_nz=20):
-    """crop PSF to a size that will yield an OTF with a maximum specified size
+def cap_psf_size(
+    psf: np.ndarray, max_otf_size: float = 60000, min_xy: int = 200, min_nz: int = 20
+) -> np.ndarray:
+    """Crop PSF to a size that will yield an OTF with a maximum specified size.
 
-    Args:
-        psf (np.ndarray): 3D PSF to be turned into an OTF
-        max_otf_size (int, optional): Maximum output OTF size. Defaults to 60000.
+    Parameters
+    ----------
+    psf : np.ndarray
+        3D PSF to be turned into an OTF
+    max_otf_size : int or float, optional
+        Maximum output OTF size. Defaults to 60000.
+    min_xy : int, optional
+        minimum size of xy dimension, by default 200
+    min_nz : int, optional
+        minimum size of z dimension, by default 20
+
+    Returns
+    -------
+    np.ndarray
+        cropped PSF
     """
     # output_otf_size = (1 + nx // 2) * (nz * 2) * 4
     if not max_otf_size:
@@ -49,7 +67,7 @@ def cap_psf_size(psf, max_otf_size=60000, min_xy=200, min_nz=20):
 
     if predict_otf_size(psf) <= max_otf_size:
         return psf
-    _nz, _ny, _nx = psf.shape
+    _nz, _, _nx = psf.shape
 
     # figure out how close the PSF maximum is to the edge of the stack
     z_center, y_center, x_center = np.unravel_index(psf.argmax(), psf.shape)
@@ -77,8 +95,9 @@ def cap_psf_size(psf, max_otf_size=60000, min_xy=200, min_nz=20):
 
 
 class CappedPSF:
-    """Context manager that provides the path to a 3D PSF that is guaranteed to
-    yield an OTF that is smaller than the specified value.
+    """Context manager that provides the path to a 3D PSF.
+
+    Thi is guaranteed to yield an OTF that is smaller than the specified value.
 
     Args:
         psf (str, np.ndarray): Path to a PSF or a numpy array with a 3D PSF
@@ -92,13 +111,13 @@ class CappedPSF:
             a temporary pathname if the psf was provided as a numpy array
     """
 
-    def __init__(self, psf, max_otf_size=None):
+    def __init__(self, psf: PathOrArray, max_otf_size: Optional[int] = None) -> None:
         self.psf = psf
         self.max_otf_size = max_otf_size or np.inf
-        self.temp_psf = None
-        self.path = None
+        self.temp_psf: Optional["tempfile._TemporaryFileWrapper"] = None
+        self.path: Optional[str] = None
 
-    def __enter__(self):
+    def __enter__(self) -> "CappedPSF":
         if isinstance(self.psf, str) and os.path.isfile(self.psf):
             if predict_otf_size(self.psf) <= self.max_otf_size:
                 self.path = self.psf
@@ -110,7 +129,7 @@ class CappedPSF:
             self.path = self.temp_psf.name
         return self
 
-    def __exit__(self, typ, val, traceback):
+    def __exit__(self, *_: Any) -> None:
         if self.temp_psf is not None:
             try:
                 self.temp_psf.close()
@@ -132,31 +151,45 @@ def make_otf(
     fixorigin: int = 10,
     cleanup_otf: bool = False,
     max_otf_size: int = 60000,
-    **kwargs,
-):
+    **kwargs: Any,
+) -> str:
     """Generate a radially averaged OTF file from a PSF file
 
-    Args:
-        psf (str): Filepath of 3D PSF TIF
-        outpath (str): Destination filepath for the output OTF
-            (default: appends "_otf.tif" to filename)
-        dzpsf (float): Z-step size in microns (default: {0.1})
-        dxpsf (float): XY-Pixel size in microns (default: {0.1})
-        wavelength (int): Emission wavelength in nm (default: {520})
-        na (float): Numerical Aperture (default: {1.25})
-        nimm (float): Refractive indez of immersion medium (default: {1.3})
-        otf_bgrd (int, None): Background to subtract. "None" = autodetect.
-            (default: {None})
-        krmax (int): pixels outside this limit will be zeroed (overwriting
-            estimated value from NA and NIMM) (default: {0})
-        fixorigin (int): for all kz, extrapolate using pixels kr=1 to this pixel
-            to get value for kr=0 (default: {10})
-        cleanup_otf (bool): clean-up outside OTF support (default: {False})
-        max_otf_size (int): make sure OTF is smaller than this many bytes. Deconvolution
-            may fail if the OTF is larger than 60KB (default: 60000)
+    Parameters
+    ----------
+    psf : str
+        Filepath of 3D PSF TIF
+    outpath : str, optional
+        Destination filepath for the output OTF
+        (default: appends "_otf.tif" to filename), by default None
+    dzpsf : float, optional
+        Z-step size in microns, by default 0.1
+    dxpsf : float, optional
+        XY-Pixel size in microns, by default 0.1
+    wavelength : int, optional
+        Emission wavelength in nm, by default 520
+    na : float, optional
+        Numerical Aperture, by default 1.25
+    nimm : float, optional
+        Refractive indez of immersion medium, by default 1.3
+    otf_bgrd : int, optional
+        Background to subtract. "None" = autodetect., by default None
+    krmax : int, optional
+        pixels outside this limit will be zeroed (overwriting
+        estimated value from NA and NIMM), by default 0
+    fixorigin : int, optional
+        for all kz, extrapolate using pixels kr=1 to this pixel
+        to get value for kr=0, by default 10
+    cleanup_otf : bool, optional
+        clean-up outside OTF support, by default False
+    max_otf_size : int, optional
+        make sure OTF is smaller than this many bytes. Deconvolution
+        may fail if the OTF is larger than 60KB (default: 60000), by default 60000
 
-    Returns:
-        str: Path of output file
+    Returns
+    -------
+    str
+        Path to the OTF file
     """
     if outpath is None:
         outpath = psf.replace(".tif", "_otf.tif")
@@ -215,11 +248,11 @@ class TemporaryOTF:
 
     """
 
-    def __init__(self, psf, **kwargs):
+    def __init__(self, psf: PathOrArray, **kwargs: Any) -> None:
         self.psf = psf
         self.kwargs = kwargs
 
-    def __enter__(self):
+    def __enter__(self) -> "TemporaryOTF":
         if not is_otf(self.psf):
             self.tempotf = tempfile.NamedTemporaryFile(suffix=".tif", delete=False)
             if isinstance(self.psf, np.ndarray):
@@ -243,7 +276,7 @@ class TemporaryOTF:
             raise ValueError("Unrecognized input for otf")
         return self
 
-    def __exit__(self, typ, val, traceback):
+    def __exit__(self, *_: Any) -> None:
         try:
             self.tempotf.close()
             os.remove(self.tempotf.name)
