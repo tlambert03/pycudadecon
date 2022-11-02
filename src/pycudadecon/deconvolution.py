@@ -246,7 +246,6 @@ class RLContext:
             "rotate": rotate,
             "width": width,
         }
-        self.kwargs.pop("self")
         self.out_shape: Optional[Tuple[int, int, int]] = None
 
     def __enter__(self) -> "RLContext":
