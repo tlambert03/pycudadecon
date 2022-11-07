@@ -4,64 +4,59 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <meta name="generator" content="sphinx-3.5.4, furo 2021.04.11.beta34"/>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.09.29"/>
         <title>pycudadecon.otf - pycudadecon</title>
-      <link rel="stylesheet" href="../../_static/styles/furo.css?digest=59ab60ac09ea94ccfe6deddff6d715cce948a6fc">
-    <link rel="stylesheet" href="../../_static/pygments.css">
-    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../../_static/pygments_dark.css">
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
     
 
 
 <style>
-  :root {
+  body {
     --color-code-background: #263238;
   --color-code-foreground: #EEFFFF;
   
   }
-  @media (prefers-color-scheme: dark) {
-    :root {
+  @media not print {
+    body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
   
     }
-  }
-
-  /* For allowing end-user-specific overrides */
-  .override-light {
-    --color-code-background: #263238;
-  --color-code-foreground: #EEFFFF;
-  
-  }
-  .override-dark {
-    --color-code-background: #202020;
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
   
+      }
+    }
   }
-</style><link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    <link rel="stylesheet" href="../../_static/styles/furo-extensions.css?digest=d391b54134226e4196576da3bdb6dddb7e05ba2b"></head>
-  <body dir="">
+</style></head>
+  <body>
     
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="svg-toc" viewBox="0 0 24 24">
     <title>Contents</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-      stroke-width="1.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-      <path stroke="none" d="M0 0h24v24H0z"/>
-      <line x1="4" y1="6" x2="20" y2="6" />
-      <line x1="10" y1="12" x2="20" y2="12" />
-      <line x1="6" y1="18" x2="20" y2="18" />
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
     </svg>
   </symbol>
   <symbol id="svg-menu" viewBox="0 0 24 24">
     <title>Menu</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-      class="feather feather-menu">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
       <line x1="3" y1="12" x2="21" y2="12"></line>
       <line x1="3" y1="6" x2="21" y2="6"></line>
       <line x1="3" y1="18" x2="21" y2="18"></line>
@@ -69,18 +64,57 @@
   </symbol>
   <symbol id="svg-arrow-right" viewBox="0 0 24 24">
     <title>Expand</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-      class="feather feather-chevron-right">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
       <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
     </svg>
   </symbol>
 </svg>
 
 <input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
 <input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
-<label class="overlay sidebar-overlay" for="__navigation"></label>
-<label class="overlay toc-overlay" for="__toc"></label>
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
 
 
 
@@ -88,6 +122,7 @@
   <header class="mobile-header">
     <div class="header-left">
       <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
         <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
       </label>
     </div>
@@ -95,7 +130,16 @@
       <a href="../../index.html"><div class="brand">pycudadecon</div></a>
     </div>
     <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
       <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
     </div>
@@ -111,11 +155,12 @@
   
   <span class="sidebar-brand-text">pycudadecon</span>
   
-</a><form class="sidebar-search-container" method="get" action="../../search.html">
-  <input class="sidebar-search" placeholder=Search name="q">
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
-</form><div class="sidebar-scroll"><div class="sidebar-tree">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../deconvolution.html">Deconvolution</a></li>
@@ -127,69 +172,106 @@
 
 </div>
 </div>
+
       </div>
       
     </div>
   </aside>
-  <main class="main">
+  <div class="main">
     <div class="content">
-      <article role="main">
-        <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
-          <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
-        </label>
-        <h1>Source code for pycudadecon.otf</h1><div class="highlight"><pre>
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for pycudadecon.otf</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Any</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">tifffile</span> <span class="k">as</span> <span class="nn">tf</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">lib</span>
-<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">imread</span><span class="p">,</span> <span class="n">is_otf</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">imread</span><span class="p">,</span> <span class="n">is_otf</span><span class="p">,</span> <span class="n">PathOrArray</span>
 
 
-<span class="k">def</span> <span class="nf">predict_otf_size</span><span class="p">(</span><span class="n">psf</span><span class="p">):</span>
-    <span class="sd">"""Calculate the file size of the OTF that would result from this psf.</span>
+<span class="k">def</span> <span class="nf">predict_otf_size</span><span class="p">(</span><span class="n">psf</span><span class="p">:</span> <span class="n">PathOrArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the file size of the OTF that would result from this psf.</span>
 
-<span class="sd">    Note: this does not actually generate an OTF</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    psf : PathOrArray</span>
+<span class="sd">        psf that would be used to make the otf</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        psf (str, np.ndarray): psf that would be used to make the otf</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    int</span>
+<span class="sd">        number of bytes that the OTF file would be</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        int: number of bytes that the OTF file would be</span>
-
-<span class="sd">    Raises:</span>
-<span class="sd">        ValueError: if the input is neither an existing filepath or numpy array</span>
-<span class="sd">    """</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">psf</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">psf</span><span class="p">):</span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        if the input is neither an existing filepath or numpy array</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">psf</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">nz</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">nx</span> <span class="o">=</span> <span class="n">psf</span><span class="o">.</span><span class="n">shape</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">psf</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">psf</span><span class="p">):</span>
         <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">TiffFile</span><span class="p">(</span><span class="n">psf</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
             <span class="n">nz</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">nx</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">series</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">psf</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
-        <span class="n">nz</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">nx</span> <span class="o">=</span> <span class="n">psf</span><span class="o">.</span><span class="n">shape</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"psf argument must be filepath or numpy array"</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;psf argument must be filepath or numpy array&quot;</span><span class="p">)</span>
     <span class="c1"># the radially averaged OTF only cares about the x</span>
     <span class="n">otfpix</span> <span class="o">=</span> <span class="n">nz</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">nx</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
     <span class="c1"># header size adds up to around 251 bytes</span>
     <span class="k">return</span> <span class="mi">251</span> <span class="o">+</span> <span class="n">otfpix</span> <span class="o">*</span> <span class="mi">32</span> <span class="o">//</span> <span class="mi">8</span>
 
 
-<span class="k">def</span> <span class="nf">cap_psf_size</span><span class="p">(</span><span class="n">psf</span><span class="p">,</span> <span class="n">max_otf_size</span><span class="o">=</span><span class="mi">60000</span><span class="p">,</span> <span class="n">min_xy</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">min_nz</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
-    <span class="sd">"""crop PSF to a size that will yield an OTF with a maximum specified size</span>
+<span class="k">def</span> <span class="nf">cap_psf_size</span><span class="p">(</span>
+    <span class="n">psf</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">max_otf_size</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">60000</span><span class="p">,</span> <span class="n">min_xy</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">min_nz</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Crop PSF to a size that will yield an OTF with a maximum specified size.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        psf (np.ndarray): 3D PSF to be turned into an OTF</span>
-<span class="sd">        max_otf_size (int, optional): Maximum output OTF size. Defaults to 60000.</span>
-<span class="sd">    """</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    psf : np.ndarray</span>
+<span class="sd">        3D PSF to be turned into an OTF</span>
+<span class="sd">    max_otf_size : int or float, optional</span>
+<span class="sd">        Maximum output OTF size. Defaults to 60000.</span>
+<span class="sd">    min_xy : int, optional</span>
+<span class="sd">        minimum size of xy dimension, by default 200</span>
+<span class="sd">    min_nz : int, optional</span>
+<span class="sd">        minimum size of z dimension, by default 20</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    np.ndarray</span>
+<span class="sd">        cropped PSF</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># output_otf_size = (1 + nx // 2) * (nz * 2) * 4</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">max_otf_size</span><span class="p">:</span>
         <span class="n">max_otf_size</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
 
     <span class="k">if</span> <span class="n">predict_otf_size</span><span class="p">(</span><span class="n">psf</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">max_otf_size</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">psf</span>
-    <span class="n">_nz</span><span class="p">,</span> <span class="n">_ny</span><span class="p">,</span> <span class="n">_nx</span> <span class="o">=</span> <span class="n">psf</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">_nz</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_nx</span> <span class="o">=</span> <span class="n">psf</span><span class="o">.</span><span class="n">shape</span>
 
     <span class="c1"># figure out how close the PSF maximum is to the edge of the stack</span>
     <span class="n">z_center</span><span class="p">,</span> <span class="n">y_center</span><span class="p">,</span> <span class="n">x_center</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">psf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(),</span> <span class="n">psf</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
@@ -197,7 +279,7 @@
 
     <span class="c1"># the maximum nx that would work given maximum z size</span>
     <span class="n">outnx</span> <span class="o">=</span> <span class="n">max_otf_size</span> <span class="o">//</span> <span class="p">(</span><span class="n">outnz</span> <span class="o">*</span> <span class="mi">4</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span>
-    <span class="c1"># if it's less than the specified minimum</span>
+    <span class="c1"># if it&#39;s less than the specified minimum</span>
     <span class="c1"># then figure out how much Z we can allow</span>
     <span class="k">if</span> <span class="n">outnx</span> <span class="o">&lt;</span> <span class="n">min_xy</span><span class="p">:</span>
         <span class="n">outnx</span> <span class="o">=</span> <span class="n">min_xy</span>
@@ -210,15 +292,16 @@
     <span class="n">psf</span> <span class="o">=</span> <span class="n">psf</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
 
     <span class="n">_nz</span><span class="p">,</span> <span class="n">_ny</span><span class="p">,</span> <span class="n">_nx</span> <span class="o">=</span> <span class="n">psf</span><span class="o">.</span><span class="n">shape</span>
-    <span class="k">assert</span> <span class="p">(</span><span class="n">_nx</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">_nz</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">&lt;=</span> <span class="n">max_otf_size</span><span class="p">,</span> <span class="s2">"Cap PSF failed...</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">_nx</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">_nz</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">&lt;=</span> <span class="n">max_otf_size</span><span class="p">,</span> <span class="s2">&quot;Cap PSF failed...</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
         <span class="n">psf</span><span class="o">.</span><span class="n">shape</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">psf</span>
 
 
 <span class="k">class</span> <span class="nc">CappedPSF</span><span class="p">:</span>
-    <span class="sd">"""Context manager that provides the path to a 3D PSF that is guaranteed to</span>
-<span class="sd">    yield an OTF that is smaller than the specified value.</span>
+    <span class="sd">&quot;&quot;&quot;Context manager that provides the path to a 3D PSF.</span>
+
+<span class="sd">    Thi is guaranteed to yield an OTF that is smaller than the specified value.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        psf (str, np.ndarray): Path to a PSF or a numpy array with a 3D PSF</span>
@@ -230,27 +313,27 @@
 <span class="sd">            a filepath with (if necessary) a temporary path to a cropped psf.  Or, if</span>
 <span class="sd">            if the PSF was already small enough, simply returns the original PSF, as</span>
 <span class="sd">            a temporary pathname if the psf was provided as a numpy array</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">psf</span><span class="p">,</span> <span class="n">max_otf_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">psf</span><span class="p">:</span> <span class="n">PathOrArray</span><span class="p">,</span> <span class="n">max_otf_size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">psf</span> <span class="o">=</span> <span class="n">psf</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_otf_size</span> <span class="o">=</span> <span class="n">max_otf_size</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">temp_psf</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temp_psf</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;tempfile._TemporaryFileWrapper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;CappedPSF&quot;</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">psf</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">psf</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">predict_otf_size</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">psf</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_otf_size</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">psf</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">psf</span> <span class="o">=</span> <span class="n">imread</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">psf</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">psf</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">temp_psf</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s2">".tif"</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-            <span class="n">tf</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_psf</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">cap_psf_size</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">psf</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_otf_size</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">temp_psf</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;.tif&quot;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_psf</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">cap_psf_size</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">psf</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_otf_size</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp_psf</span><span class="o">.</span><span class="n">name</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp_psf</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">temp_psf</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -272,34 +355,48 @@
     <span class="n">fixorigin</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
     <span class="n">cleanup_otf</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">max_otf_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">60000</span><span class="p">,</span>
-    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-<span class="p">):</span>
-    <span class="sd">"""Generate a radially averaged OTF file from a PSF file</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Generate a radially averaged OTF file from a PSF file</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        psf (str): Filepath of 3D PSF TIF</span>
-<span class="sd">        outpath (str): Destination filepath for the output OTF</span>
-<span class="sd">            (default: appends "_otf.tif" to filename)</span>
-<span class="sd">        dzpsf (float): Z-step size in microns (default: {0.1})</span>
-<span class="sd">        dxpsf (float): XY-Pixel size in microns (default: {0.1})</span>
-<span class="sd">        wavelength (int): Emission wavelength in nm (default: {520})</span>
-<span class="sd">        na (float): Numerical Aperture (default: {1.25})</span>
-<span class="sd">        nimm (float): Refractive indez of immersion medium (default: {1.3})</span>
-<span class="sd">        otf_bgrd (int, None): Background to subtract. "None" = autodetect.</span>
-<span class="sd">            (default: {None})</span>
-<span class="sd">        krmax (int): pixels outside this limit will be zeroed (overwriting</span>
-<span class="sd">            estimated value from NA and NIMM) (default: {0})</span>
-<span class="sd">        fixorigin (int): for all kz, extrapolate using pixels kr=1 to this pixel</span>
-<span class="sd">            to get value for kr=0 (default: {10})</span>
-<span class="sd">        cleanup_otf (bool): clean-up outside OTF support (default: {False})</span>
-<span class="sd">        max_otf_size (int): make sure OTF is smaller than this many bytes. Deconvolution</span>
-<span class="sd">            may fail if the OTF is larger than 60KB (default: 60000)</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    psf : str</span>
+<span class="sd">        Filepath of 3D PSF TIF</span>
+<span class="sd">    outpath : str, optional</span>
+<span class="sd">        Destination filepath for the output OTF</span>
+<span class="sd">        (default: appends &quot;_otf.tif&quot; to filename), by default None</span>
+<span class="sd">    dzpsf : float, optional</span>
+<span class="sd">        Z-step size in microns, by default 0.1</span>
+<span class="sd">    dxpsf : float, optional</span>
+<span class="sd">        XY-Pixel size in microns, by default 0.1</span>
+<span class="sd">    wavelength : int, optional</span>
+<span class="sd">        Emission wavelength in nm, by default 520</span>
+<span class="sd">    na : float, optional</span>
+<span class="sd">        Numerical Aperture, by default 1.25</span>
+<span class="sd">    nimm : float, optional</span>
+<span class="sd">        Refractive indez of immersion medium, by default 1.3</span>
+<span class="sd">    otf_bgrd : int, optional</span>
+<span class="sd">        Background to subtract. &quot;None&quot; = autodetect., by default None</span>
+<span class="sd">    krmax : int, optional</span>
+<span class="sd">        pixels outside this limit will be zeroed (overwriting</span>
+<span class="sd">        estimated value from NA and NIMM), by default 0</span>
+<span class="sd">    fixorigin : int, optional</span>
+<span class="sd">        for all kz, extrapolate using pixels kr=1 to this pixel</span>
+<span class="sd">        to get value for kr=0, by default 10</span>
+<span class="sd">    cleanup_otf : bool, optional</span>
+<span class="sd">        clean-up outside OTF support, by default False</span>
+<span class="sd">    max_otf_size : int, optional</span>
+<span class="sd">        make sure OTF is smaller than this many bytes. Deconvolution</span>
+<span class="sd">        may fail if the OTF is larger than 60KB (default: 60000), by default 60000</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        str: Path of output file</span>
-<span class="sd">    """</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        Path to the OTF file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">outpath</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">outpath</span> <span class="o">=</span> <span class="n">psf</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">".tif"</span><span class="p">,</span> <span class="s2">"_otf.tif"</span><span class="p">)</span>
+        <span class="n">outpath</span> <span class="o">=</span> <span class="n">psf</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.tif&quot;</span><span class="p">,</span> <span class="s2">&quot;_otf.tif&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">otf_bgrd</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">otf_bgrd</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
         <span class="n">bUserBackground</span> <span class="o">=</span> <span class="kc">True</span>
@@ -328,7 +425,7 @@
 
 
 <div class="viewcode-block" id="TemporaryOTF"><a class="viewcode-back" href="../../otf.html#pycudadecon.TemporaryOTF">[docs]</a><span class="k">class</span> <span class="nc">TemporaryOTF</span><span class="p">:</span>
-    <span class="sd">"""Context manager to read OTF file or generate a temporary OTF from a PSF.</span>
+    <span class="sd">&quot;&quot;&quot;Context manager to read OTF file or generate a temporary OTF from a PSF.</span>
 
 <span class="sd">    Normalizes the input PSF to always provide the path to an OTF file,</span>
 <span class="sd">    converting the PSF to a temporary file if necessary.</span>
@@ -353,18 +450,18 @@
 <span class="sd">        &gt;&gt;&gt; with TemporaryOTF(psf, **kwargs) as otf:</span>
 <span class="sd">        ...     print(otf.path)</span>
 
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">psf</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">psf</span><span class="p">:</span> <span class="n">PathOrArray</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">psf</span> <span class="o">=</span> <span class="n">psf</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
 
-    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;TemporaryOTF&quot;</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">is_otf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">psf</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">tempotf</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s2">".tif"</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tempotf</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;.tif&quot;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">psf</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
-                <span class="n">temp_psf</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s2">".tif"</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-                <span class="n">tf</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="n">temp_psf</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">psf</span><span class="p">)</span>
+                <span class="n">temp_psf</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;.tif&quot;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">temp_psf</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">psf</span><span class="p">)</span>
                 <span class="n">make_otf</span><span class="p">(</span><span class="n">temp_psf</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tempotf</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">temp_psf</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -373,38 +470,46 @@
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">psf</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">psf</span><span class="p">):</span>
                 <span class="n">make_otf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">psf</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tempotf</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Did not expect PSF file as </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">psf</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Did not expect PSF file as </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">psf</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tempotf</span><span class="o">.</span><span class="n">name</span>
         <span class="k">elif</span> <span class="n">is_otf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">psf</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">psf</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">psf</span>
         <span class="k">elif</span> <span class="n">is_otf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">psf</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">psf</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"cannot yet handle OTFs as numpy arrays"</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;cannot yet handle OTFs as numpy arrays&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Unrecognized input for otf"</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unrecognized input for otf&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tempotf</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
             <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tempotf</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">pass</span></div>
 </pre></div>
-      </article>
+        </article>
+      </div>
       <footer>
         
         <div class="related-pages">
           
           
         </div>
-
-        <div class="related-information">
-              Copyright &#169; 2021
-            |
-            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a>
-              and
-              <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
-              <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              
+            </div>
+          </div>
         </div>
         
       </footer>
@@ -414,23 +519,26 @@
       
       
     </aside>
-  </main>
-</div>
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+  </div>
+</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/togglebutton.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
-    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script src="../../_static/scripts/furo.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
-    <script src="../../_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></body>
+    </body>
 </html>

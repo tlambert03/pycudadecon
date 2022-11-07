@@ -31,7 +31,4 @@ RLContext(data.shape, otf) as ctx:
 ```{eval-rst}
 .. automodule:: pycudadecon
     :members: decon, rl_init, rl_decon,  RLContext, rl_cleanup
-
-.. automodule:: pycudadecon.libcudawrapper
-    :members: cuda_reset
 ```
