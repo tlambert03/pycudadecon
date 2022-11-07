@@ -1,6 +1,6 @@
 title: pycudadecon
 author: Talley Lambert
-copyright: "2021"
+copyright: "2023"
 email: talley.lambert@gmail.com
 logo: logo.png
 
@@ -48,6 +48,6 @@ sphinx:
         - "https://docs.python.org/3"
         - null
       napari:
-        - "https://napari.org/docs/dev/"
+        - "https://napari.org/"
         - null
     pygments_style: "material"
