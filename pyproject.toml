@@ -56,6 +56,7 @@ dev = [
   "pytest",
   "rich",
 ]
+docs = ["jupyter-book", "ghp-import", "sphinx-autodoc-typehints", "furo"]
 
 [project.urls]
 Documentation = "https://pycudadecon.readthedocs.io/en/latest/"

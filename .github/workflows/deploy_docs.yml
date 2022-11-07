@@ -10,15 +10,14 @@ jobs:
   build-and-deploy-book:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
         with:
-          python-version: 3.8
+          python-version: 3.10
 
       - name: Install dependencies
         run: |
-          pip install -e .
-          pip install -r docs/requirements.txt
+          pip install -e .[docs]
 
       - name: Build the book
         run: |
