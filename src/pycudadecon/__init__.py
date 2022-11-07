@@ -8,9 +8,12 @@ try:
 except PackageNotFoundError:
     __version__ = "uninstalled"
 
-from typing import Any
+from typing import TYPE_CHECKING
 
-lib: Any
+if TYPE_CHECKING:
+    from . import _libwrap as lib
+
+
 try:
     from . import _libwrap as lib
 except FileNotFoundError as e:

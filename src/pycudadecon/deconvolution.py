@@ -1,6 +1,6 @@
 import os
 from fnmatch import fnmatch
-from typing import Iterator, List, Optional, Sequence, Tuple, Union
+from typing import Iterator, List, Optional, Sequence, Tuple, Union, Any
 
 import numpy as np
 from typing_extensions import Literal
@@ -10,8 +10,8 @@ from .otf import TemporaryOTF
 from .util import PathOrArray, _kwargs_for, imread
 
 
-def rl_cleanup():
-    """Release GPU buffer and cleanup after deconvolution
+def rl_cleanup() -> None:
+    """Release GPU buffer and cleanup after deconvolution.
 
     Call this before program quits to release global GPUBuffer d_interpOTF.
 
@@ -20,7 +20,7 @@ def rl_cleanup():
     - Destroys cuFFT plan
     - Releases GPU buffers
     """
-    return lib.RL_cleanup()
+    lib.RL_cleanup()
 
 
 def rl_init(
@@ -33,7 +33,8 @@ def rl_init(
     deskew: float = 0,
     rotate: float = 0,
     width: int = 0,
-):
+    skewed_decon: bool = False,
+) -> None:
     """Initialize GPU for deconvolution.
 
     Prepares cuFFT plan for deconvolution with a given data shape and OTF.
@@ -61,6 +62,8 @@ def rl_init(
         axis after deconvolution, by default 0
     width : int, optional
         If deskewed, the output image's width, by default 0 (do not crop)
+    skewed_decon : bool, optional
+        If True, perform deconvolution in skewed space, by default False.
 
     Examples
     --------
@@ -70,19 +73,13 @@ def rl_init(
 
     """
     nz, ny, nx = rawdata_shape
-    lib.RL_interface_init(
-        nx,
-        ny,
-        nz,
-        dxdata,
-        dzdata,
-        dxpsf,
-        dzpsf,
-        deskew,
-        rotate,
-        width,
-        otfpath.encode(),
-    )
+
+    args: list = [nx, ny, nz, dxdata, dzdata, dxpsf, dzpsf, deskew, rotate, width]
+
+    if lib.lib.version >= (0, 6):
+        args += [skewed_decon]
+
+    lib.RL_interface_init(*args, otfpath.encode())
 
 
 def rl_decon(
@@ -96,6 +93,7 @@ def rl_decon(
     nz_blend: int = 0,
     pad_val: float = 0.0,
     dup_rev_z: bool = False,
+    skewed_decon: bool = False,
 ) -> Union[np.ndarray, Tuple[np.ndarray, np.ndarray]]:
     """Perform Richardson Lucy Deconvolution.
 
@@ -130,6 +128,8 @@ def rl_decon(
     dup_rev_z : bool, optional
         Duplicate reversed stack prior to decon to reduce axial ringing,
         by default False
+    skewed_decon : bool, optional
+        If True, perform deconvolution in skewed space, by default False.
 
     Returns
     -------
@@ -142,7 +142,6 @@ def rl_decon(
     ValueError
         If im.ndim is not 3, or `output_shape` is provided but not length 3
     """
-
     if im.ndim != 3:
         raise ValueError("Only 3D arrays supported")
 
@@ -170,7 +169,8 @@ def rl_decon(
 
     if not im.flags["C_CONTIGUOUS"]:
         im = np.ascontiguousarray(im)
-    lib.RL_interface(
+
+    args = [
         im,
         nx,
         ny,
@@ -186,7 +186,12 @@ def rl_decon(
         nz_blend,
         pad_val,
         dup_rev_z,
-    )
+    ]
+
+    if lib.lib.version >= (0, 6):
+        args += [skewed_decon]
+
+    lib.RL_interface(*args)
 
     if save_deskewed:
         return decon_result, deskew_result
@@ -194,19 +199,22 @@ def rl_decon(
         return decon_result
 
 
-def quickDecon(image: np.ndarray, otfpath: str, **kwargs):
+def quickDecon(
+    image: np.ndarray, otfpath: str, **kwargs: Any
+) -> Union[np.ndarray, Tuple[np.ndarray, np.ndarray]]:
     """Perform deconvolution of `image` with otf at `otfpath`.
 
     Not currently used...
     """
-    rl_init(image.shape, otfpath, **_kwargs_for(rl_init, kwargs))
+    assert image.ndim == 3, "Only 3D arrays supported"
+    rl_init(image.shape, otfpath, **_kwargs_for(rl_init, kwargs))  # type: ignore
     result = rl_decon(image, **_kwargs_for(rl_decon, kwargs))
     lib.RL_cleanup()
     return result
 
 
 class RLContext:
-    """Context manager to setup the GPU for RL decon
+    """Context manager to setup the GPU for RL decon.
 
     Takes care of handing the OTF to the GPU, preparing a cuFFT plane,
     and cleaning up after decon.  Internally, this calls :func:`rl_init`,
@@ -233,17 +241,27 @@ class RLContext:
         rotate: float = 0,
         width: int = 0,
     ):
-        self.kwargs = locals()
-        self.kwargs.pop("self")
+        self.kwargs = {
+            "rawdata_shape": rawdata_shape,
+            "otfpath": otfpath,
+            "dzdata": dzdata,
+            "dxdata": dxdata,
+            "dzpsf": dzpsf,
+            "dxpsf": dxpsf,
+            "deskew": deskew,
+            "rotate": rotate,
+            "width": width,
+        }
         self.out_shape: Optional[Tuple[int, int, int]] = None
 
-    def __enter__(self):
-        """Setup the context and return the ZYX shape of the output image"""
-        rl_init(**self.kwargs)
+    def __enter__(self) -> "RLContext":
+        """Setup the context and return the ZYX shape of the output image."""
+        rl_init(**self.kwargs)  # type: ignore
         self.out_shape = (lib.get_output_nz(), lib.get_output_ny(), lib.get_output_nx())
         return self
 
-    def __exit__(self, typ, val, traceback):
+    def __exit__(self, *_: Any) -> None:
+        """Cleanup the context."""
         # exit receives a tuple with any exceptions raised during processing
         # if __exit__ returns True, exceptions will be supressed
         lib.RL_cleanup()
@@ -254,7 +272,7 @@ rl_context = RLContext
 
 
 def _yield_arrays(
-    images: Union[PathOrArray, Sequence[PathOrArray]], fpattern="*.tif"
+    images: Union[PathOrArray, Sequence[PathOrArray]], fpattern: str = "*.tif"
 ) -> Iterator[np.ndarray]:
     """Yield arrays from an array, path, or sequence of either.
 
@@ -266,7 +284,7 @@ def _yield_arrays(
         used to filter files in a directory, by default "*.tif"
 
     Yields
-    -------
+    ------
     Iterator[np.ndarray]
         Arrays (read from paths if necessary)
 
@@ -302,7 +320,7 @@ def decon(
     images: Union[PathOrArray, Sequence[PathOrArray]],
     psf: PathOrArray,
     fpattern: str = "*.tif",
-    **kwargs
+    **kwargs: Any
 ) -> Union[np.ndarray, List[np.ndarray]]:
     """Deconvolve an image or images with a PSF or OTF file.
 
@@ -374,10 +392,11 @@ def decon(
         # first, assume that all of the images are the same shape...
         # in which case we can prevent a lot of GPU IO
         # grab and store the shape of the first item in the generator
-        next_im = next(arraygen)
+        next_im: np.ndarray = next(arraygen)
+        assert next_im.ndim == 3, "Images must be 3D"
         shp = next_im.shape
 
-        with RLContext(shp, otf.path, **init_kwargs) as ctx:
+        with RLContext(shp, otf.path, **init_kwargs) as ctx:  # type: ignore
             while True:
                 out.append(
                     rl_decon(next_im, output_shape=ctx.out_shape, **decon_kwargs)
@@ -389,19 +408,19 @@ def decon(
                     if next_im.shape != shp:
                         break
                 except StopIteration:
-                    next_im = None
+                    next_im = None  # type: ignore
                     break
 
         # if we had a shape mismatch, there will still be images left to process
         # process them the slow way here...
         if next_im is not None:
             for imarray in [next_im, *arraygen]:
-                with RLContext(imarray.shape, otf.path, **init_kwargs) as ctx:
+                with RLContext(imarray.shape, otf.path, **init_kwargs) as ctx:  # type: ignore # noqa
                     out.append(
                         rl_decon(imarray, output_shape=ctx.out_shape, **decon_kwargs)
                     )
 
     if isinstance(images, (list, tuple)) and len(images) > 1:
-        return out
+        return out  # type: ignore
     else:
-        return out[0]
+        return out[0]  # type: ignore

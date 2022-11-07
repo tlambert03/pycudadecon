@@ -4,7 +4,7 @@ import os
 import sys
 from ctypes.util import find_library
 from inspect import Parameter, signature
-from typing import Callable, Optional, Type
+from typing import Callable, Optional, Type, Tuple
 
 import numpy as np
 
@@ -40,8 +40,9 @@ else:
 
 
 class Library:
-    def __init__(self, name: str):
+    def __init__(self, name: str, version: Tuple[int, ...]=(0, 0, 0)):
         self.name = name
+        self.version = version
 
         _file = name
         if not _file or not os.path.exists(_file):
