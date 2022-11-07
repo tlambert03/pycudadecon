@@ -108,28 +108,49 @@ else:
         OTF_file_name: file name of OTF
         """
 
+if _cudadecon_version < (0, 6):
 
-@lib.function
-def RL_interface(
-    raw_data: ndarray_uint16,
-    nx: int,
-    ny: int,
-    nz: int,
-    result: np.ndarray,
-    raw_deskewed_result: np.ndarray,
-    background: float,
-    bDoRescale: bool,
-    bSaveDeskewedRaw: bool,
-    nIters: int,
-    extraShift: int,
-    bSkewedDecon: bool = False,
-    napodize: int = 0,
-    nZblend: int = 0,
-    padVal: float = 0.0,
-    bDupRevStack: bool = False,
-) -> int:
-    """Perform decon."""
+    @lib.function
+    def RL_interface(
+        raw_data: ndarray_uint16,
+        nx: int,
+        ny: int,
+        nz: int,
+        result: np.ndarray,
+        raw_deskewed_result: np.ndarray,
+        background: float,
+        bDoRescale: bool,
+        bSaveDeskewedRaw: bool,
+        nIters: int,
+        extraShift: int,
+        napodize: int = 0,
+        nZblend: int = 0,
+        padVal: float = 0.0,
+        bDupRevStack: bool = False,
+    ) -> int:
+        """Perform decon."""
 
+else:
+    @lib.function
+    def RL_interface(
+        raw_data: ndarray_uint16,
+        nx: int,
+        ny: int,
+        nz: int,
+        result: np.ndarray,
+        raw_deskewed_result: np.ndarray,
+        background: float,
+        bDoRescale: bool,
+        bSaveDeskewedRaw: bool,
+        nIters: int,
+        extraShift: int,
+        napodize: int = 0,
+        nZblend: int = 0,
+        padVal: float = 0.0,
+        bDupRevStack: bool = False,
+        bSkewedDecon: bool = False,
+    ) -> int:
+        """Perform decon."""
 
 # The following are used between init and RL_interface to
 # retrieve the post-deskewed image dimensions

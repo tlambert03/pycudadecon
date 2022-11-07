@@ -62,6 +62,8 @@ def rl_init(
         axis after deconvolution, by default 0
     width : int, optional
         If deskewed, the output image's width, by default 0 (do not crop)
+    skewed_decon : bool, optional
+        If True, perform deconvolution in skewed space, by default False.
 
     Examples
     --------
@@ -91,6 +93,7 @@ def rl_decon(
     nz_blend: int = 0,
     pad_val: float = 0.0,
     dup_rev_z: bool = False,
+    skewed_decon: bool = False,
 ) -> Union[np.ndarray, Tuple[np.ndarray, np.ndarray]]:
     """Perform Richardson Lucy Deconvolution.
 
@@ -125,6 +128,8 @@ def rl_decon(
     dup_rev_z : bool, optional
         Duplicate reversed stack prior to decon to reduce axial ringing,
         by default False
+    skewed_decon : bool, optional
+        If True, perform deconvolution in skewed space, by default False.
 
     Returns
     -------
@@ -164,7 +169,8 @@ def rl_decon(
 
     if not im.flags["C_CONTIGUOUS"]:
         im = np.ascontiguousarray(im)
-    lib.RL_interface(
+
+    args = [
         im,
         nx,
         ny,
@@ -180,7 +186,12 @@ def rl_decon(
         nz_blend,
         pad_val,
         dup_rev_z,
-    )
+    ]
+
+    if lib.lib.version >= (0, 6):
+        args += [skewed_decon]
+
+    lib.RL_interface(*args)
 
     if save_deskewed:
         return decon_result, deskew_result
