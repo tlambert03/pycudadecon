@@ -33,6 +33,7 @@ def rl_init(
     deskew: float = 0,
     rotate: float = 0,
     width: int = 0,
+    skewed_decon: bool = False,
 ) -> None:
     """Initialize GPU for deconvolution.
 
@@ -70,19 +71,13 @@ def rl_init(
 
     """
     nz, ny, nx = rawdata_shape
-    lib.RL_interface_init(
-        nx,
-        ny,
-        nz,
-        dxdata,
-        dzdata,
-        dxpsf,
-        dzpsf,
-        deskew,
-        rotate,
-        width,
-        otfpath.encode(),
-    )
+
+    args: list = [nx, ny, nz, dxdata, dzdata, dxpsf, dzpsf, deskew, rotate, width]
+
+    if lib.lib.version >= (0, 6):
+        args += [skewed_decon]
+
+    lib.RL_interface_init(*args, otfpath.encode())
 
 
 def rl_decon(

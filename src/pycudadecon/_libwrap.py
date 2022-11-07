@@ -1,10 +1,25 @@
 import numpy as np
 from typing_extensions import Annotated
+import os
+from pathlib import Path
 
 from ._ctyped import Library
 
+# FIXME: ugly... we should export version better from cudadecon
+_cudadecon_version: tuple[int, ...] = (0, 0, 0)
+_conda_prefix = os.getenv("CONDA_PREFIX")
+if _conda_prefix:
+    conda_meta = Path(_conda_prefix) / "conda-meta"
+    if conda_meta.exists():
+        fname = next(conda_meta.glob("cudadecon*.json"), None)
+        if fname is not None:
+            name, *rest = fname.stem.split("-")
+            abistring = rest[0] if rest else None
+            if abistring:
+                _cudadecon_version = tuple(int(x) for x in abistring.split("."))
+
 try:
-    lib = Library("libcudaDecon")
+    lib = Library("libcudaDecon", version=_cudadecon_version)
 except FileNotFoundError:
     raise FileNotFoundError(
         "Unable to find library 'lidbcudaDecon'\n"
@@ -27,34 +42,71 @@ def camcor_interface(
     """Execute camera corrections."""
 
 
-@lib.function
-def RL_interface_init(
-    nx: int,
-    ny: int,
-    nz: int,
-    dxdata: float,
-    dzdata: float,
-    dxpsf: float,
-    dzpsf: float,
-    deskewAngle: float,
-    rotationAngle: float,
-    outputWidth: int,
-    otfpath: str,
-) -> int:
-    """Call RL_interface_init() before RL_interface when running decon.
-    nx, ny, and nz: raw image dimensions
-    dr: raw image pixel size
-    dz: raw image Z step
-    dr_psf: PSF pixel size
-    dz_psf: PSF Z step
-    deskewAngle: deskewing angle; usually -32.8 on Bi-chang scope and 32.8 on
-    Wes scope
-    rotationAngle: if 0 then no final rotation is done;
-        otherwise set to the same as deskewAngle
-    outputWidth: if set to 0, then calculate the output width because of
-    deskewing; otherwise use this value as the output width
-    OTF_file_name: file name of OTF
-    """
+if _cudadecon_version < (0, 6):
+
+    @lib.function
+    def RL_interface_init(
+        nx: int,
+        ny: int,
+        nz: int,
+        dxdata: float,
+        dzdata: float,
+        dxpsf: float,
+        dzpsf: float,
+        deskewAngle: float,
+        rotationAngle: float,
+        outputWidth: int,
+        otfpath: str,
+    ) -> int:
+        """Call RL_interface_init() before RL_interface when running decon.
+
+        nx, ny, and nz: raw image dimensions
+        dr: raw image pixel size
+        dz: raw image Z step
+        dr_psf: PSF pixel size
+        dz_psf: PSF Z step
+        deskewAngle: deskewing angle; usually -32.8 on Bi-chang scope and 32.8 on
+        Wes scope
+        rotationAngle: if 0 then no final rotation is done;
+            otherwise set to the same as deskewAngle
+        outputWidth: if set to 0, then calculate the output width because of
+        deskewing; otherwise use this value as the output width
+        OTF_file_name: file name of OTF
+        """
+
+else:
+
+    @lib.function
+    def RL_interface_init(
+        nx: int,
+        ny: int,
+        nz: int,
+        dxdata: float,
+        dzdata: float,
+        dxpsf: float,
+        dzpsf: float,
+        deskewAngle: float,
+        rotationAngle: float,
+        outputWidth: int,
+        bSkewedDecon: bool,
+        otfpath: str,
+    ) -> int:
+        """Call RL_interface_init() before RL_interface when running decon.
+
+        nx, ny, and nz: raw image dimensions
+        dr: raw image pixel size
+        dz: raw image Z step
+        dr_psf: PSF pixel size
+        dz_psf: PSF Z step
+        deskewAngle: deskewing angle; usually -32.8 on Bi-chang scope and 32.8 on
+        Wes scope
+        rotationAngle: if 0 then no final rotation is done;
+            otherwise set to the same as deskewAngle
+        outputWidth: if set to 0, then calculate the output width because of
+        deskewing; otherwise use this value as the output width
+        bSkewedDecon: if true then do deconvolution in skewed space
+        OTF_file_name: file name of OTF
+        """
 
 
 @lib.function
@@ -70,6 +122,7 @@ def RL_interface(
     bSaveDeskewedRaw: bool,
     nIters: int,
     extraShift: int,
+    bSkewedDecon: bool = False,
     napodize: int = 0,
     nZblend: int = 0,
     padVal: float = 0.0,
