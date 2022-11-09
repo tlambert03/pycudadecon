@@ -57,7 +57,7 @@ setup.
 ## Usage
 
 
-The [`pycudadecon.decon()`](https://pycudadecon.readthedocs.io/en/latest/deconvolution.html#pycudadecon.decon) function is designed be able to handle most basic applications:
+The [`pycudadecon.decon()`](https://www.talleylambert.com/pycudadecon/deconvolution.html#pycudadecon.decon) function is designed be able to handle most basic applications:
 
 ```python
 from pycudadecon import decon
@@ -74,7 +74,7 @@ result = decon([img_array, '/path/to/3D_image.tif'], psf_array)
 # see docstrings for additional parameter options
 ```
 
-For finer-tuned control, you may wish to make an OTF file from your PSF using [`pycudadecon.make_otf()`](https://pycudadecon.readthedocs.io/en/latest/otf.html?highlight=make_otf#pycudadecon.make_otf), and then use the [`pycudadecon.RLContext`](https://pycudadecon.readthedocs.io/en/latest/deconvolution.html?highlight=RLContext#pycudadecon.RLContext) context manager to setup the GPU for use with the [`pycudadecon.rl_decon()`](https://pycudadecon.readthedocs.io/en/latest/deconvolution.html?highlight=RLContext#pycudadecon.rl_decon) function.  (Note all images processed in the same context must have the same input shape).
+For finer-tuned control, you may wish to make an OTF file from your PSF using [`pycudadecon.make_otf()`](https://www.talleylambert.com/pycudadecon/otf.html#pycudadecon.make_otf), and then use the [`pycudadecon.RLContext`](https://www.talleylambert.com/pycudadecon/deconvolution.html#pycudadecon.RLContext) context manager to setup the GPU for use with the [`pycudadecon.rl_decon()`](https://www.talleylambert.com/pycudadecon/deconvolution.html#pycudadecon.rl_decon) function.  (Note all images processed in the same context must have the same input shape).
 
 ```python
 from pycudadecon import RLContext, rl_decon
@@ -95,7 +95,7 @@ with RLContext(imshape, otf_path, dz) as ctx:
         # do something with result...
 ```
 
-If you have a 3D PSF volume, the [`pycudadecon.TemporaryOTF`](https://pycudadecon.readthedocs.io/en/latest/otf.html?highlight=temporaryotf#pycudadecon.TemporaryOTF) context manager facilitates temporary OTF generation...
+If you have a 3D PSF volume, the [`pycudadecon.TemporaryOTF`](https://www.talleylambert.com/pycudadecon/otf.html#pycudadecon.TemporaryOTF) context manager facilitates temporary OTF generation...
 
 ```python
  # continuing with the variables from the previous example...
@@ -108,11 +108,11 @@ If you have a 3D PSF volume, the [`pycudadecon.TemporaryOTF`](https://pycudadeco
              # do something with result...
 ```
 
-... and that bit of code is essentially what the [`pycudadecon.decon()`](https://pycudadecon.readthedocs.io/en/latest/deconvolution.html#pycudadecon.decon) function is doing, with a little bit of additional conveniences added in.
+... and that bit of code is essentially what the [`pycudadecon.decon()`](https://www.talleylambert.com/pycudadecon/deconvolution.html#pycudadecon.decon) function is doing, with a little bit of additional conveniences added in.
 
-*Each of these functions has many options and accepts multiple keyword arguments. See the [documentation](https://pycudadecon.readthedocs.io/en/latest/index.html) for further information on the respective functions.*
+*Each of these functions has many options and accepts multiple keyword arguments. See the [documentation](https://www.talleylambert.com/pycudadecon/index.html) for further information on the respective functions.*
 
-For examples and information on affine transforms, volume rotations, and deskewing (typical of light sheet volumes acquired with stage-scanning), see the [documentation on Affine Transformations](https://pycudadecon.readthedocs.io/en/latest/affine.html)
+For examples and information on affine transforms, volume rotations, and deskewing (typical of light sheet volumes acquired with stage-scanning), see the [documentation on Affine Transformations](https://www.talleylambert.com/pycudadecon/affine.html)
 ___
 
 <sup>1</sup> D.S.C. Biggs and M. Andrews, Acceleration of iterative image restoration algorithms, Applied Optics, Vol. 36, No. 8, 1997. https://doi.org/10.1364/AO.36.001766
