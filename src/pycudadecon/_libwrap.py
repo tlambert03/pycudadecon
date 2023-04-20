@@ -1,7 +1,8 @@
-import numpy as np
-from typing_extensions import Annotated
 import os
 from pathlib import Path
+
+import numpy as np
+from typing_extensions import Annotated
 
 from ._ctyped import Library
 
@@ -108,6 +109,7 @@ else:
         OTF_file_name: file name of OTF
         """
 
+
 if _cudadecon_version < (0, 6):
 
     @lib.function
@@ -131,6 +133,7 @@ if _cudadecon_version < (0, 6):
         """Perform decon."""
 
 else:
+
     @lib.function
     def RL_interface(
         raw_data: ndarray_uint16,
@@ -152,6 +155,7 @@ else:
     ) -> int:
         """Perform decon."""
 
+
 # The following are used between init and RL_interface to
 # retrieve the post-deskewed image dimensions
 # can be used to allocate result buffer before calling RL_interface()
@@ -172,7 +176,7 @@ def get_output_nz() -> int:
 
 @lib.function
 def RL_cleanup() -> None:
-    """Release GPU buffer and cleanup after deconvolution
+    """Release GPU buffer and cleanup after deconvolution.
 
     Call this before program quits to release global GPUBuffer d_interpOTF.
 
@@ -185,7 +189,7 @@ def RL_cleanup() -> None:
 
 @lib.function
 def cuda_reset() -> None:
-    """Calls `cudaDeviceReset`
+    """Calls `cudaDeviceReset`.
 
     Destroy all allocations and reset all state on the current device
     in the current process.

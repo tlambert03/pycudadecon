@@ -1,12 +1,12 @@
 import os
 import tempfile
-from typing import Optional, Any
+from typing import Any, Optional
 
 import numpy as np
 import tifffile as tf
 
 from . import lib
-from .util import imread, is_otf, PathOrArray
+from .util import PathOrArray, imread, is_otf
 
 
 def predict_otf_size(psf: PathOrArray) -> int:
@@ -100,11 +100,13 @@ class CappedPSF:
     Thi is guaranteed to yield an OTF that is smaller than the specified value.
 
     Args:
+    ----
         psf (str, np.ndarray): Path to a PSF or a numpy array with a 3D PSF
         max_otf_size (int, None): maximum allowable size in bytes of the OTF.  If None,
             do not restrict size of OTF.
 
     Returns:
+    -------
         str: the ``self.path`` attribute may be used within the context to retrieve
             a filepath with (if necessary) a temporary path to a cropped psf.  Or, if
             if the PSF was already small enough, simply returns the original PSF, as
@@ -153,7 +155,7 @@ def make_otf(
     max_otf_size: int = 60000,
     **kwargs: Any,
 ) -> str:
-    """Generate a radially averaged OTF file from a PSF file
+    """Generate a radially averaged OTF file from a PSF file.
 
     Parameters
     ----------
@@ -230,19 +232,23 @@ class TemporaryOTF:
     the temporary OTF filepath.
 
     Args:
+    ----
         psf (str, np.ndarray): 3D PSF numpy array, or a filepath to a 3D PSF
             or 2D complex OTF file.
         **kwargs: optional keyword arguments will be passed to the
             :func:`pycudadecon.otf.make_otf` function
 
     Note:
+    ----
         OTF files cannot currently be provided directly as 2D complex np.ndarrays
 
     Raises:
+    ------
         ValueError: If the PSF/OTF is an unexpected type
         NotImplementedError: if the PSF/OTF is a complex 2D numpy array
 
     Example:
+    -------
         >>> with TemporaryOTF(psf, **kwargs) as otf:
         ...     print(otf.path)
 

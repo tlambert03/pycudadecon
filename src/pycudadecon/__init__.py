@@ -15,12 +15,12 @@ if TYPE_CHECKING:
 
 
 try:
-    from . import _libwrap as lib
+    from . import _libwrap as lib  # noqa: F811
 except FileNotFoundError as e:
     import warnings
 
     t = e
-    warnings.warn(f"\n{e}\n\nMost functionality will fail!\n")
+    warnings.warn(f"\n{e}\n\nMost functionality will fail!\n", stacklevel=2)
 
     class _stub:
         def __getattr__(self, name):
@@ -29,8 +29,8 @@ except FileNotFoundError as e:
     lib = _stub()
 
 
-from .affine import affineGPU, deskewGPU, rotateGPU  # noqa
-from .deconvolution import (  # noqa
+from .affine import affineGPU, deskewGPU, rotateGPU
+from .deconvolution import (
     RLContext,
     decon,
     rl_cleanup,
@@ -38,7 +38,7 @@ from .deconvolution import (  # noqa
     rl_decon,
     rl_init,
 )
-from .otf import TemporaryOTF, make_otf  # noqa
+from .otf import TemporaryOTF, make_otf
 
 __all__ = [
     "__version__",

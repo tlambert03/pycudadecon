@@ -4,14 +4,14 @@ from . import lib
 
 
 def quickCamcor(imstack, camparams):
-    """Correct Flash residual pixel artifact on GPU"""
+    """Correct Flash residual pixel artifact on GPU."""
     camcor_init(imstack.shape, camparams)
     return camcor(imstack)
 
 
 def camcor_init(rawdata_shape, camparams):
-    """initialize camera correction on GPU.
-    shape is nz/ny/nx of the concatenated stacks from a single timepoint
+    """Initialize camera correction on GPU.
+    shape is nz/ny/nx of the concatenated stacks from a single timepoint.
     """
     nz, ny, nx = rawdata_shape
     if not np.issubdtype(camparams.dtype, np.float32):

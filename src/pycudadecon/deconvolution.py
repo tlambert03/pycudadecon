@@ -1,9 +1,8 @@
 import os
 from fnmatch import fnmatch
-from typing import Iterator, List, Optional, Sequence, Tuple, Union, Any
+from typing import Any, Iterator, List, Literal, Optional, Sequence, Tuple, Union
 
 import numpy as np
-from typing_extensions import Literal
 
 from . import lib
 from .otf import TemporaryOTF
@@ -320,7 +319,7 @@ def decon(
     images: Union[PathOrArray, Sequence[PathOrArray]],
     psf: PathOrArray,
     fpattern: str = "*.tif",
-    **kwargs: Any
+    **kwargs: Any,
 ) -> Union[np.ndarray, List[np.ndarray]]:
     """Deconvolve an image or images with a PSF or OTF file.
 

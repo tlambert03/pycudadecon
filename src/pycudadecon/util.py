@@ -31,7 +31,7 @@ def imread(fpath: str, **kwargs):
 
 
 def array_is_otf(arr: np.ndarray) -> bool:
-    """Check whether a numpy array is likely an OTF file
+    """Check whether a numpy array is likely an OTF file.
 
     tifffile reads the otf file as a real-valued float32, instead
     of complex valued... so the second column is almost always 0
@@ -54,14 +54,14 @@ def path_is_otf(fpath: str):
 def is_otf(arr_or_fpath: PathOrArray) -> bool:
     """
     accepts either a numpy array or a string representing a filepath
-    and returns True if the array or path represents an OTF file
+    and returns True if the array or path represents an OTF file.
     """
     if isinstance(arr_or_fpath, str):
         # assume it's a filepath
         if os.path.isfile(arr_or_fpath):
             return path_is_otf(arr_or_fpath)
         else:
-            raise FileNotFoundError(f"file path does not exist: {arr_or_fpath}")  # noqa
+            raise FileNotFoundError(f"file path does not exist: {arr_or_fpath}")
     elif isinstance(arr_or_fpath, np.ndarray):
         return array_is_otf(arr_or_fpath)
     return False
@@ -71,7 +71,7 @@ def is_otf(arr_or_fpath: PathOrArray) -> bool:
 @contextmanager
 def stdout_redirected(to=os.devnull):
     """
-    import os
+    import os.
 
     with stdout_redirected(to=filename):
         print("from Python")

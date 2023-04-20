@@ -1,7 +1,6 @@
 from pathlib import Path
 
 import numpy as np
-
 from pycudadecon import make_otf
 from pycudadecon.util import imread, is_otf
 

@@ -3,9 +3,8 @@ import os
 
 import numpy as np
 from pims import ND2_Reader
-from skimage.io import imsave
-
 from pycudadecon.affine import affineGPU
+from skimage.io import imsave
 
 # needed to flip the sign on the transform
 DEFAULT_TMAT = np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0.70711, 0, 1, 0], [0, 0, 0, 1]])
@@ -18,6 +17,7 @@ def deskew_file(path, tmat=DEFAULT_TMAT, mip=True):
     of multichannel deskewed files for each timepoint.
 
     Args:
+    ----
         path (str): the nd2 file to process
         tmat (np.ndarray): the transformation matrix
         mip (bool): Whether to write a MIP file

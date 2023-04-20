@@ -14,7 +14,7 @@ def deskewGPU(
     shift: int = 0,
     pad_val: Optional[int] = None,
 ):
-    """Deskew data acquired in stage-scanning mode on GPU
+    """Deskew data acquired in stage-scanning mode on GPU.
 
     Simple affine transform variant to perform a shear operation to correct
     for volume shearing.
@@ -73,7 +73,7 @@ def deskewGPU(
 def affineGPU(
     im: np.ndarray, tmat: np.ndarray, dzyx: Optional[Tuple[float, float, float]] = None
 ):
-    """Perform 3D affine transformation of image given a 4x4 transformation matrix
+    """Perform 3D affine transformation of image given a 4x4 transformation matrix.
 
     optional `dzyx` parameter specifies the voxel size of the
     image `(dz, dy, dx)`. If it is provided, it will be used to transform
@@ -88,7 +88,6 @@ def affineGPU(
 
     Parameters
     ----------
-
     im : np.ndarray
         3D input volume
     tmat : np.ndarray
@@ -111,7 +110,6 @@ def affineGPU(
 
     Examples
     --------
-
     Perform simple translation
 
     >>> nx, ny, nz = (10, 20, 3)
@@ -176,7 +174,7 @@ def affineGPU(
 
 
 def rotateGPU(im, dzdata, dxdata=0.1, angle=31.5, reverse=False):
-    """Rotate image around Y axis by some angle
+    """Rotate image around Y axis by some angle.
 
     This is a convenience function that will apply the appropriate affine
     transformation for rotating a volume around the Y axis by some angle.
