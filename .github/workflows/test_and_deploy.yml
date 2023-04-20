@@ -20,8 +20,6 @@ jobs:
       - uses: actions/setup-python@v4
       - run: pip install check-manifest && check-manifest
 
-  Won't work without GPU
-
   test:
     name: (${{ matrix.python-version }})
     runs-on: self-hosted
