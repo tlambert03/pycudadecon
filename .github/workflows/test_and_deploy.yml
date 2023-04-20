@@ -20,47 +20,38 @@ jobs:
       - uses: actions/setup-python@v4
       - run: pip install check-manifest && check-manifest
 
-  # Won't work without GPU
+  Won't work without GPU
 
-  # test:
-  #   name: ${{ matrix.platform }} (${{ matrix.python-version }})
-  #   runs-on: ${{ matrix.platform }}
-  #   defaults:
-  #     run:
-  #       shell: bash -l {0}
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       python-version: [3.7, 3.8, 3.9]
-  #       platform: [ubuntu-latest, windows-latest]
-  #   steps:
-  #     - uses: actions/checkout@v2
+  test:
+    name: (${{ matrix.python-version }})
+    runs-on: self-hosted
+    defaults:
+      run:
+        shell: bash -l {0}
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
+    steps:
+      - uses: actions/checkout@v3
 
-  #     - uses: conda-incubator/setup-miniconda@v2
-  #       with:
-  #         mamba-version: "*"
-  #         channels: conda-forge,defaults
-  #         channel-priority: true
-  #         python-version: ${{ matrix.python-version }}
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          mamba-version: "*"
+          channels: conda-forge,defaults
+          channel-priority: true
+          python-version: ${{ matrix.python-version }}
 
-  #     - name: Print info
-  #       run: |
-  #         conda info
-  #         conda list
-  #         conda config --show-sources
-  #         conda config --show
-  #         printenv | sort
+      - name: Install
+        run: |
+          mamba install cudadecon
+          pip install -e .[test]
 
-  #     - name: Install
-  #       run: |
-  #         mamba install cudadecon>=0.0.11 pytest
-  #         pip install -e .
+      - name: Test
+        run: pytest -v --color yes --cov pycudadecon --cov-report xml --cov-report term-missing
 
-  #     - name: Test
-  #       run: pytest
-
-  # - name: Coverage
-  #   uses: codecov/codecov-action@v1
+  - name: Coverage
+    uses: codecov/codecov-action@v3
 
 
   deploy:
