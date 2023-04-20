@@ -38,12 +38,11 @@ jobs:
           python-version: ${{ matrix.python-version }}
           channels: conda-forge,defaults
           channel-priority: true
-        env:
-          CONDA: "$HOME/mambaforge/"
+          miniforge-version: "latest"
 
       - name: Install
         run: |
-          mamba install cudadecon
+          conda install cudadecon
           pip install -e .[test]
 
       - name: Test
