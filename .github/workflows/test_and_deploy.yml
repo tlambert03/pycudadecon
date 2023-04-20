@@ -48,9 +48,8 @@ jobs:
       - name: Test
         run: pytest -v --color yes --cov pycudadecon --cov-report xml --cov-report term-missing
 
-  - name: Coverage
-    uses: codecov/codecov-action@v3
-
+      - name: Coverage
+        uses: codecov/codecov-action@v3
 
   deploy:
     name: Deploy
