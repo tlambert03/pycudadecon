@@ -216,10 +216,10 @@ pattern <code class="docutils literal notranslate"><span class="pre">--filename-
 <section id="examples">
 <h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># deconvolve a folder of images</span>
-cudaDeconv /folder/of/images 488nm /path/to/488nm_otf.tif -z <span class="m">0</span>.3
+cudaDeconv<span class="w"> </span>/folder/of/images<span class="w"> </span>488nm<span class="w"> </span>/path/to/488nm_otf.tif<span class="w"> </span>-z<span class="w"> </span><span class="m">0</span>.3
 
 <span class="c1"># a typical lattice experiment might also add the deskew flag and maybe MIPs</span>
-cudaDeconv /folder/of/images 488nm /path/to/488nm_otf.tif -z <span class="m">0</span>.3 -D <span class="m">31</span>.5 -M <span class="m">0</span> <span class="m">0</span> <span class="m">1</span>
+cudaDeconv<span class="w"> </span>/folder/of/images<span class="w"> </span>488nm<span class="w"> </span>/path/to/488nm_otf.tif<span class="w"> </span>-z<span class="w"> </span><span class="m">0</span>.3<span class="w"> </span>-D<span class="w"> </span><span class="m">31</span>.5<span class="w"> </span>-M<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">1</span>
 </pre></div>
 </div>
 <p>Run <code class="docutils literal notranslate"><span class="pre">cudaDeconv</span> <span class="pre">--help</span></code> at the command prompt for the full menu of options</p>
@@ -301,7 +301,7 @@ cudaDeconv compiled for LLSpy.  Version: 0.4.0
 complex OTF file that can be used by cudaDeconv.</p>
 <section id="id1">
 <h3>Examples<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>radialft /path/to/psf_file.tif /path/to/new_otf_file.tif --fixorigin <span class="m">10</span> --nocleanup
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>radialft<span class="w"> </span>/path/to/psf_file.tif<span class="w"> </span>/path/to/new_otf_file.tif<span class="w"> </span>--fixorigin<span class="w"> </span><span class="m">10</span><span class="w"> </span>--nocleanup
 </pre></div>
 </div>
 <p>Run <code class="docutils literal notranslate"><span class="pre">radialft</span> <span class="pre">--help</span></code> at the command prompt for the full menu of options</p>

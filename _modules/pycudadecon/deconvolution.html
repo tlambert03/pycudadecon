@@ -204,10 +204,9 @@
           <h1>Source code for pycudadecon.deconvolution</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">fnmatch</span> <span class="kn">import</span> <span class="n">fnmatch</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Literal</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">lib</span>
 <span class="kn">from</span> <span class="nn">.otf</span> <span class="kn">import</span> <span class="n">TemporaryOTF</span>
@@ -215,7 +214,7 @@
 
 
 <div class="viewcode-block" id="rl_cleanup"><a class="viewcode-back" href="../../deconvolution.html#pycudadecon.rl_cleanup">[docs]</a><span class="k">def</span> <span class="nf">rl_cleanup</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Release GPU buffer and cleanup after deconvolution.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Release GPU buffer and cleanup after deconvolution.</span>
 
 <span class="sd">    Call this before program quits to release global GPUBuffer d_interpOTF.</span>
 
@@ -239,7 +238,7 @@
     <span class="n">width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">skewed_decon</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Initialize GPU for deconvolution.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize GPU for deconvolution.</span>
 
 <span class="sd">    Prepares cuFFT plan for deconvolution with a given data shape and OTF.</span>
 <span class="sd">    Must be used prior to :func:`pycudadecon.rl_decon`</span>
@@ -299,7 +298,7 @@
     <span class="n">dup_rev_z</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">skewed_decon</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]:</span>
-    <span class="sd">&quot;&quot;&quot;Perform Richardson Lucy Deconvolution.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform Richardson Lucy Deconvolution.</span>
 
 <span class="sd">    Performs actual deconvolution. GPU must first be initialized with</span>
 <span class="sd">    :func:`pycudadecon.rl_init`</span>
@@ -406,7 +405,7 @@
 <span class="k">def</span> <span class="nf">quickDecon</span><span class="p">(</span>
     <span class="n">image</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">otfpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]:</span>
-    <span class="sd">&quot;&quot;&quot;Perform deconvolution of `image` with otf at `otfpath`.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform deconvolution of `image` with otf at `otfpath`.</span>
 
 <span class="sd">    Not currently used...</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -418,7 +417,7 @@
 
 
 <div class="viewcode-block" id="RLContext"><a class="viewcode-back" href="../../deconvolution.html#pycudadecon.RLContext">[docs]</a><span class="k">class</span> <span class="nc">RLContext</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Context manager to setup the GPU for RL decon.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Context manager to setup the GPU for RL decon.</span>
 
 <span class="sd">    Takes care of handing the OTF to the GPU, preparing a cuFFT plane,</span>
 <span class="sd">    and cleaning up after decon.  Internally, this calls :func:`rl_init`,</span>
@@ -459,13 +458,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">out_shape</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;RLContext&quot;</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Setup the context and return the ZYX shape of the output image.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Setup the context and return the ZYX shape of the output image.&quot;&quot;&quot;</span>
         <span class="n">rl_init</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">out_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">lib</span><span class="o">.</span><span class="n">get_output_nz</span><span class="p">(),</span> <span class="n">lib</span><span class="o">.</span><span class="n">get_output_ny</span><span class="p">(),</span> <span class="n">lib</span><span class="o">.</span><span class="n">get_output_nx</span><span class="p">())</span>
         <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Cleanup the context.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Cleanup the context.&quot;&quot;&quot;</span>
         <span class="c1"># exit receives a tuple with any exceptions raised during processing</span>
         <span class="c1"># if __exit__ returns True, exceptions will be supressed</span>
         <span class="n">lib</span><span class="o">.</span><span class="n">RL_cleanup</span><span class="p">()</span></div>
@@ -478,7 +477,7 @@
 <span class="k">def</span> <span class="nf">_yield_arrays</span><span class="p">(</span>
     <span class="n">images</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">PathOrArray</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">PathOrArray</span><span class="p">]],</span> <span class="n">fpattern</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;*.tif&quot;</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Yield arrays from an array, path, or sequence of either.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Yield arrays from an array, path, or sequence of either.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -524,9 +523,9 @@
     <span class="n">images</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">PathOrArray</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">PathOrArray</span><span class="p">]],</span>
     <span class="n">psf</span><span class="p">:</span> <span class="n">PathOrArray</span><span class="p">,</span>
     <span class="n">fpattern</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;*.tif&quot;</span><span class="p">,</span>
-    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]:</span>
-    <span class="sd">&quot;&quot;&quot;Deconvolve an image or images with a PSF or OTF file.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Deconvolve an image or images with a PSF or OTF file.</span>
 
 <span class="sd">    If `images` is a directory, use the `fpattern` argument to select files</span>
 <span class="sd">    by filename pattern.</span>

@@ -218,7 +218,7 @@
     <span class="n">shift</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">pad_val</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Deskew data acquired in stage-scanning mode on GPU</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Deskew data acquired in stage-scanning mode on GPU.</span>
 
 <span class="sd">    Simple affine transform variant to perform a shear operation to correct</span>
 <span class="sd">    for volume shearing.</span>
@@ -277,7 +277,7 @@
 <div class="viewcode-block" id="affineGPU"><a class="viewcode-back" href="../../affine.html#pycudadecon.affineGPU">[docs]</a><span class="k">def</span> <span class="nf">affineGPU</span><span class="p">(</span>
     <span class="n">im</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">tmat</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">dzyx</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Perform 3D affine transformation of image given a 4x4 transformation matrix</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform 3D affine transformation of image given a 4x4 transformation matrix.</span>
 
 <span class="sd">    optional `dzyx` parameter specifies the voxel size of the</span>
 <span class="sd">    image `(dz, dy, dx)`. If it is provided, it will be used to transform</span>
@@ -292,7 +292,6 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-
 <span class="sd">    im : np.ndarray</span>
 <span class="sd">        3D input volume</span>
 <span class="sd">    tmat : np.ndarray</span>
@@ -315,7 +314,6 @@
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-
 <span class="sd">    Perform simple translation</span>
 
 <span class="sd">    &gt;&gt;&gt; nx, ny, nz = (10, 20, 3)</span>
@@ -380,7 +378,7 @@
 
 
 <div class="viewcode-block" id="rotateGPU"><a class="viewcode-back" href="../../affine.html#pycudadecon.rotateGPU">[docs]</a><span class="k">def</span> <span class="nf">rotateGPU</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">dzdata</span><span class="p">,</span> <span class="n">dxdata</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="mf">31.5</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Rotate image around Y axis by some angle</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Rotate image around Y axis by some angle.</span>
 
 <span class="sd">    This is a convenience function that will apply the appropriate affine</span>
 <span class="sd">    transformation for rotating a volume around the Y axis by some angle.</span>

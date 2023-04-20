@@ -204,17 +204,17 @@
           <h1>Source code for pycudadecon.otf</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">tifffile</span> <span class="k">as</span> <span class="nn">tf</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">lib</span>
-<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">imread</span><span class="p">,</span> <span class="n">is_otf</span><span class="p">,</span> <span class="n">PathOrArray</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">PathOrArray</span><span class="p">,</span> <span class="n">imread</span><span class="p">,</span> <span class="n">is_otf</span>
 
 
 <span class="k">def</span> <span class="nf">predict_otf_size</span><span class="p">(</span><span class="n">psf</span><span class="p">:</span> <span class="n">PathOrArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Calculate the file size of the OTF that would result from this psf.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the file size of the OTF that would result from this psf.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -247,7 +247,7 @@
 <span class="k">def</span> <span class="nf">cap_psf_size</span><span class="p">(</span>
     <span class="n">psf</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">max_otf_size</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">60000</span><span class="p">,</span> <span class="n">min_xy</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">min_nz</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Crop PSF to a size that will yield an OTF with a maximum specified size.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Crop PSF to a size that will yield an OTF with a maximum specified size.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -299,16 +299,18 @@
 
 
 <span class="k">class</span> <span class="nc">CappedPSF</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Context manager that provides the path to a 3D PSF.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Context manager that provides the path to a 3D PSF.</span>
 
 <span class="sd">    Thi is guaranteed to yield an OTF that is smaller than the specified value.</span>
 
 <span class="sd">    Args:</span>
+<span class="sd">    ----</span>
 <span class="sd">        psf (str, np.ndarray): Path to a PSF or a numpy array with a 3D PSF</span>
 <span class="sd">        max_otf_size (int, None): maximum allowable size in bytes of the OTF.  If None,</span>
 <span class="sd">            do not restrict size of OTF.</span>
 
 <span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
 <span class="sd">        str: the ``self.path`` attribute may be used within the context to retrieve</span>
 <span class="sd">            a filepath with (if necessary) a temporary path to a cropped psf.  Or, if</span>
 <span class="sd">            if the PSF was already small enough, simply returns the original PSF, as</span>
@@ -357,7 +359,7 @@
     <span class="n">max_otf_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">60000</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Generate a radially averaged OTF file from a PSF file</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a radially averaged OTF file from a PSF file.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -425,7 +427,7 @@
 
 
 <div class="viewcode-block" id="TemporaryOTF"><a class="viewcode-back" href="../../otf.html#pycudadecon.TemporaryOTF">[docs]</a><span class="k">class</span> <span class="nc">TemporaryOTF</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Context manager to read OTF file or generate a temporary OTF from a PSF.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Context manager to read OTF file or generate a temporary OTF from a PSF.</span>
 
 <span class="sd">    Normalizes the input PSF to always provide the path to an OTF file,</span>
 <span class="sd">    converting the PSF to a temporary file if necessary.</span>
@@ -434,19 +436,23 @@
 <span class="sd">    the temporary OTF filepath.</span>
 
 <span class="sd">    Args:</span>
+<span class="sd">    ----</span>
 <span class="sd">        psf (str, np.ndarray): 3D PSF numpy array, or a filepath to a 3D PSF</span>
 <span class="sd">            or 2D complex OTF file.</span>
 <span class="sd">        **kwargs: optional keyword arguments will be passed to the</span>
 <span class="sd">            :func:`pycudadecon.otf.make_otf` function</span>
 
 <span class="sd">    Note:</span>
+<span class="sd">    ----</span>
 <span class="sd">        OTF files cannot currently be provided directly as 2D complex np.ndarrays</span>
 
 <span class="sd">    Raises:</span>
+<span class="sd">    ------</span>
 <span class="sd">        ValueError: If the PSF/OTF is an unexpected type</span>
 <span class="sd">        NotImplementedError: if the PSF/OTF is a complex 2D numpy array</span>
 
 <span class="sd">    Example:</span>
+<span class="sd">    -------</span>
 <span class="sd">        &gt;&gt;&gt; with TemporaryOTF(psf, **kwargs) as otf:</span>
 <span class="sd">        ...     print(otf.path)</span>
 

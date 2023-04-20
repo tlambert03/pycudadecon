@@ -210,7 +210,7 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pycudadecon.affineGPU">
 <span class="sig-prename descclassname"><span class="pre">pycudadecon.</span></span><span class="sig-name descname"><span class="pre">affineGPU</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">im</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tmat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dzyx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycudadecon/affine.html#affineGPU"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pycudadecon.affineGPU" title="Permalink to this definition">#</a></dt>
-<dd><p>Perform 3D affine transformation of image given a 4x4 transformation matrix</p>
+<dd><p>Perform 3D affine transformation of image given a 4x4 transformation matrix.</p>
 <p>optional <cite>dzyx</cite> parameter specifies the voxel size of the
 image <cite>(dz, dy, dx)</cite>. If it is provided, it will be used to transform
 the image from intrinsic coordinates to world coordinates prior to
@@ -284,7 +284,7 @@ is performed in image coordinates.  by default <cite>None</cite></p></li>
 <dl class="py function">
 <dt class="sig sig-object py" id="pycudadecon.deskewGPU">
 <span class="sig-prename descclassname"><span class="pre">pycudadecon.</span></span><span class="sig-name descname"><span class="pre">deskewGPU</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">im</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dxdata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dzdata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">31.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pad_val</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycudadecon/affine.html#deskewGPU"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pycudadecon.deskewGPU" title="Permalink to this definition">#</a></dt>
-<dd><p>Deskew data acquired in stage-scanning mode on GPU</p>
+<dd><p>Deskew data acquired in stage-scanning mode on GPU.</p>
 <p>Simple affine transform variant to perform a shear operation to correct
 for volume shearing.</p>
 <dl class="field-list simple">
@@ -316,7 +316,7 @@ the median value of the last Z plane will be used, by default <cite>None</cite><
 <dl class="py function">
 <dt class="sig sig-object py" id="pycudadecon.rotateGPU">
 <span class="sig-prename descclassname"><span class="pre">pycudadecon.</span></span><span class="sig-name descname"><span class="pre">rotateGPU</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">im</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dzdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dxdata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">31.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reverse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycudadecon/affine.html#rotateGPU"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pycudadecon.rotateGPU" title="Permalink to this definition">#</a></dt>
-<dd><p>Rotate image around Y axis by some angle</p>
+<dd><p>Rotate image around Y axis by some angle.</p>
 <p>This is a convenience function that will apply the appropriate affine
 transformation for rotating a volume around the Y axis by some angle.
 This is typically done with images acquired on inverted light sheet
