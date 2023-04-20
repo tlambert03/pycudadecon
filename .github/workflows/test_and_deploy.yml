@@ -39,7 +39,7 @@ jobs:
           channels: conda-forge,defaults
           channel-priority: true
         env:
-          CONDA: $HOME/mambaforge/
+          CONDA: "$HOME/mambaforge/"
 
       - name: Install
         run: |
