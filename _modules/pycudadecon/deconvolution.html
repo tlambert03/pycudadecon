@@ -419,7 +419,7 @@
 <div class="viewcode-block" id="RLContext"><a class="viewcode-back" href="../../deconvolution.html#pycudadecon.RLContext">[docs]</a><span class="k">class</span> <span class="nc">RLContext</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Context manager to setup the GPU for RL decon.</span>
 
-<span class="sd">    Takes care of handing the OTF to the GPU, preparing a cuFFT plane,</span>
+<span class="sd">    Takes care of handing the OTF to the GPU, preparing a cuFFT plan,</span>
 <span class="sd">    and cleaning up after decon.  Internally, this calls :func:`rl_init`,</span>
 <span class="sd">    stores the shape of the expected output volume after any deskew/decon,</span>
 <span class="sd">    then calls :func:`rl_cleanup` when exiting the context.</span>
