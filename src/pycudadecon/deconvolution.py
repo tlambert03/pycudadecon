@@ -62,7 +62,8 @@ def rl_init(
     width : int, optional
         If deskewed, the output image's width, by default 0 (do not crop)
     skewed_decon : bool, optional
-        If True, perform deconvolution in skewed space, by default False.
+        If True, perform deconvolution in skewed space, by default False. Same as the "-dcbds" command line option.
+        If deskewing, do it after decon; require sample-scan PSF and non-Rotational Averaged 3D OTF
 
     Examples
     --------
@@ -75,7 +76,7 @@ def rl_init(
 
     args: list = [nx, ny, nz, dxdata, dzdata, dxpsf, dzpsf, deskew, rotate, width]
 
-    if lib.lib.version >= (0, 6):
+    if lib.lib.version >= (0, 6):   # must have cudadecon library >= 0.6.0
         args += [skewed_decon]
 
     lib.RL_interface_init(*args, otfpath.encode())
@@ -239,6 +240,7 @@ class RLContext:
         deskew: float = 0,
         rotate: float = 0,
         width: int = 0,
+        skewed_decon: bool = False,
     ):
         self.kwargs = {
             "rawdata_shape": rawdata_shape,
@@ -250,6 +252,7 @@ class RLContext:
             "deskew": deskew,
             "rotate": rotate,
             "width": width,
+            "skewed_decon": skewed_decon,
         }
         self.out_shape: Optional[Tuple[int, int, int]] = None
 

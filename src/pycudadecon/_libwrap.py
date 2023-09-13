@@ -5,9 +5,9 @@ import numpy as np
 from typing_extensions import Annotated
 
 from ._ctyped import Library
-
+from typing import Tuple
 # FIXME: ugly... we should export version better from cudadecon
-_cudadecon_version: tuple[int, ...] = (0, 0, 0)
+_cudadecon_version: Tuple[int, ...] = (0, 0, 0)
 _conda_prefix = os.getenv("CONDA_PREFIX")
 if _conda_prefix:
     conda_meta = Path(_conda_prefix) / "conda-meta"
@@ -75,7 +75,7 @@ if _cudadecon_version < (0, 6):
         OTF_file_name: file name of OTF
         """
 
-else:
+else: # include "bSkewDecon" arguement
 
     @lib.function
     def RL_interface_init(
