@@ -204,7 +204,7 @@
           <h1>Source code for pycudadecon.deconvolution</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">fnmatch</span> <span class="kn">import</span> <span class="n">fnmatch</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">cast</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -266,8 +266,9 @@
 <span class="sd">    width : int, optional</span>
 <span class="sd">        If deskewed, the output image&#39;s width, by default 0 (do not crop)</span>
 <span class="sd">    skewed_decon : bool, optional</span>
-<span class="sd">        If True, perform deconvolution in skewed space, by default False. Same as the &quot;-dcbds&quot; command line option.</span>
-<span class="sd">        If deskewing, do it after decon; require sample-scan PSF and non-Rotational Averaged 3D OTF</span>
+<span class="sd">        If True, perform deconvolution in skewed space, by default False. Same as the</span>
+<span class="sd">        &quot;-dcbds&quot; command line option. If deskewing, do it after decon; require</span>
+<span class="sd">        sample-scan PSF and non-Rotational Averaged 3D OTF</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -280,10 +281,10 @@
 
     <span class="n">args</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">,</span> <span class="n">dxdata</span><span class="p">,</span> <span class="n">dzdata</span><span class="p">,</span> <span class="n">dxpsf</span><span class="p">,</span> <span class="n">dzpsf</span><span class="p">,</span> <span class="n">deskew</span><span class="p">,</span> <span class="n">rotate</span><span class="p">,</span> <span class="n">width</span><span class="p">]</span>
 
-    <span class="k">if</span> <span class="n">lib</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">version</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span>   <span class="c1"># must have cudadecon library &gt;= 0.6.0</span>
+    <span class="k">if</span> <span class="n">lib</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">version</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span>  <span class="c1"># must have cudadecon library &gt;= 0.6.0</span>
         <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="n">skewed_decon</span><span class="p">]</span>
 
-    <span class="n">lib</span><span class="o">.</span><span class="n">RL_interface_init</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">otfpath</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span></div>
+    <span class="n">lib</span><span class="o">.</span><span class="n">RL_interface_init</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">otfpath</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>  <span class="c1"># type: ignore</span></div>
 
 
 <div class="viewcode-block" id="rl_decon"><a class="viewcode-back" href="../../deconvolution.html#pycudadecon.rl_decon">[docs]</a><span class="k">def</span> <span class="nf">rl_decon</span><span class="p">(</span>
@@ -395,7 +396,7 @@
     <span class="k">if</span> <span class="n">lib</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">version</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span>
         <span class="n">args</span> <span class="o">+=</span> <span class="p">[</span><span class="n">skewed_decon</span><span class="p">]</span>
 
-    <span class="n">lib</span><span class="o">.</span><span class="n">RL_interface</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+    <span class="n">lib</span><span class="o">.</span><span class="n">RL_interface</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 
     <span class="k">if</span> <span class="n">save_deskewed</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">decon_result</span><span class="p">,</span> <span class="n">deskew_result</span>
@@ -526,12 +527,42 @@
     <span class="n">images</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">PathOrArray</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">PathOrArray</span><span class="p">]],</span>
     <span class="n">psf</span><span class="p">:</span> <span class="n">PathOrArray</span><span class="p">,</span>
     <span class="n">fpattern</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;*.tif&quot;</span><span class="p">,</span>
-    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="c1"># make_otf kwargs:</span>
+    <span class="n">dzpsf</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">dxpsf</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">wavelength</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">520</span><span class="p">,</span>
+    <span class="n">na</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.25</span><span class="p">,</span>
+    <span class="n">nimm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.3</span><span class="p">,</span>
+    <span class="n">otf_bgrd</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">krmax</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">fixorigin</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">cleanup_otf</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">max_otf_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">60000</span><span class="p">,</span>
+    <span class="c1"># rl_init_kwargs:</span>
+    <span class="n">dzdata</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">dxdata</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">deskew</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">rotate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">skewed_decon</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="c1"># rl_decon kwargs:</span>
+    <span class="n">background</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;auto&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">80</span><span class="p">,</span>
+    <span class="n">n_iters</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">shift</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">save_deskewed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">napodize</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span>
+    <span class="n">nz_blend</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">pad_val</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">dup_rev_z</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Deconvolve an image or images with a PSF or OTF file.</span>
 
 <span class="sd">    If `images` is a directory, use the `fpattern` argument to select files</span>
 <span class="sd">    by filename pattern.</span>
+
+<span class="sd">    Note that all other kwargs are passed to either :func:`make_otf`, :func:`rl_init`,</span>
+<span class="sd">    or :func:`rl_decon`.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -544,13 +575,79 @@
 <span class="sd">    fpattern : str, optional</span>
 <span class="sd">        Filepattern to use when a directory is provided in the `images` argument,</span>
 <span class="sd">        by default `*.tif`</span>
-<span class="sd">    ** kwargs</span>
-<span class="sd">        All other kwargs must be valid for either :func:`rl_init` or :func:`rl_decon`.</span>
+
+<span class="sd">    dzpsf : float, optional</span>
+<span class="sd">        Z-step size in microns, by default 0.1</span>
+<span class="sd">    dxpsf : float, optional</span>
+<span class="sd">        XY-Pixel size in microns, by default 0.1</span>
+<span class="sd">    wavelength : int, optional</span>
+<span class="sd">        Emission wavelength in nm, by default 520</span>
+<span class="sd">    na : float, optional</span>
+<span class="sd">        Numerical Aperture, by default 1.25</span>
+<span class="sd">    nimm : float, optional</span>
+<span class="sd">        Refractive indez of immersion medium, by default 1.3</span>
+<span class="sd">    otf_bgrd : int, optional</span>
+<span class="sd">        Background to subtract. &quot;None&quot; = autodetect., by default None</span>
+<span class="sd">    krmax : int, optional</span>
+<span class="sd">        pixels outside this limit will be zeroed (overwriting</span>
+<span class="sd">        estimated value from NA and NIMM), by default 0</span>
+<span class="sd">    fixorigin : int, optional</span>
+<span class="sd">        for all kz, extrapolate using pixels kr=1 to this pixel</span>
+<span class="sd">        to get value for kr=0, by default 10</span>
+<span class="sd">    cleanup_otf : bool, optional</span>
+<span class="sd">        clean-up outside OTF support, by default False</span>
+<span class="sd">    max_otf_size : int, optional</span>
+<span class="sd">        make sure OTF is smaller than this many bytes. Deconvolution</span>
+<span class="sd">        may fail if the OTF is larger than 60KB (default: 60000), by default 60000</span>
+
+<span class="sd">    dzdata : float, optional</span>
+<span class="sd">        Z-step size of data, by default 0.5</span>
+<span class="sd">    dxdata : float, optional</span>
+<span class="sd">        XY pixel size of data, by default 0.1</span>
+<span class="sd">    deskew : float, optional</span>
+<span class="sd">        Deskew angle. If not 0.0 then deskewing will be performed before</span>
+<span class="sd">        deconvolution, by default 0</span>
+<span class="sd">    rotate : float, optional</span>
+<span class="sd">        Rotation angle; if not 0.0 then rotation will be performed around Y</span>
+<span class="sd">        axis after deconvolution, by default 0</span>
+<span class="sd">    width : int, optional</span>
+<span class="sd">        If deskewed, the output image&#39;s width, by default 0 (do not crop)</span>
+<span class="sd">    skewed_decon : bool, optional</span>
+<span class="sd">        If True, perform deconvolution in skewed space, by default False. Same as the</span>
+<span class="sd">        &quot;-dcbds&quot; command line option. If deskewing, do it after decon; require</span>
+<span class="sd">        sample-scan PSF and non-Rotational Averaged 3D OTF</span>
+
+<span class="sd">    background : int or &#39;auto&#39;</span>
+<span class="sd">        User-supplied background to subtract. If &#39;auto&#39;, the median value of the</span>
+<span class="sd">        last Z plane will be used as background. by default 80</span>
+<span class="sd">    n_iters : int, optional</span>
+<span class="sd">        Number of iterations, by default 10</span>
+<span class="sd">    shift : int, optional</span>
+<span class="sd">        If deskewed, the output image&#39;s extra shift in X (positive-&gt;left),</span>
+<span class="sd">        by default 0</span>
+<span class="sd">    save_deskewed : bool, optional</span>
+<span class="sd">        Save deskewed raw data as well as deconvolution result, by default False</span>
+<span class="sd">    output_shape : tuple of int, optional</span>
+<span class="sd">        Specify the output shape after deskewing.  Usually this is unnecessary and</span>
+<span class="sd">        can be autodetected.  Mostly intended for use within a</span>
+<span class="sd">        :class:`pycudadecon.RLContext` context, by default None</span>
+<span class="sd">    napodize : int, optional</span>
+<span class="sd">        Number of pixels to soften edge with, by default 15</span>
+<span class="sd">    nz_blend : int, optional</span>
+<span class="sd">        Number of top and bottom sections to blend in to reduce axial ringing,</span>
+<span class="sd">        by default 0</span>
+<span class="sd">    pad_val : float, optional</span>
+<span class="sd">        Value with which to pad image when deskewing, by default 0.0</span>
+<span class="sd">    dup_rev_z : bool, optional</span>
+<span class="sd">        Duplicate reversed stack prior to decon to reduce axial ringing,</span>
+<span class="sd">        by default False</span>
+
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    np.ndarray or list of array</span>
-<span class="sd">        The deconvolved image(s)</span>
+<span class="sd">        The deconvolved image(s).  Will be a list if `images` was a sequence of</span>
+<span class="sd">        length &gt;=2.</span>
 
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
@@ -583,29 +680,58 @@
 <span class="sd">    &gt;&gt;&gt; inputs = [&#39;/directory/with/images&#39;, &#39;/path/to/image.tif&#39;, imarray]</span>
 <span class="sd">    &gt;&gt;&gt; result = decon(inputs, &#39;/path/to/psf.tif&#39;, fpattern=&#39;*560nm*.tif&#39;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;save_deskewed&quot;</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;deskew&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot use save_deskewed=True with deskew=0&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;deskew&quot;</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Must set deskew != 0 when using save_deskewed=True&quot;</span><span class="p">)</span>
-
-    <span class="n">init_kwargs</span> <span class="o">=</span> <span class="n">_kwargs_for</span><span class="p">(</span><span class="n">rl_init</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
-    <span class="n">decon_kwargs</span> <span class="o">=</span> <span class="n">_kwargs_for</span><span class="p">(</span><span class="n">rl_decon</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">save_deskewed</span> <span class="ow">and</span> <span class="n">deskew</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Must set deskew != 0 when using save_deskewed=True&quot;</span><span class="p">)</span>
 
     <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">with</span> <span class="n">TemporaryOTF</span><span class="p">(</span><span class="n">psf</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">as</span> <span class="n">otf</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">TemporaryOTF</span><span class="p">(</span>
+        <span class="n">psf</span><span class="p">,</span>
+        <span class="n">dzpsf</span><span class="o">=</span><span class="n">dzpsf</span><span class="p">,</span>
+        <span class="n">dxpsf</span><span class="o">=</span><span class="n">dxpsf</span><span class="p">,</span>
+        <span class="n">wavelength</span><span class="o">=</span><span class="n">wavelength</span><span class="p">,</span>
+        <span class="n">na</span><span class="o">=</span><span class="n">na</span><span class="p">,</span>
+        <span class="n">nimm</span><span class="o">=</span><span class="n">nimm</span><span class="p">,</span>
+        <span class="n">otf_bgrd</span><span class="o">=</span><span class="n">otf_bgrd</span><span class="p">,</span>
+        <span class="n">krmax</span><span class="o">=</span><span class="n">krmax</span><span class="p">,</span>
+        <span class="n">fixorigin</span><span class="o">=</span><span class="n">fixorigin</span><span class="p">,</span>
+        <span class="n">cleanup_otf</span><span class="o">=</span><span class="n">cleanup_otf</span><span class="p">,</span>
+        <span class="n">max_otf_size</span><span class="o">=</span><span class="n">max_otf_size</span><span class="p">,</span>
+    <span class="p">)</span> <span class="k">as</span> <span class="n">otf</span><span class="p">:</span>
         <span class="n">arraygen</span> <span class="o">=</span> <span class="n">_yield_arrays</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">fpattern</span><span class="p">)</span>
         <span class="c1"># first, assume that all of the images are the same shape...</span>
         <span class="c1"># in which case we can prevent a lot of GPU IO</span>
         <span class="c1"># grab and store the shape of the first item in the generator</span>
         <span class="n">next_im</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">arraygen</span><span class="p">)</span>
         <span class="k">assert</span> <span class="n">next_im</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Images must be 3D&quot;</span>
-        <span class="n">shp</span> <span class="o">=</span> <span class="n">next_im</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">shp</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="s2">&quot;tuple[int, int, int]&quot;</span><span class="p">,</span> <span class="n">next_im</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
-        <span class="k">with</span> <span class="n">RLContext</span><span class="p">(</span><span class="n">shp</span><span class="p">,</span> <span class="n">otf</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">init_kwargs</span><span class="p">)</span> <span class="k">as</span> <span class="n">ctx</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
+        <span class="k">with</span> <span class="n">RLContext</span><span class="p">(</span>
+            <span class="n">shp</span><span class="p">,</span>
+            <span class="n">otf</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">dzdata</span><span class="o">=</span><span class="n">dzdata</span><span class="p">,</span>
+            <span class="n">dxdata</span><span class="o">=</span><span class="n">dxdata</span><span class="p">,</span>
+            <span class="n">dzpsf</span><span class="o">=</span><span class="n">dzpsf</span><span class="p">,</span>
+            <span class="n">dxpsf</span><span class="o">=</span><span class="n">dxpsf</span><span class="p">,</span>
+            <span class="n">deskew</span><span class="o">=</span><span class="n">deskew</span><span class="p">,</span>
+            <span class="n">rotate</span><span class="o">=</span><span class="n">rotate</span><span class="p">,</span>
+            <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span>
+            <span class="n">skewed_decon</span><span class="o">=</span><span class="n">skewed_decon</span><span class="p">,</span>
+        <span class="p">)</span> <span class="k">as</span> <span class="n">ctx</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
             <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
                 <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="n">rl_decon</span><span class="p">(</span><span class="n">next_im</span><span class="p">,</span> <span class="n">output_shape</span><span class="o">=</span><span class="n">ctx</span><span class="o">.</span><span class="n">out_shape</span><span class="p">,</span> <span class="o">**</span><span class="n">decon_kwargs</span><span class="p">)</span>
+                    <span class="n">rl_decon</span><span class="p">(</span>
+                        <span class="n">next_im</span><span class="p">,</span>
+                        <span class="n">output_shape</span><span class="o">=</span><span class="n">ctx</span><span class="o">.</span><span class="n">out_shape</span><span class="p">,</span>
+                        <span class="n">background</span><span class="o">=</span><span class="n">background</span><span class="p">,</span>
+                        <span class="n">n_iters</span><span class="o">=</span><span class="n">n_iters</span><span class="p">,</span>
+                        <span class="n">shift</span><span class="o">=</span><span class="n">shift</span><span class="p">,</span>
+                        <span class="n">save_deskewed</span><span class="o">=</span><span class="n">save_deskewed</span><span class="p">,</span>
+                        <span class="n">napodize</span><span class="o">=</span><span class="n">napodize</span><span class="p">,</span>
+                        <span class="n">nz_blend</span><span class="o">=</span><span class="n">nz_blend</span><span class="p">,</span>
+                        <span class="n">pad_val</span><span class="o">=</span><span class="n">pad_val</span><span class="p">,</span>
+                        <span class="n">dup_rev_z</span><span class="o">=</span><span class="n">dup_rev_z</span><span class="p">,</span>
+                        <span class="n">skewed_decon</span><span class="o">=</span><span class="n">skewed_decon</span><span class="p">,</span>
+                    <span class="p">)</span>
                 <span class="p">)</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">next_im</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">arraygen</span><span class="p">)</span>
@@ -623,7 +749,19 @@
             <span class="k">for</span> <span class="n">imarray</span> <span class="ow">in</span> <span class="p">[</span><span class="n">next_im</span><span class="p">,</span> <span class="o">*</span><span class="n">arraygen</span><span class="p">]:</span>
                 <span class="k">with</span> <span class="n">RLContext</span><span class="p">(</span><span class="n">imarray</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">otf</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">init_kwargs</span><span class="p">)</span> <span class="k">as</span> <span class="n">ctx</span><span class="p">:</span>  <span class="c1"># type: ignore # noqa</span>
                     <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                        <span class="n">rl_decon</span><span class="p">(</span><span class="n">imarray</span><span class="p">,</span> <span class="n">output_shape</span><span class="o">=</span><span class="n">ctx</span><span class="o">.</span><span class="n">out_shape</span><span class="p">,</span> <span class="o">**</span><span class="n">decon_kwargs</span><span class="p">)</span>
+                        <span class="n">rl_decon</span><span class="p">(</span>
+                            <span class="n">imarray</span><span class="p">,</span>
+                            <span class="n">output_shape</span><span class="o">=</span><span class="n">ctx</span><span class="o">.</span><span class="n">out_shape</span><span class="p">,</span>
+                            <span class="n">background</span><span class="o">=</span><span class="n">background</span><span class="p">,</span>
+                            <span class="n">n_iters</span><span class="o">=</span><span class="n">n_iters</span><span class="p">,</span>
+                            <span class="n">shift</span><span class="o">=</span><span class="n">shift</span><span class="p">,</span>
+                            <span class="n">save_deskewed</span><span class="o">=</span><span class="n">save_deskewed</span><span class="p">,</span>
+                            <span class="n">napodize</span><span class="o">=</span><span class="n">napodize</span><span class="p">,</span>
+                            <span class="n">nz_blend</span><span class="o">=</span><span class="n">nz_blend</span><span class="p">,</span>
+                            <span class="n">pad_val</span><span class="o">=</span><span class="n">pad_val</span><span class="p">,</span>
+                            <span class="n">dup_rev_z</span><span class="o">=</span><span class="n">dup_rev_z</span><span class="p">,</span>
+                            <span class="n">skewed_decon</span><span class="o">=</span><span class="n">skewed_decon</span><span class="p">,</span>
+                        <span class="p">)</span>
                     <span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">images</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
