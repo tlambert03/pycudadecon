@@ -4,7 +4,7 @@ import sys
 import warnings
 from contextlib import contextmanager
 from inspect import signature
-from typing import Callable, Union
+from typing import Any, Callable, Union
 
 import numpy as np
 import tifffile as tf
@@ -24,7 +24,7 @@ def _kwargs_for(function: Callable, kwargs: dict) -> dict:
     return {k: v for k, v in kwargs.items() if k in signature(function).parameters}
 
 
-def imread(fpath: str, **kwargs):
+def imread(fpath: str, **kwargs: Any) -> np.ndarray:
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         return tf.imread(fpath, **kwargs)
@@ -42,7 +42,7 @@ def array_is_otf(arr: np.ndarray) -> bool:
     return False if arr.dtype != "float32" else not arr[:, 1].any()
 
 
-def path_is_otf(fpath: str):
+def path_is_otf(fpath: str) -> bool:
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         with tf.TiffFile(fpath) as tif:
@@ -69,7 +69,7 @@ def is_otf(arr_or_fpath: PathOrArray) -> bool:
 
 # https://stackoverflow.com/questions/5081657/how-do-i-prevent-a-c-shared-library-to-print-on-stdout-in-python/17954769#17954769
 @contextmanager
-def stdout_redirected(to=os.devnull):
+def stdout_redirected(to=os.devnull) -> None:
     """
     import os.
 

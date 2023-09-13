@@ -357,6 +357,9 @@ def decon(
     If `images` is a directory, use the `fpattern` argument to select files
     by filename pattern.
 
+    Note that all other kwargs are passed to either :func:`make_otf`, :func:`rl_init`,
+    or :func:`rl_decon`.
+
     Parameters
     ----------
     images : str, np.ndarray, or sequence of either
@@ -368,13 +371,79 @@ def decon(
     fpattern : str, optional
         Filepattern to use when a directory is provided in the `images` argument,
         by default `*.tif`
-    ** kwargs
-        All other kwargs must be valid for either :func:`rl_init` or :func:`rl_decon`.
+
+    dzpsf : float, optional
+        Z-step size in microns, by default 0.1
+    dxpsf : float, optional
+        XY-Pixel size in microns, by default 0.1
+    wavelength : int, optional
+        Emission wavelength in nm, by default 520
+    na : float, optional
+        Numerical Aperture, by default 1.25
+    nimm : float, optional
+        Refractive indez of immersion medium, by default 1.3
+    otf_bgrd : int, optional
+        Background to subtract. "None" = autodetect., by default None
+    krmax : int, optional
+        pixels outside this limit will be zeroed (overwriting
+        estimated value from NA and NIMM), by default 0
+    fixorigin : int, optional
+        for all kz, extrapolate using pixels kr=1 to this pixel
+        to get value for kr=0, by default 10
+    cleanup_otf : bool, optional
+        clean-up outside OTF support, by default False
+    max_otf_size : int, optional
+        make sure OTF is smaller than this many bytes. Deconvolution
+        may fail if the OTF is larger than 60KB (default: 60000), by default 60000
+
+    dzdata : float, optional
+        Z-step size of data, by default 0.5
+    dxdata : float, optional
+        XY pixel size of data, by default 0.1
+    deskew : float, optional
+        Deskew angle. If not 0.0 then deskewing will be performed before
+        deconvolution, by default 0
+    rotate : float, optional
+        Rotation angle; if not 0.0 then rotation will be performed around Y
+        axis after deconvolution, by default 0
+    width : int, optional
+        If deskewed, the output image's width, by default 0 (do not crop)
+    skewed_decon : bool, optional
+        If True, perform deconvolution in skewed space, by default False. Same as the
+        "-dcbds" command line option. If deskewing, do it after decon; require
+        sample-scan PSF and non-Rotational Averaged 3D OTF
+
+    background : int or 'auto'
+        User-supplied background to subtract. If 'auto', the median value of the
+        last Z plane will be used as background. by default 80
+    n_iters : int, optional
+        Number of iterations, by default 10
+    shift : int, optional
+        If deskewed, the output image's extra shift in X (positive->left),
+        by default 0
+    save_deskewed : bool, optional
+        Save deskewed raw data as well as deconvolution result, by default False
+    output_shape : tuple of int, optional
+        Specify the output shape after deskewing.  Usually this is unnecessary and
+        can be autodetected.  Mostly intended for use within a
+        :class:`pycudadecon.RLContext` context, by default None
+    napodize : int, optional
+        Number of pixels to soften edge with, by default 15
+    nz_blend : int, optional
+        Number of top and bottom sections to blend in to reduce axial ringing,
+        by default 0
+    pad_val : float, optional
+        Value with which to pad image when deskewing, by default 0.0
+    dup_rev_z : bool, optional
+        Duplicate reversed stack prior to decon to reduce axial ringing,
+        by default False
+
 
     Returns
     -------
     np.ndarray or list of array
-        The deconvolved image(s)
+        The deconvolved image(s).  Will be a list if `images` was a sequence of
+        length >=2.
 
     Raises
     ------
