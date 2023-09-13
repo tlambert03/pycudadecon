@@ -1,7 +1,6 @@
 from pathlib import Path
 
 import pytest
-
 from pycudadecon.util import imread
 
 DATA = Path(__file__).parent / "test_data"

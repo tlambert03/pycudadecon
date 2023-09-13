@@ -2,7 +2,6 @@ from pathlib import Path
 
 import numpy.testing as npt
 import pytest
-
 from pycudadecon import RLContext, decon, rl_cleanup, rl_decon, rl_init
 from pycudadecon.util import imread
 
