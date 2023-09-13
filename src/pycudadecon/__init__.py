@@ -1,7 +1,7 @@
 try:
     from importlib.metadata import PackageNotFoundError, version
 except ImportError:
-    from importlib_metadata import PackageNotFoundError, version
+    from importlib_metadata import PackageNotFoundError, version  # type: ignore
 
 try:
     __version__ = version("pycudadecon")
@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 
 try:
-    from . import _libwrap as lib  # noqa: F811
+    from . import _libwrap as lib
 except FileNotFoundError as e:
     import warnings
 
@@ -26,7 +26,7 @@ except FileNotFoundError as e:
         def __getattr__(self, name):
             raise t
 
-    lib = _stub()
+    lib = _stub()  # type: ignore
 
 
 from .affine import affineGPU, deskewGPU, rotateGPU

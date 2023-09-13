@@ -11,7 +11,7 @@ readme = "README.md"
 requires-python = ">=3.7"
 license = { text = "MIT" }
 keywords = ["deconvolution", "microscopy", "CUDA"]
-authors = [{ email = "talley.lambert@gmail.com" }, { name = "Talley Lambert" }]
+authors = [{ email = "talley.lambert@gmail.com", name = "Talley Lambert" }]
 classifiers = [
   "Development Status :: 4 - Beta",
   "Environment :: GPU :: NVIDIA CUDA",

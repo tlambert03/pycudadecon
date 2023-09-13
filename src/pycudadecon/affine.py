@@ -165,9 +165,9 @@ def affineGPU(
     # have to calculate this here to know the size of the return array
     result = np.empty((nz, ny, nx), dtype=np.float32)
     if isinstance(dzyx, (tuple, list)) and len(dzyx) == 3:
-        _dzyx = tuple(float(i) for i in dzyx[::-1])
+        dx, dy, dz = (float(i) for i in dzyx[::-1])
         # note, dzyx coordinate order is flipped when handing to Affine_interface_RA
-        lib.Affine_interface_RA(im, nx, ny, nz, *_dzyx, result, tmat)
+        lib.Affine_interface_RA(im, nx, ny, nz, dx, dy, dz, result, tmat)
     else:
         lib.Affine_interface(im, nx, ny, nz, result, tmat)
     return result
