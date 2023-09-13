@@ -239,6 +239,7 @@ class RLContext:
         deskew: float = 0,
         rotate: float = 0,
         width: int = 0,
+        skewed_decon: bool = False,
     ):
         self.kwargs = {
             "rawdata_shape": rawdata_shape,
@@ -250,6 +251,7 @@ class RLContext:
             "deskew": deskew,
             "rotate": rotate,
             "width": width,
+            "skewed_decon": skewed_decon,
         }
         self.out_shape: Optional[Tuple[int, int, int]] = None
 
