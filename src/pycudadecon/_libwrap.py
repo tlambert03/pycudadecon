@@ -7,7 +7,7 @@ from typing_extensions import Annotated
 from ._ctyped import Library
 
 # FIXME: ugly... we should export version better from cudadecon
-_cudadecon_version: tuple[int, ...] = (0, 0, 0)
+_cudadecon_version: tuple(int(x) for x in (0, 0, 0))
 _conda_prefix = os.getenv("CONDA_PREFIX")
 if _conda_prefix:
     conda_meta = Path(_conda_prefix) / "conda-meta"
