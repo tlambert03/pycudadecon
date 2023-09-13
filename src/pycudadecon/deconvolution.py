@@ -216,7 +216,7 @@ def quickDecon(
 class RLContext:
     """Context manager to setup the GPU for RL decon.
 
-    Takes care of handing the OTF to the GPU, preparing a cuFFT plane,
+    Takes care of handing the OTF to the GPU, preparing a cuFFT plan,
     and cleaning up after decon.  Internally, this calls :func:`rl_init`,
     stores the shape of the expected output volume after any deskew/decon,
     then calls :func:`rl_cleanup` when exiting the context.
