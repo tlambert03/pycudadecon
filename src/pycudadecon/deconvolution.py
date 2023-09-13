@@ -423,10 +423,6 @@ def decon(
         by default 0
     save_deskewed : bool, optional
         Save deskewed raw data as well as deconvolution result, by default False
-    output_shape : tuple of int, optional
-        Specify the output shape after deskewing.  Usually this is unnecessary and
-        can be autodetected.  Mostly intended for use within a
-        :class:`pycudadecon.RLContext` context, by default None
     napodize : int, optional
         Number of pixels to soften edge with, by default 15
     nz_blend : int, optional
