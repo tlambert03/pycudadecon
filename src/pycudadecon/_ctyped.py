@@ -3,14 +3,15 @@ import functools
 import os
 from ctypes.util import find_library
 from inspect import Parameter, signature
-from typing import Callable, Optional, Tuple, Type, TYPE_CHECKING
+from typing import TYPE_CHECKING, Callable, Optional, Tuple, Type
 
 import numpy as np
 from typing_extensions import Annotated, get_args, get_origin
 
 if TYPE_CHECKING:
-    from typing_extensions import ParamSpec
     from typing import TypeVar
+
+    from typing_extensions import ParamSpec
 
     P = ParamSpec("P")
     R = TypeVar("R")
