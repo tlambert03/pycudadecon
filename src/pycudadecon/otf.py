@@ -88,9 +88,7 @@ def cap_psf_size(
     psf = psf[idx]
 
     _nz, _ny, _nx = psf.shape
-    assert (_nx // 2 + 1) * 2 * _nz * 4 <= max_otf_size, "Cap PSF failed...{}".format(
-        psf.shape
-    )
+    assert (_nx // 2 + 1) * 2 * _nz * 4 <= max_otf_size, f"Cap PSF failed...{psf.shape}"
     return psf
 
 
@@ -117,9 +115,7 @@ class CappedPSF:
         self.psf = psf
         self.max_otf_size = max_otf_size or np.inf
         self.temp_psf: Optional["tempfile._TemporaryFileWrapper"] = None
-        self.path: Optional[str] = None
-
-    def __enter__(self) -> "CappedPSF":
+        self.path: str
         if isinstance(self.psf, str) and os.path.isfile(self.psf):
             if predict_otf_size(self.psf) <= self.max_otf_size:
                 self.path = self.psf
@@ -129,6 +125,8 @@ class CappedPSF:
             self.temp_psf = tempfile.NamedTemporaryFile(suffix=".tif", delete=False)
             tf.imwrite(self.temp_psf.name, cap_psf_size(self.psf, self.max_otf_size))
             self.path = self.temp_psf.name
+
+    def __enter__(self) -> "CappedPSF":
         return self
 
     def __exit__(self, *_: Any) -> None:
@@ -274,8 +272,8 @@ class TemporaryOTF:
             else:
                 raise ValueError(f"Did not expect PSF file as {type(self.psf)}")
             self.path = self.tempotf.name
-        elif is_otf(self.psf) and os.path.isfile(self.psf):
-            self.path = self.psf
+        elif is_otf(self.psf) and os.path.isfile(str(self.psf)):
+            self.path = str(self.psf)
         elif is_otf(self.psf) and isinstance(self.psf, np.ndarray):
             raise NotImplementedError("cannot yet handle OTFs as numpy arrays")
         else:

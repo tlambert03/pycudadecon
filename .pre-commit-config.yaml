@@ -7,27 +7,27 @@ default_install_hook_types: [pre-commit, commit-msg]
 
 repos:
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.0.262
+    rev: v0.0.289
     hooks:
       - id: ruff
         args: [--fix]
 
   - repo: https://github.com/psf/black
-    rev: 23.3.0
+    rev: 23.9.1
     hooks:
       - id: black
 
   - repo: https://github.com/abravalheri/validate-pyproject
-    rev: v0.12.2
+    rev: v0.14
     hooks:
       - id: validate-pyproject
 
-  # - repo: https://github.com/pre-commit/mirrors-mypy
-  #   rev: v1.2.0
-  #   hooks:
-  #     - id: mypy
-  #       files: "^src/"
-  #       # # you have to add the things you want to type check against here
-  #       additional_dependencies:
-  #         - numpy
-  #         - typing_extensions
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.5.1
+    hooks:
+      - id: mypy
+        files: "^src/"
+        # # you have to add the things you want to type check against here
+        additional_dependencies:
+          - numpy
+          - typing_extensions

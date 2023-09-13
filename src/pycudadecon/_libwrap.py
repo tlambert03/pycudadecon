@@ -1,11 +1,12 @@
 import os
 from pathlib import Path
+from typing import Tuple
 
 import numpy as np
 from typing_extensions import Annotated
 
 from ._ctyped import Library
-from typing import Tuple
+
 # FIXME: ugly... we should export version better from cudadecon
 _cudadecon_version: Tuple[int, ...] = (0, 0, 0)
 _conda_prefix = os.getenv("CONDA_PREFIX")
@@ -32,12 +33,14 @@ ndarray_uint16 = Annotated[np.ndarray, "uint16"]
 
 
 @lib.function
-def camcor_interface_init(nx: int, ny: int, nz: int, camparam: np.ndarray) -> int:
+def camcor_interface_init(  # type: ignore [empty-body]
+    nx: int, ny: int, nz: int, camparam: np.ndarray
+) -> int:
     """Setup for camera corrections."""
 
 
 @lib.function
-def camcor_interface(
+def camcor_interface(  # type: ignore [empty-body]
     raw_data: ndarray_uint16, nx: int, ny: int, nz: int, result: ndarray_uint16
 ) -> int:
     """Execute camera corrections."""
@@ -46,7 +49,7 @@ def camcor_interface(
 if _cudadecon_version < (0, 6):
 
     @lib.function
-    def RL_interface_init(
+    def RL_interface_init(  # type: ignore [empty-body]
         nx: int,
         ny: int,
         nz: int,
@@ -75,10 +78,10 @@ if _cudadecon_version < (0, 6):
         OTF_file_name: file name of OTF
         """
 
-else: # include "bSkewDecon" arguement
+else:  # include "bSkewDecon" arguement
 
     @lib.function
-    def RL_interface_init(
+    def RL_interface_init(  # type: ignore [empty-body]
         nx: int,
         ny: int,
         nz: int,
@@ -113,7 +116,7 @@ else: # include "bSkewDecon" arguement
 if _cudadecon_version < (0, 6):
 
     @lib.function
-    def RL_interface(
+    def RL_interface(  # type: ignore [empty-body]
         raw_data: ndarray_uint16,
         nx: int,
         ny: int,
@@ -135,7 +138,7 @@ if _cudadecon_version < (0, 6):
 else:
 
     @lib.function
-    def RL_interface(
+    def RL_interface(  # type: ignore [empty-body]
         raw_data: ndarray_uint16,
         nx: int,
         ny: int,
@@ -160,17 +163,17 @@ else:
 # retrieve the post-deskewed image dimensions
 # can be used to allocate result buffer before calling RL_interface()
 @lib.function
-def get_output_nx() -> int:
+def get_output_nx() -> int:  # type: ignore [empty-body]
     ...
 
 
 @lib.function
-def get_output_ny() -> int:
+def get_output_ny() -> int:  # type: ignore [empty-body]
     ...
 
 
 @lib.function
-def get_output_nz() -> int:
+def get_output_nz() -> int:  # type: ignore [empty-body]
     ...
 
 
@@ -197,7 +200,7 @@ def cuda_reset() -> None:
 
 
 @lib.function
-def Deskew_interface(
+def Deskew_interface(  # type: ignore [empty-body]
     raw_data: np.ndarray,
     nx: int,
     ny: int,
@@ -214,7 +217,7 @@ def Deskew_interface(
 
 
 @lib.function
-def Affine_interface(
+def Affine_interface(  # type: ignore [empty-body]
     raw_data: np.ndarray,
     nx: int,
     ny: int,
@@ -226,7 +229,7 @@ def Affine_interface(
 
 
 @lib.function
-def Affine_interface_RA(
+def Affine_interface_RA(  # type: ignore [empty-body]
     raw_data: np.ndarray,
     nx: int,
     ny: int,
@@ -251,8 +254,8 @@ except FileNotFoundError:
 
 @otf_lib.function
 def makeOTF(
-    ifiles: str,
-    ofiles: str,
+    ifiles: bytes,
+    ofiles: bytes,
     lambdanm: int = 520,
     dz: float = 0.102,
     interpkr: int = 10,

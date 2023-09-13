@@ -3,10 +3,18 @@ import functools
 import os
 from ctypes.util import find_library
 from inspect import Parameter, signature
-from typing import Callable, Optional, Tuple, Type
+from typing import TYPE_CHECKING, Callable, Optional, Tuple, Type
 
 import numpy as np
 from typing_extensions import Annotated, get_args, get_origin
+
+if TYPE_CHECKING:
+    from typing import TypeVar
+
+    from typing_extensions import ParamSpec
+
+    P = ParamSpec("P")
+    R = TypeVar("R")
 
 
 class Library:
@@ -24,7 +32,7 @@ class Library:
         if not self.lib._name:
             raise FileNotFoundError(f"Unable to find library: {self.name}")
 
-    def function(self, func: Callable) -> Callable:
+    def function(self, func: "Callable[P, R]") -> "Callable[P, R]":
         func_c = getattr(self.lib, func.__name__)
 
         sig = signature(func)
@@ -40,7 +48,7 @@ class Library:
             def __signature__(self):
                 return sig
 
-            def __call__(self, *args, **kw):
+            def __call__(self, *args: "P.args", **kw: "P.kwargs") -> "R":
                 return self._func(*args, **kw)
 
             def __repr__(_self):
@@ -68,5 +76,6 @@ def cast_type(hint: Type) -> Optional[Type]:
         float: ctypes.c_float,
         int: ctypes.c_int,
         str: ctypes.c_char_p,
+        bytes: ctypes.c_char_p,
         np.ndarray: np.ctypeslib.ndpointer(ctypes.c_float, flags="C_CONTIGUOUS"),
     }[hint]
