@@ -69,7 +69,7 @@ def is_otf(arr_or_fpath: PathOrArray) -> bool:
 
 # https://stackoverflow.com/questions/5081657/how-do-i-prevent-a-c-shared-library-to-print-on-stdout-in-python/17954769#17954769
 @contextmanager
-def stdout_redirected(to=os.devnull) -> None:
+def stdout_redirected(to=os.devnull):
     """
     import os.
 
