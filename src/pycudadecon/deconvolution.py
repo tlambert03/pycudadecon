@@ -62,7 +62,8 @@ def rl_init(
     width : int, optional
         If deskewed, the output image's width, by default 0 (do not crop)
     skewed_decon : bool, optional
-        If True, perform deconvolution in skewed space, by default False.
+        If True, perform deconvolution in skewed space, by default False. Same as the "-dcbds" command line option.
+        If deskewing, do it after decon; require sample-scan PSF and non-Rotational Averaged 3D OTF
 
     Examples
     --------
@@ -75,7 +76,7 @@ def rl_init(
 
     args: list = [nx, ny, nz, dxdata, dzdata, dxpsf, dzpsf, deskew, rotate, width]
 
-    if lib.lib.version >= (0, 6):
+    if lib.lib.version >= (0, 6):   # must have cudadecon library >= 0.6.0
         args += [skewed_decon]
 
     lib.RL_interface_init(*args, otfpath.encode())
@@ -215,7 +216,7 @@ def quickDecon(
 class RLContext:
     """Context manager to setup the GPU for RL decon.
 
-    Takes care of handing the OTF to the GPU, preparing a cuFFT plan,
+    Takes care of handing the OTF to the GPU, preparing a cuFFT plane,
     and cleaning up after decon.  Internally, this calls :func:`rl_init`,
     stores the shape of the expected output volume after any deskew/decon,
     then calls :func:`rl_cleanup` when exiting the context.

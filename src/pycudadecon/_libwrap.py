@@ -75,7 +75,7 @@ if _cudadecon_version < (0, 6):
         OTF_file_name: file name of OTF
         """
 
-else:
+else: # include "bSkewDecon" arguement
 
     @lib.function
     def RL_interface_init(
