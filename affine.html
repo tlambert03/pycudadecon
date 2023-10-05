@@ -235,7 +235,7 @@ is performed in image coordinates.  by default <cite>None</cite></p></li>
 <dd class="field-odd"><p>np.ndarray</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – If the dimensions of the transformation matrix do not the input volume.  For
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.12)"><strong>ValueError</strong></a> – If the dimensions of the transformation matrix do not the input volume.  For
     instance, a 3D input volume requires a 4 x 4 tranforamtion matrix.</p>
 </dd>
 </dl>
@@ -291,16 +291,16 @@ for volume shearing.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>im</strong> (<em>np.ndarray</em>) – Image volume to deskew</p></li>
-<li><p><strong>dxdata</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>optional</em>) – XY Pixel size of image volume, by default 0.1</p></li>
-<li><p><strong>dzdata</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>optional</em>) – Z-step size in image volume.  In a typical light sheet stage-scanning
+<li><p><strong>dxdata</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – XY Pixel size of image volume, by default 0.1</p></li>
+<li><p><strong>dzdata</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – Z-step size in image volume.  In a typical light sheet stage-scanning
 aquisition, this corresponds to the step size that the stage takes between
 planes, NOT the final Z-step size between planeds after deskewing along the
 optical axis of the detection objective, by default 0.5</p></li>
-<li><p><strong>angle</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>optional</em>) – Deskew angle (usually, angle between sheet and axis of stage motion),
+<li><p><strong>angle</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – Deskew angle (usually, angle between sheet and axis of stage motion),
 by default 31.5</p></li>
-<li><p><strong>width</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – If not 0, crop output image to specified width, by default 0</p></li>
-<li><p><strong>shift</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – If not 0, shift image center by this value, by default 0</p></li>
-<li><p><strong>pad_val</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – Value to pad image with when deskewing.  If <cite>None</cite>
+<li><p><strong>width</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – If not 0, crop output image to specified width, by default 0</p></li>
+<li><p><strong>shift</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – If not 0, shift image center by this value, by default 0</p></li>
+<li><p><strong>pad_val</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – Value to pad image with when deskewing.  If <cite>None</cite>
 the median value of the last Z plane will be used, by default <cite>None</cite></p></li>
 </ul>
 </dd>
@@ -328,10 +328,10 @@ orthogonal to the coverslip</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>im</strong> (<em>np.ndarray</em>) – 3D volume to be rotated</p></li>
-<li><p><strong>dzdata</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Z-step size in microns of the image volume</p></li>
-<li><p><strong>dxdata</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – XY pixel size of the volume, by default 0.1</p></li>
-<li><p><strong>angle</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Angle to rotate around Y axis, by default 31.5</p></li>
-<li><p><strong>reverse</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – Rotate in the opposite direction, by default <cite>False</cite></p></li>
+<li><p><strong>dzdata</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – Z-step size in microns of the image volume</p></li>
+<li><p><strong>dxdata</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – XY pixel size of the volume, by default 0.1</p></li>
+<li><p><strong>angle</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – Angle to rotate around Y axis, by default 31.5</p></li>
+<li><p><strong>reverse</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – Rotate in the opposite direction, by default <cite>False</cite></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

@@ -232,7 +232,7 @@ perform the setup and breakdown automatically:</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pycudadecon.RLContext">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pycudadecon.</span></span><span class="sig-name descname"><span class="pre">RLContext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rawdata_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">otfpath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dzdata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dxdata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dzpsf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dxpsf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deskew</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skewed_decon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycudadecon/deconvolution.html#RLContext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pycudadecon.RLContext" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Context manager to setup the GPU for RL decon.</p>
 <p>Takes care of handing the OTF to the GPU, preparing a cuFFT plan,
 and cleaning up after decon.  Internally, this calls <a class="reference internal" href="#pycudadecon.rl_init" title="pycudadecon.rl_init"><code class="xref py py-func docutils literal notranslate"><span class="pre">rl_init()</span></code></a>,
@@ -257,46 +257,46 @@ or <a class="reference internal" href="#pycudadecon.rl_decon" title="pycudadecon
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>images</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>np.ndarray</em><em>, or </em><em>sequence of either</em>) – The array, filepath, directory, or list/tuple thereof to deconvolve</p></li>
-<li><p><strong>psf</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> or </em><em>np.ndarray</em>) – a filepath of a PSF or OTF file, or a 3D numpy PSF array.  Function will
+<li><p><strong>images</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>np.ndarray</em><em>, or </em><em>sequence of either</em>) – The array, filepath, directory, or list/tuple thereof to deconvolve</p></li>
+<li><p><strong>psf</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em> or </em><em>np.ndarray</em>) – a filepath of a PSF or OTF file, or a 3D numpy PSF array.  Function will
 auto-detect whether the file is a 3D PSF or a filepath representing a 2D
 complex OTF.</p></li>
-<li><p><strong>fpattern</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>optional</em>) – Filepattern to use when a directory is provided in the <cite>images</cite> argument,
+<li><p><strong>fpattern</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – Filepattern to use when a directory is provided in the <cite>images</cite> argument,
 by default <cite>*.tif</cite></p></li>
-<li><p><strong>dzpsf</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>optional</em>) – Z-step size in microns, by default 0.1</p></li>
-<li><p><strong>dxpsf</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>optional</em>) – XY-Pixel size in microns, by default 0.1</p></li>
-<li><p><strong>wavelength</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – Emission wavelength in nm, by default 520</p></li>
-<li><p><strong>na</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>optional</em>) – Numerical Aperture, by default 1.25</p></li>
-<li><p><strong>nimm</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>optional</em>) – Refractive indez of immersion medium, by default 1.3</p></li>
-<li><p><strong>otf_bgrd</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – Background to subtract. “None” = autodetect., by default None</p></li>
-<li><p><strong>krmax</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – pixels outside this limit will be zeroed (overwriting
+<li><p><strong>dzpsf</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – Z-step size in microns, by default 0.1</p></li>
+<li><p><strong>dxpsf</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – XY-Pixel size in microns, by default 0.1</p></li>
+<li><p><strong>wavelength</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – Emission wavelength in nm, by default 520</p></li>
+<li><p><strong>na</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – Numerical Aperture, by default 1.25</p></li>
+<li><p><strong>nimm</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – Refractive indez of immersion medium, by default 1.3</p></li>
+<li><p><strong>otf_bgrd</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – Background to subtract. “None” = autodetect., by default None</p></li>
+<li><p><strong>krmax</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – pixels outside this limit will be zeroed (overwriting
 estimated value from NA and NIMM), by default 0</p></li>
-<li><p><strong>fixorigin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – for all kz, extrapolate using pixels kr=1 to this pixel
+<li><p><strong>fixorigin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – for all kz, extrapolate using pixels kr=1 to this pixel
 to get value for kr=0, by default 10</p></li>
-<li><p><strong>cleanup_otf</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – clean-up outside OTF support, by default False</p></li>
-<li><p><strong>max_otf_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – make sure OTF is smaller than this many bytes. Deconvolution
+<li><p><strong>cleanup_otf</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – clean-up outside OTF support, by default False</p></li>
+<li><p><strong>max_otf_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – make sure OTF is smaller than this many bytes. Deconvolution
 may fail if the OTF is larger than 60KB (default: 60000), by default 60000</p></li>
-<li><p><strong>dzdata</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>optional</em>) – Z-step size of data, by default 0.5</p></li>
-<li><p><strong>dxdata</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>optional</em>) – XY pixel size of data, by default 0.1</p></li>
-<li><p><strong>deskew</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>optional</em>) – Deskew angle. If not 0.0 then deskewing will be performed before
+<li><p><strong>dzdata</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – Z-step size of data, by default 0.5</p></li>
+<li><p><strong>dxdata</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – XY pixel size of data, by default 0.1</p></li>
+<li><p><strong>deskew</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – Deskew angle. If not 0.0 then deskewing will be performed before
 deconvolution, by default 0</p></li>
-<li><p><strong>rotate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>optional</em>) – Rotation angle; if not 0.0 then rotation will be performed around Y
+<li><p><strong>rotate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – Rotation angle; if not 0.0 then rotation will be performed around Y
 axis after deconvolution, by default 0</p></li>
-<li><p><strong>width</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – If deskewed, the output image’s width, by default 0 (do not crop)</p></li>
-<li><p><strong>skewed_decon</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – If True, perform deconvolution in skewed space, by default False. Same as the
+<li><p><strong>width</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – If deskewed, the output image’s width, by default 0 (do not crop)</p></li>
+<li><p><strong>skewed_decon</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – If True, perform deconvolution in skewed space, by default False. Same as the
 “-dcbds” command line option. If deskewing, do it after decon; require
 sample-scan PSF and non-Rotational Averaged 3D OTF</p></li>
-<li><p><strong>background</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em> or </em><em>'auto'</em>) – User-supplied background to subtract. If ‘auto’, the median value of the
+<li><p><strong>background</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em> or </em><em>'auto'</em>) – User-supplied background to subtract. If ‘auto’, the median value of the
 last Z plane will be used as background. by default 80</p></li>
-<li><p><strong>n_iters</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – Number of iterations, by default 10</p></li>
-<li><p><strong>shift</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – If deskewed, the output image’s extra shift in X (positive-&gt;left),
+<li><p><strong>n_iters</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – Number of iterations, by default 10</p></li>
+<li><p><strong>shift</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – If deskewed, the output image’s extra shift in X (positive-&gt;left),
 by default 0</p></li>
-<li><p><strong>save_deskewed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Save deskewed raw data as well as deconvolution result, by default False</p></li>
-<li><p><strong>napodize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – Number of pixels to soften edge with, by default 15</p></li>
-<li><p><strong>nz_blend</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – Number of top and bottom sections to blend in to reduce axial ringing,
+<li><p><strong>save_deskewed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Save deskewed raw data as well as deconvolution result, by default False</p></li>
+<li><p><strong>napodize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – Number of pixels to soften edge with, by default 15</p></li>
+<li><p><strong>nz_blend</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – Number of top and bottom sections to blend in to reduce axial ringing,
 by default 0</p></li>
-<li><p><strong>pad_val</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>optional</em>) – Value with which to pad image when deskewing, by default 0.0</p></li>
-<li><p><strong>dup_rev_z</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Duplicate reversed stack prior to decon to reduce axial ringing,
+<li><p><strong>pad_val</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – Value with which to pad image when deskewing, by default 0.0</p></li>
+<li><p><strong>dup_rev_z</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Duplicate reversed stack prior to decon to reduce axial ringing,
 by default False</p></li>
 </ul>
 </dd>
@@ -309,9 +309,9 @@ length &gt;=2.</p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – If save_deskewed is True and deskew is unset or 0</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#IOError" title="(in Python v3.11)"><strong>IOError</strong></a> – If a directory is provided as input and <code class="docutils literal notranslate"><span class="pre">fpattern</span></code> yields no files</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#NotImplementedError" title="(in Python v3.11)"><strong>NotImplementedError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">psf</span></code> is provided as a complex, 2D numpy array (OTFs can only be
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.12)"><strong>ValueError</strong></a> – If save_deskewed is True and deskew is unset or 0</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#IOError" title="(in Python v3.12)"><strong>IOError</strong></a> – If a directory is provided as input and <code class="docutils literal notranslate"><span class="pre">fpattern</span></code> yields no files</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#NotImplementedError" title="(in Python v3.12)"><strong>NotImplementedError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">psf</span></code> is provided as a complex, 2D numpy array (OTFs can only be
     provided as filenames created with <a class="reference internal" href="otf.html#pycudadecon.make_otf" title="pycudadecon.make_otf"><code class="xref py py-func docutils literal notranslate"><span class="pre">pycudadecon.make_otf()</span></code></a>)</p></li>
 </ul>
 </dd>
@@ -351,7 +351,7 @@ or directories</p>
 </ul>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -366,22 +366,22 @@ or directories</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>im</strong> (<em>np.ndarray</em>) – 3D image volume to deconvolve</p></li>
-<li><p><strong>background</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em> or </em><em>'auto'</em>) – User-supplied background to subtract. If ‘auto’, the median value of the
+<li><p><strong>background</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em> or </em><em>'auto'</em>) – User-supplied background to subtract. If ‘auto’, the median value of the
 last Z plane will be used as background. by default 80</p></li>
-<li><p><strong>n_iters</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – Number of iterations, by default 10</p></li>
-<li><p><strong>shift</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – If deskewed, the output image’s extra shift in X (positive-&gt;left),
+<li><p><strong>n_iters</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – Number of iterations, by default 10</p></li>
+<li><p><strong>shift</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – If deskewed, the output image’s extra shift in X (positive-&gt;left),
 by default 0</p></li>
-<li><p><strong>save_deskewed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Save deskewed raw data as well as deconvolution result, by default False</p></li>
+<li><p><strong>save_deskewed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Save deskewed raw data as well as deconvolution result, by default False</p></li>
 <li><p><strong>output_shape</strong> (<em>tuple of int</em><em>, </em><em>optional</em>) – Specify the output shape after deskewing.  Usually this is unnecessary and
 can be autodetected.  Mostly intended for use within a
 <a class="reference internal" href="#pycudadecon.RLContext" title="pycudadecon.RLContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">pycudadecon.RLContext</span></code></a> context, by default None</p></li>
-<li><p><strong>napodize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – Number of pixels to soften edge with, by default 15</p></li>
-<li><p><strong>nz_blend</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – Number of top and bottom sections to blend in to reduce axial ringing,
+<li><p><strong>napodize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – Number of pixels to soften edge with, by default 15</p></li>
+<li><p><strong>nz_blend</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – Number of top and bottom sections to blend in to reduce axial ringing,
 by default 0</p></li>
-<li><p><strong>pad_val</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>optional</em>) – Value with which to pad image when deskewing, by default 0.0</p></li>
-<li><p><strong>dup_rev_z</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – Duplicate reversed stack prior to decon to reduce axial ringing,
+<li><p><strong>pad_val</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – Value with which to pad image when deskewing, by default 0.0</p></li>
+<li><p><strong>dup_rev_z</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Duplicate reversed stack prior to decon to reduce axial ringing,
 by default False</p></li>
-<li><p><strong>skewed_decon</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – If True, perform deconvolution in skewed space, by default False.</p></li>
+<li><p><strong>skewed_decon</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – If True, perform deconvolution in skewed space, by default False.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -392,7 +392,7 @@ by default False</p></li>
 <dd class="field-odd"><p>np.ndarray or 2-tuple of np.ndarray</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – If im.ndim is not 3, or <cite>output_shape</cite> is provided but not length 3</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.12)"><strong>ValueError</strong></a> – If im.ndim is not 3, or <cite>output_shape</cite> is provided but not length 3</p>
 </dd>
 </dl>
 </dd></dl>
@@ -406,18 +406,18 @@ Must be used prior to <a class="reference internal" href="#pycudadecon.rl_decon"
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>rawdata_shape</strong> (<em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>]</em>) – 3-tuple of data shape</p></li>
-<li><p><strong>otfpath</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Path to OTF TIF</p></li>
-<li><p><strong>dzdata</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>optional</em>) – Z-step size of data, by default 0.5</p></li>
-<li><p><strong>dxdata</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>optional</em>) – XY pixel size of data, by default 0.1</p></li>
-<li><p><strong>dzpsf</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>optional</em>) – Z-step size of the OTF, by default 0.1</p></li>
-<li><p><strong>dxpsf</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>optional</em>) – XY pixel size of the OTF, by default 0.1</p></li>
-<li><p><strong>deskew</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>optional</em>) – Deskew angle. If not 0.0 then deskewing will be performed before
+<li><p><strong>rawdata_shape</strong> (<em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>]</em>) – 3-tuple of data shape</p></li>
+<li><p><strong>otfpath</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – Path to OTF TIF</p></li>
+<li><p><strong>dzdata</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – Z-step size of data, by default 0.5</p></li>
+<li><p><strong>dxdata</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – XY pixel size of data, by default 0.1</p></li>
+<li><p><strong>dzpsf</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – Z-step size of the OTF, by default 0.1</p></li>
+<li><p><strong>dxpsf</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – XY pixel size of the OTF, by default 0.1</p></li>
+<li><p><strong>deskew</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – Deskew angle. If not 0.0 then deskewing will be performed before
 deconvolution, by default 0</p></li>
-<li><p><strong>rotate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em>, </em><em>optional</em>) – Rotation angle; if not 0.0 then rotation will be performed around Y
+<li><p><strong>rotate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – Rotation angle; if not 0.0 then rotation will be performed around Y
 axis after deconvolution, by default 0</p></li>
-<li><p><strong>width</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – If deskewed, the output image’s width, by default 0 (do not crop)</p></li>
-<li><p><strong>skewed_decon</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em>) – If True, perform deconvolution in skewed space, by default False. Same as the
+<li><p><strong>width</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – If deskewed, the output image’s width, by default 0 (do not crop)</p></li>
+<li><p><strong>skewed_decon</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – If True, perform deconvolution in skewed space, by default False. Same as the
 “-dcbds” command line option. If deskewing, do it after decon; require
 sample-scan PSF and non-Rotational Averaged 3D OTF</p></li>
 </ul>
@@ -431,7 +431,7 @@ sample-scan PSF and non-Rotational Averaged 3D OTF</p></li>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
