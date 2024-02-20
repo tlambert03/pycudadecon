@@ -212,8 +212,7 @@ def Deskew_interface(  # type: ignore [empty-body]
     outputWidth: int,
     extraShift: int,
     padVal: float = 0,
-) -> int:
-    ...
+) -> int: ...
 
 
 @lib.function
@@ -224,8 +223,7 @@ def Affine_interface(  # type: ignore [empty-body]
     nz: int,
     result: np.ndarray,
     affMat: np.ndarray,
-) -> int:
-    ...
+) -> int: ...
 
 
 @lib.function
@@ -239,8 +237,7 @@ def Affine_interface_RA(  # type: ignore [empty-body]
     dz: float,
     result: np.ndarray,
     affMat: np.ndarray,
-) -> int:
-    ...
+) -> int: ...
 
 
 try:
