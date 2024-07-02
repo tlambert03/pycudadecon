@@ -152,9 +152,7 @@ def affineGPU(
     """
     if tmat.shape != tuple([im.ndim + 1] * 2):
         raise ValueError(
-            "{} dimensional transform matrix used on {} dimensional image".format(
-                tmat.shape[0] - 1, im.ndim
-            )
+            f"{tmat.shape[0] - 1} dimensional transform matrix used on {im.ndim} dimensional image"
         )
 
     nz, ny, nx = im.shape

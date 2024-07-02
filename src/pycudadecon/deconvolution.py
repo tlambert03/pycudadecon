@@ -307,9 +307,7 @@ def _yield_arrays(
             imfiles = [f for f in os.listdir(images) if fnmatch(f, fpattern)]
             if not len(imfiles):
                 raise OSError(
-                    'No files matching pattern "{}" found in directory: {}'.format(
-                        fpattern, images
-                    )
+                    f'No files matching pattern "{fpattern}" found in directory: {images}'
                 )
             for fpath in imfiles:
                 yield imread(os.path.join(images, fpath))
