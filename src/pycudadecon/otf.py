@@ -114,7 +114,7 @@ class CappedPSF:
     def __init__(self, psf: PathOrArray, max_otf_size: Optional[int] = None) -> None:
         self.psf = psf
         self.max_otf_size = max_otf_size or np.inf
-        self.temp_psf: Optional["tempfile._TemporaryFileWrapper"] = None
+        self.temp_psf: Optional[tempfile._TemporaryFileWrapper] = None
         self.path: str
         if isinstance(self.psf, str) and os.path.isfile(self.psf):
             if predict_otf_size(self.psf) <= self.max_otf_size:
