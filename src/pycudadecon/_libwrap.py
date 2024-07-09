@@ -263,5 +263,6 @@ def makeOTF(
     dr: float = 0.102,
     krmax: int = 0,
     bDoCleanup: bool = False,
+    b3Dout: bool = False,
 ):
     """Make OTF file(s) from `ifiles`, write to `ofiles`."""
