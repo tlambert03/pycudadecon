@@ -1,3 +1,5 @@
+"""Functions to generate and manipulate OTF files."""
+
 import os
 import tempfile
 from typing import Any, Optional
@@ -95,7 +97,7 @@ def cap_psf_size(
 class CappedPSF:
     """Context manager that provides the path to a 3D PSF.
 
-    Thi is guaranteed to yield an OTF that is smaller than the specified value.
+    This is guaranteed to yield an OTF that is smaller than the specified value.
 
     Args:
     ----
@@ -103,7 +105,7 @@ class CappedPSF:
         max_otf_size (int, None): maximum allowable size in bytes of the OTF.  If None,
             do not restrict size of OTF.
 
-    Returns:
+    Returns
     -------
         str: the ``self.path`` attribute may be used within the context to retrieve
             a filepath with (if necessary) a temporary path to a cropped psf.  Or, if
@@ -114,7 +116,7 @@ class CappedPSF:
     def __init__(self, psf: PathOrArray, max_otf_size: Optional[int] = None) -> None:
         self.psf = psf
         self.max_otf_size = max_otf_size or np.inf
-        self.temp_psf: Optional["tempfile._TemporaryFileWrapper"] = None
+        self.temp_psf: Optional[tempfile._TemporaryFileWrapper] = None
         self.path: str
         if isinstance(self.psf, str) and os.path.isfile(self.psf):
             if predict_otf_size(self.psf) <= self.max_otf_size:
@@ -127,9 +129,11 @@ class CappedPSF:
             self.path = self.temp_psf.name
 
     def __enter__(self) -> "CappedPSF":
+        """Enter the context manager and return self."""
         return self
 
     def __exit__(self, *_: Any) -> None:
+        """Exit the context manager and cleanup temporary PSF."""
         if self.temp_psf is not None:
             try:
                 self.temp_psf.close()
@@ -185,6 +189,8 @@ def make_otf(
     max_otf_size : int, optional
         make sure OTF is smaller than this many bytes. Deconvolution
         may fail if the OTF is larger than 60KB (default: 60000), by default 60000
+    **kwargs : Any
+        additional keyword arguments are ignored
 
     Returns
     -------
@@ -240,7 +246,7 @@ class TemporaryOTF:
     ----
         OTF files cannot currently be provided directly as 2D complex np.ndarrays
 
-    Raises:
+    Raises
     ------
         ValueError: If the PSF/OTF is an unexpected type
         NotImplementedError: if the PSF/OTF is a complex 2D numpy array
@@ -257,6 +263,7 @@ class TemporaryOTF:
         self.kwargs = kwargs
 
     def __enter__(self) -> "TemporaryOTF":
+        """Enter the context manager and generate a temporary OTF file."""
         if not is_otf(self.psf):
             self.tempotf = tempfile.NamedTemporaryFile(suffix=".tif", delete=False)
             if isinstance(self.psf, np.ndarray):
@@ -281,6 +288,7 @@ class TemporaryOTF:
         return self
 
     def __exit__(self, *_: Any) -> None:
+        """Exit the context manager and cleanup temporary OTF."""
         try:
             self.tempotf.close()
             os.remove(self.tempotf.name)

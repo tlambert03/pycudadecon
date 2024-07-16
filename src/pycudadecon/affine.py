@@ -1,3 +1,5 @@
+"""Affine transformations on 3D volumes using CUDA."""
+
 from typing import Optional, Tuple
 
 import numpy as np
@@ -13,7 +15,7 @@ def deskewGPU(
     width: int = 0,
     shift: int = 0,
     pad_val: Optional[int] = None,
-):
+) -> np.ndarray:
     """Deskew data acquired in stage-scanning mode on GPU.
 
     Simple affine transform variant to perform a shear operation to correct
@@ -27,7 +29,7 @@ def deskewGPU(
         XY Pixel size of image volume, by default 0.1
     dzdata : float, optional
         Z-step size in image volume.  In a typical light sheet stage-scanning
-        aquisition, this corresponds to the step size that the stage takes between
+        acquisition, this corresponds to the step size that the stage takes between
         planes, NOT the final Z-step size between planeds after deskewing along the
         optical axis of the detection objective, by default 0.5
     angle : float, optional
@@ -72,7 +74,7 @@ def deskewGPU(
 
 def affineGPU(
     im: np.ndarray, tmat: np.ndarray, dzyx: Optional[Tuple[float, float, float]] = None
-):
+) -> np.ndarray:
     """Perform 3D affine transformation of image given a 4x4 transformation matrix.
 
     optional `dzyx` parameter specifies the voxel size of the
@@ -113,10 +115,7 @@ def affineGPU(
     Perform simple translation
 
     >>> nx, ny, nz = (10, 20, 3)
-    >>> T = np.array([[1, 0, 0, nx],
-    ...               [0, 1, 0, ny],
-    ...               [0, 0, 1, nz],
-    ...               [0, 0, 0, 1]])
+    >>> T = np.array([[1, 0, 0, nx], [0, 1, 0, ny], [0, 0, 1, nz], [0, 0, 0, 1]])
     >>> rotated = affineGPU(im, T)
 
     Perform a rotation about the Y axis...
@@ -152,9 +151,8 @@ def affineGPU(
     """
     if tmat.shape != tuple([im.ndim + 1] * 2):
         raise ValueError(
-            "{} dimensional transform matrix used on {} dimensional image".format(
-                tmat.shape[0] - 1, im.ndim
-            )
+            f"{tmat.shape[0] - 1} dimensional transform matrix used on {im.ndim} "
+            "dimensional image"
         )
 
     nz, ny, nx = im.shape
@@ -173,7 +171,13 @@ def affineGPU(
     return result
 
 
-def rotateGPU(im, dzdata, dxdata=0.1, angle=31.5, reverse=False):
+def rotateGPU(
+    im: np.ndarray,
+    dzdata: float,
+    dxdata: float = 0.1,
+    angle: float = 31.5,
+    reverse: bool = False,
+) -> np.ndarray:
     """Rotate image around Y axis by some angle.
 
     This is a convenience function that will apply the appropriate affine
