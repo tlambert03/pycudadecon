@@ -2,6 +2,7 @@ from pathlib import Path
 
 import numpy.testing as npt
 import pytest
+
 from pycudadecon import RLContext, decon, rl_cleanup, rl_decon, rl_init
 from pycudadecon.util import imread
 
@@ -66,7 +67,7 @@ def test_decon_wrapper_with_many_inputs(deskewed_image, decon_image, config):
 
 
 def test_decon_wrapper_with_variable_shapes(deskewed_image, config):
-    """test passing a list of variabel shape images to decon"""
+    """test passing a list of variable shape images to decon"""
     im = deskewed_image
     images = [im, im[:, 4:-4, 4:-4], im[2:-2, 16:-16, 16:-16]]
     decon(images, OTF_PATH, **config)

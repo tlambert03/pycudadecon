@@ -1,11 +1,12 @@
 import numpy as np
 import numpy.testing as npt
 import pytest
+
 from pycudadecon import affineGPU, deskewGPU, rotateGPU
 
 
 def test_deskew(raw_image, deskewed_image):
-    """test basic deskewing of a file aquired on a lattice light sheet"""
+    """test basic deskewing of a file acquired on a lattice light sheet"""
     deskewed = deskewGPU(raw_image, dzdata=0.3, angle=31.5, pad_val=98)
     npt.assert_allclose(deskewed, deskewed_image)
 
@@ -44,7 +45,7 @@ def test_affine_translate(raw_image):
 
 def test_affine_translate_RA(raw_image):
     """
-    make sure the referenceing object works to accept transformation
+    make sure the referencing object works to accept transformation
     matrices in units of sample space, instead of world coordinates
     """
     xpix = -50

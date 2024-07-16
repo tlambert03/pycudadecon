@@ -78,7 +78,7 @@ if _cudadecon_version < (0, 6):
         OTF_file_name: file name of OTF
         """
 
-else:  # include "bSkewDecon" arguement
+else:  # include "bSkewDecon" argument
 
     @lib.function
     def RL_interface_init(  # type: ignore [empty-body]
@@ -263,5 +263,5 @@ def makeOTF(
     dr: float = 0.102,
     krmax: int = 0,
     bDoCleanup: bool = False,
-):
+) -> None:
     """Make OTF file(s) from `ifiles`, write to `ofiles`."""

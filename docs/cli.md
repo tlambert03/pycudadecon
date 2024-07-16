@@ -36,7 +36,7 @@ cudaDeconv compiled for LLSpy.  Version: 0.4.0
   -Z [ --dzpsf ] arg (=0.1)         PSF z step (um)
   -l [ --wavelength ] arg (=0.525)  Emission wavelength (um)
   -W [ --wiener ] arg (=-1)         Wiener constant (regularization
-                                    factor); if this value is postive then
+                                    factor); if this value is positive then
                                     do Wiener filter instead of R-L
   -b [ --background ] arg (=90)     User-supplied background
   -e [ --napodize ] arg (=15)       # of pixels to soften edge with
@@ -80,7 +80,7 @@ cudaDeconv compiled for LLSpy.  Version: 0.4.0
   --LSC arg                         Lightsheet correction file
   --FlatStart                       Start the RL from a guess that is a
                                     flat image filled with the median image
-                                    value.  This may supress noise.
+                                    value.  This may suppress noise.
   -p [ --bleachCorrection ]         Apply bleach correction when running
                                     multiple images in a single batch
   --lzw                             Use LZW tiff compression

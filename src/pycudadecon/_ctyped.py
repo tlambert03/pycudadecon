@@ -2,7 +2,7 @@ import ctypes
 import functools
 import os
 from ctypes.util import find_library
-from inspect import Parameter, signature
+from inspect import Parameter, Signature, signature
 from typing import TYPE_CHECKING, Callable, Optional, Tuple, Type
 
 import numpy as np
@@ -40,18 +40,18 @@ class Library:
         func_c.argtypes = [cast_type(p.annotation) for p in sig.parameters.values()]
 
         class CTypesFunction:
-            def __init__(self, func):
+            def __init__(self, func: "Callable[P, R]") -> None:
                 self._func = func
                 functools.update_wrapper(self, func)
 
             @property
-            def __signature__(self):
+            def __signature__(self) -> "Signature":
                 return sig
 
             def __call__(self, *args: "P.args", **kw: "P.kwargs") -> "R":
                 return self._func(*args, **kw)
 
-            def __repr__(_self):
+            def __repr__(_self) -> str:
                 return (
                     f"<CTypesFunction: {os.path.basename(self.name)}.{func.__name__}>"
                 )

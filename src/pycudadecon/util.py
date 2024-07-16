@@ -1,10 +1,13 @@
+"""Utility functions for pycudadecon."""
+
+import io
 import logging
 import os
 import sys
 import warnings
 from contextlib import contextmanager
 from inspect import signature
-from typing import Any, Callable, Union
+from typing import Any, Callable, Iterator, Union
 
 import numpy as np
 import tifffile as tf
@@ -25,9 +28,10 @@ def _kwargs_for(function: Callable, kwargs: dict) -> dict:
 
 
 def imread(fpath: str, **kwargs: Any) -> np.ndarray:
+    """Read image file at `fpath` using tifffile. silences warnings."""
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        return tf.imread(fpath, **kwargs)
+        return tf.imread(fpath, **kwargs)  # type: ignore [no-any-return]
 
 
 def array_is_otf(arr: np.ndarray) -> bool:
@@ -43,6 +47,7 @@ def array_is_otf(arr: np.ndarray) -> bool:
 
 
 def path_is_otf(fpath: str) -> bool:
+    """Return True if the file at `fpath` is an OTF file."""
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         with tf.TiffFile(fpath) as tif:
@@ -52,7 +57,8 @@ def path_is_otf(fpath: str) -> bool:
 
 
 def is_otf(arr_or_fpath: PathOrArray) -> bool:
-    """
+    """Return True if the array or path represents an OTF file.
+
     accepts either a numpy array or a string representing a filepath
     and returns True if the array or path represents an OTF file.
     """
@@ -69,7 +75,7 @@ def is_otf(arr_or_fpath: PathOrArray) -> bool:
 
 # https://stackoverflow.com/questions/5081657/how-do-i-prevent-a-c-shared-library-to-print-on-stdout-in-python/17954769#17954769
 @contextmanager
-def stdout_redirected(to=os.devnull):
+def stdout_redirected(to: str = os.devnull) -> Iterator[None]:
     """
     import os.
 
@@ -82,17 +88,17 @@ def stdout_redirected(to=os.devnull):
     # assert that Python and C stdio write using the same file descriptor
     # assert libc.fileno(ctypes.c_void_p.in_dll(libc, "stdout")) == fd == 1
 
-    def _redirect_stdout(to):
+    def _redirect_stdout(_to: io.TextIOWrapper) -> None:
         sys.stdout.close()  # + implicit flush()
-        os.dup2(to.fileno(), fd)  # fd writes to 'to' file
+        os.dup2(_to.fileno(), fd)  # fd writes to 'to' file
         sys.stdout = os.fdopen(fd, "w")  # Python writes to fd
 
     with os.fdopen(os.dup(fd), "w") as old_stdout:
         with open(to, "w") as file:
-            _redirect_stdout(to=file)
+            _redirect_stdout(file)
         try:
             yield  # allow code to be run with the redirected stdout
         finally:
-            _redirect_stdout(to=old_stdout)  # restore stdout.
+            _redirect_stdout(old_stdout)  # restore stdout.
             # buffering and flags such as
             # CLOEXEC may be different
