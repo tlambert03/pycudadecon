@@ -37,6 +37,8 @@ class Library:
 
     @property
     def version(self) -> Tuple[int, ...]:
+        if not self.version_string:
+            return ()
         return tuple(map(int, self.version_string.split(".")[:3]))
 
     def function(self, func: "Callable[P, R]") -> "Callable[P, R]":

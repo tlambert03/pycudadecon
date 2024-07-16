@@ -55,7 +55,7 @@ def camcor_interface(  # type: ignore [empty-body]
     """Execute camera corrections."""
 
 
-if lib.version < (0, 6):
+if lib.version and lib.version < (0, 6):
 
     @lib.function
     def RL_interface_init(  # type: ignore [empty-body]
@@ -86,6 +86,26 @@ if lib.version < (0, 6):
         deskewing; otherwise use this value as the output width
         OTF_file_name: file name of OTF
         """
+
+    @lib.function
+    def RL_interface(  # type: ignore [empty-body]
+        raw_data: ndarray_uint16,
+        nx: int,
+        ny: int,
+        nz: int,
+        result: np.ndarray,
+        raw_deskewed_result: np.ndarray,
+        background: float,
+        bDoRescale: bool,
+        bSaveDeskewedRaw: bool,
+        nIters: int,
+        extraShift: int,
+        napodize: int = 0,
+        nZblend: int = 0,
+        padVal: float = 0.0,
+        bDupRevStack: bool = False,
+    ) -> int:
+        """Perform decon."""
 
 else:  # include "bSkewDecon" argument
 
@@ -120,31 +140,6 @@ else:  # include "bSkewDecon" argument
         bSkewedDecon: if true then do deconvolution in skewed space
         OTF_file_name: file name of OTF
         """
-
-
-if lib.version < (0, 6):
-
-    @lib.function
-    def RL_interface(  # type: ignore [empty-body]
-        raw_data: ndarray_uint16,
-        nx: int,
-        ny: int,
-        nz: int,
-        result: np.ndarray,
-        raw_deskewed_result: np.ndarray,
-        background: float,
-        bDoRescale: bool,
-        bSaveDeskewedRaw: bool,
-        nIters: int,
-        extraShift: int,
-        napodize: int = 0,
-        nZblend: int = 0,
-        padVal: float = 0.0,
-        bDupRevStack: bool = False,
-    ) -> int:
-        """Perform decon."""
-
-else:
 
     @lib.function
     def RL_interface(  # type: ignore [empty-body]

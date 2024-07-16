@@ -79,7 +79,7 @@ def rl_init(
 
     args: list = [nx, ny, nz, dxdata, dzdata, dxpsf, dzpsf, deskew, rotate, width]
 
-    if lib.lib.version >= (0, 6):  # must have cudadecon library >= 0.6.0
+    if not lib.lib.version or lib.lib.version >= (0, 6):
         args += [skewed_decon]
 
     lib.RL_interface_init(*args, otfpath.encode())  # type: ignore
@@ -191,7 +191,7 @@ def rl_decon(
         dup_rev_z,
     ]
 
-    if lib.lib.version >= (0, 6):
+    if not lib.lib.version or lib.lib.version >= (0, 6):
         args += [skewed_decon]
 
     lib.RL_interface(*args)  # type: ignore
