@@ -34,12 +34,7 @@ classifiers = [
   "Topic :: Scientific/Engineering",
 ]
 dynamic = ["version"]
-dependencies = [
-  "numpy",
-  "tifffile",
-  "typing_extensions",
-  "importlib-metadata;python_version<'3.8'",
-]
+dependencies = ["numpy", "tifffile", "typing_extensions"]
 
 # extras
 # https://peps.python.org/pep-0621/#dependencies-optional-dependencies
@@ -120,13 +115,13 @@ pretty = true
 [tool.coverage.report]
 show_missing = true
 exclude_lines = [
-    "pragma: no cover",
-    "if TYPE_CHECKING:",
-    "@overload",
-    "except ImportError",
-    "\\.\\.\\.",
-    "raise NotImplementedError()",
-    "pass",
+  "pragma: no cover",
+  "if TYPE_CHECKING:",
+  "@overload",
+  "except ImportError",
+  "\\.\\.\\.",
+  "raise NotImplementedError()",
+  "pass",
 ]
 [tool.coverage.run]
 source = ["pycudadecon"]
