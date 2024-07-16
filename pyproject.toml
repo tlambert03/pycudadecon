@@ -100,7 +100,7 @@ skip-magic-trailing-comma = false # default is false
 [tool.pytest.ini_options]
 minversion = "7.0"
 testpaths = ["tests"]
-filterwarnings = ["error"]
+filterwarnings = ["error", "ignore:Unable to find function"]
 
 # https://mypy.readthedocs.io/en/stable/config_file.html
 [tool.mypy]

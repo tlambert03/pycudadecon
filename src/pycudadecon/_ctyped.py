@@ -1,9 +1,10 @@
 import ctypes
 import functools
 import os
+import warnings
 from ctypes.util import find_library
 from inspect import Parameter, Signature, signature
-from typing import TYPE_CHECKING, Callable, Optional, Tuple, Type
+from typing import TYPE_CHECKING, Any, Callable, Optional, Tuple, Type
 
 import numpy as np
 from typing_extensions import Annotated, get_args, get_origin
@@ -18,22 +19,41 @@ if TYPE_CHECKING:
 
 
 class Library:
-    def __init__(self, name: str, version: Tuple[int, ...] = (0, 0, 0)):
+    def __init__(self, name: str) -> None:
         self.name = name
-        self.version = version
+        self.version_string = ""
 
         _file = name
         if not _file or not os.path.exists(_file):
             _file = find_library(name.replace("lib", "", 1))  # type: ignore
             if not _file or not os.path.exists(_file):
                 _file = find_library(name)  # type: ignore
+        if not _file:
+            raise FileNotFoundError(f"Unable to find library: {name}")
 
         self.lib = ctypes.CDLL(_file)
         if not self.lib._name:
             raise FileNotFoundError(f"Unable to find library: {self.name}")
 
+    @property
+    def version(self) -> Tuple[int, ...]:
+        return tuple(map(int, self.version_string.split(".")[:3]))
+
     def function(self, func: "Callable[P, R]") -> "Callable[P, R]":
-        func_c = getattr(self.lib, func.__name__)
+        try:
+            func_c = getattr(self.lib, func.__name__)
+        except AttributeError:
+            warnings.warn(
+                f"Unable to find function: {func.__name__} in {self.name}", stacklevel=2
+            )
+
+            def _missing(*args: Any, **kw: Any) -> Any:
+                raise NotImplementedError(
+                    f"Sorry, we were unable to find the function "
+                    f"{func.__name__!r} in library {self.name!r}."
+                )
+
+            return _missing
 
         sig = signature(func)
         func_c.restype = cast_type(sig.return_annotation)
