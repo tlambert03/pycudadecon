@@ -1,27 +1,13 @@
 import os
 from pathlib import Path
-from typing import Tuple
 
 import numpy as np
 from typing_extensions import Annotated
 
 from ._ctyped import Library
 
-# FIXME: ugly... we should export version better from cudadecon
-_cudadecon_version: Tuple[int, ...] = (0, 0, 0)
-_conda_prefix = os.getenv("CONDA_PREFIX")
-if _conda_prefix:
-    conda_meta = Path(_conda_prefix) / "conda-meta"
-    if conda_meta.exists():
-        fname = next(conda_meta.glob("cudadecon*.json"), None)
-        if fname is not None:
-            name, *rest = fname.stem.split("-")
-            abistring = rest[0] if rest else None
-            if abistring:
-                _cudadecon_version = tuple(int(x) for x in abistring.split("."))
-
 try:
-    lib = Library("libcudaDecon", version=_cudadecon_version)
+    lib = Library("libcudaDecon")
 except FileNotFoundError:
     raise FileNotFoundError(
         "Unable to find library 'lidbcudaDecon'\n"
@@ -30,6 +16,29 @@ except FileNotFoundError:
 
 
 ndarray_uint16 = Annotated[np.ndarray, "uint16"]
+
+
+@lib.function
+def get_version() -> bytes:  # type: ignore [empty-body]
+    """Return the version of the cudadecon library. Example b'0.7.0'."""
+
+
+try:
+    version = get_version().decode("utf-8")
+    lib.version_string = version
+except Exception:
+    # the shared library doesn't have the function get_version
+    # try to find it in the conda-meta directory
+    _conda_prefix = os.getenv("CONDA_PREFIX")
+    if _conda_prefix:
+        conda_meta = Path(_conda_prefix) / "conda-meta"
+        if conda_meta.exists():
+            fname = next(conda_meta.glob("cudadecon*.json"), None)
+            if fname is not None:
+                name, *rest = fname.stem.split("-")
+                _version = rest[0] if rest else None
+                if _version:
+                    lib.version_string = _version
 
 
 @lib.function
@@ -46,7 +55,7 @@ def camcor_interface(  # type: ignore [empty-body]
     """Execute camera corrections."""
 
 
-if _cudadecon_version < (0, 6):
+if lib.version and lib.version < (0, 6):
 
     @lib.function
     def RL_interface_init(  # type: ignore [empty-body]
@@ -77,6 +86,26 @@ if _cudadecon_version < (0, 6):
         deskewing; otherwise use this value as the output width
         OTF_file_name: file name of OTF
         """
+
+    @lib.function
+    def RL_interface(  # type: ignore [empty-body]
+        raw_data: ndarray_uint16,
+        nx: int,
+        ny: int,
+        nz: int,
+        result: np.ndarray,
+        raw_deskewed_result: np.ndarray,
+        background: float,
+        bDoRescale: bool,
+        bSaveDeskewedRaw: bool,
+        nIters: int,
+        extraShift: int,
+        napodize: int = 0,
+        nZblend: int = 0,
+        padVal: float = 0.0,
+        bDupRevStack: bool = False,
+    ) -> int:
+        """Perform decon."""
 
 else:  # include "bSkewDecon" argument
 
@@ -111,31 +140,6 @@ else:  # include "bSkewDecon" argument
         bSkewedDecon: if true then do deconvolution in skewed space
         OTF_file_name: file name of OTF
         """
-
-
-if _cudadecon_version < (0, 6):
-
-    @lib.function
-    def RL_interface(  # type: ignore [empty-body]
-        raw_data: ndarray_uint16,
-        nx: int,
-        ny: int,
-        nz: int,
-        result: np.ndarray,
-        raw_deskewed_result: np.ndarray,
-        background: float,
-        bDoRescale: bool,
-        bSaveDeskewedRaw: bool,
-        nIters: int,
-        extraShift: int,
-        napodize: int = 0,
-        nZblend: int = 0,
-        padVal: float = 0.0,
-        bDupRevStack: bool = False,
-    ) -> int:
-        """Perform decon."""
-
-else:
 
     @lib.function
     def RL_interface(  # type: ignore [empty-body]
