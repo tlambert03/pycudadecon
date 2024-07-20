@@ -158,6 +158,7 @@ if lib.lib.version and lib.lib.version < (0, 7):
         cleanup_otf: bool = False,
         max_otf_size: int = 60000,
         skewed_decon: bool = False,
+        **kwargs: Any,
     ) -> str:
         """Generate a radially averaged OTF file from a PSF file.
 
@@ -244,6 +245,7 @@ else:
         cleanup_otf: bool = False,
         max_otf_size: int = 60000,
         skewed_decon: bool = False,
+        **kwargs: Any,
     ) -> str:
         """Generate a radially averaged OTF file from a PSF file.
 
