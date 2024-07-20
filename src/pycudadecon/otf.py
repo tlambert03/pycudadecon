@@ -142,76 +142,77 @@ class CappedPSF:
                 pass
 
 
-if lib.lib.version and lib.lib.version < (0, 7):
+def make_otf(
+    psf: str,
+    outpath: Optional[str] = None,
+    dzpsf: float = 0.1,
+    dxpsf: float = 0.1,
+    wavelength: int = 520,
+    na: float = 1.25,
+    nimm: float = 1.3,
+    otf_bgrd: Optional[int] = None,
+    krmax: int = 0,
+    fixorigin: int = 10,
+    cleanup_otf: bool = False,
+    max_otf_size: int = 60000,
+    skewed_decon: bool = False,
+    **kwargs: Any,
+) -> str:
+    """Generate a radially averaged OTF file from a PSF file.
 
-    def make_otf(
-        psf: str,
-        outpath: Optional[str] = None,
-        dzpsf: float = 0.1,
-        dxpsf: float = 0.1,
-        wavelength: int = 520,
-        na: float = 1.25,
-        nimm: float = 1.3,
-        otf_bgrd: Optional[int] = None,
-        krmax: int = 0,
-        fixorigin: int = 10,
-        cleanup_otf: bool = False,
-        max_otf_size: int = 60000,
-        skewed_decon: bool = False,
-        **kwargs: Any,
-    ) -> str:
-        """Generate a radially averaged OTF file from a PSF file.
+    Parameters
+    ----------
+    psf : str
+        Filepath of 3D PSF TIF
+    outpath : str, optional
+        Destination filepath for the output OTF
+        (default: appends "_otf.tif" to filename), by default None
+    dzpsf : float, optional
+        Z-step size in microns, by default 0.1
+    dxpsf : float, optional
+        XY-Pixel size in microns, by default 0.1
+    wavelength : int, optional
+        Emission wavelength in nm, by default 520
+    na : float, optional
+        Numerical Aperture, by default 1.25
+    nimm : float, optional
+        Refractive indez of immersion medium, by default 1.3
+    otf_bgrd : int, optional
+        Background to subtract. "None" = autodetect., by default None
+    krmax : int, optional
+        pixels outside this limit will be zeroed (overwriting
+        estimated value from NA and NIMM), by default 0
+    fixorigin : int, optional
+        for all kz, extrapolate using pixels kr=1 to this pixel
+        to get value for kr=0, by default 10
+    cleanup_otf : bool, optional
+        clean-up outside OTF support, by default False
+    max_otf_size : int, optional
+        make sure OTF is smaller than this many bytes. Deconvolution
+        may fail if the OTF is larger than 60KB (default: 60000)
+    skewed_decon : bool, optional
+        generate 3D OTF instead of radially averaged OTF for deconvolution
+        in skewed space
 
-        Parameters
-        ----------
-        psf : str
-            Filepath of 3D PSF TIF
-        outpath : str, optional
-            Destination filepath for the output OTF
-            (default: appends "_otf.tif" to filename), by default None
-        dzpsf : float, optional
-            Z-step size in microns, by default 0.1
-        dxpsf : float, optional
-            XY-Pixel size in microns, by default 0.1
-        wavelength : int, optional
-            Emission wavelength in nm, by default 520
-        na : float, optional
-            Numerical Aperture, by default 1.25
-        nimm : float, optional
-            Refractive indez of immersion medium, by default 1.3
-        otf_bgrd : int, optional
-            Background to subtract. "None" = autodetect., by default None
-        krmax : int, optional
-            pixels outside this limit will be zeroed (overwriting
-            estimated value from NA and NIMM), by default 0
-        fixorigin : int, optional
-            for all kz, extrapolate using pixels kr=1 to this pixel
-            to get value for kr=0, by default 10
-        cleanup_otf : bool, optional
-            clean-up outside OTF support, by default False
-        max_otf_size : int, optional
-            make sure OTF is smaller than this many bytes. Deconvolution
-            may fail if the OTF is larger than 60KB (default: 60000)
-        skewed_decon : bool, optional
-            generate 3D OTF instead of radially averaged OTF for deconvolution
-            in skewed space
+    Returns
+    -------
+    str
+        Path to the OTF file
+    """
+    if outpath is None:
+        outpath = psf.replace(".tif", "_otf.tif")
 
-        Returns
-        -------
-        str
-            Path to the OTF file
-        """
-        if outpath is None:
-            outpath = psf.replace(".tif", "_otf.tif")
+    if otf_bgrd and isinstance(otf_bgrd, (int, float)):
+        bUserBackground = True
+        background = float(otf_bgrd)
+    else:
+        bUserBackground = False
+        background = 0.0
 
-        if otf_bgrd and isinstance(otf_bgrd, (int, float)):
-            bUserBackground = True
-            background = float(otf_bgrd)
-        else:
-            bUserBackground = False
-            background = 0.0
+    with CappedPSF(psf, max_otf_size) as _psf:
 
-        with CappedPSF(psf, max_otf_size) as _psf:
+        if lib.lib.version and lib.lib.version < (0, 7):
+    
             lib.makeOTF(
                 str.encode(_psf.path),
                 str.encode(outpath),
@@ -227,78 +228,8 @@ if lib.lib.version and lib.lib.version < (0, 7):
                 cleanup_otf,
             )
 
-        return outpath
-
-else:
-
-    def make_otf(
-        psf: str,
-        outpath: Optional[str] = None,
-        dzpsf: float = 0.1,
-        dxpsf: float = 0.1,
-        wavelength: int = 520,
-        na: float = 1.25,
-        nimm: float = 1.3,
-        otf_bgrd: Optional[int] = None,
-        krmax: int = 0,
-        fixorigin: int = 10,
-        cleanup_otf: bool = False,
-        max_otf_size: int = 60000,
-        skewed_decon: bool = False,
-        **kwargs: Any,
-    ) -> str:
-        """Generate a radially averaged OTF file from a PSF file.
-
-        Parameters
-        ----------
-        psf : str
-            Filepath of 3D PSF TIF
-        outpath : str, optional
-            Destination filepath for the output OTF
-            (default: appends "_otf.tif" to filename), by default None
-        dzpsf : float, optional
-            Z-step size in microns, by default 0.1
-        dxpsf : float, optional
-            XY-Pixel size in microns, by default 0.1
-        wavelength : int, optional
-            Emission wavelength in nm, by default 520
-        na : float, optional
-            Numerical Aperture, by default 1.25
-        nimm : float, optional
-            Refractive indez of immersion medium, by default 1.3
-        otf_bgrd : int, optional
-            Background to subtract. "None" = autodetect., by default None
-        krmax : int, optional
-            pixels outside this limit will be zeroed (overwriting
-            estimated value from NA and NIMM), by default 0
-        fixorigin : int, optional
-            for all kz, extrapolate using pixels kr=1 to this pixel
-            to get value for kr=0, by default 10
-        cleanup_otf : bool, optional
-            clean-up outside OTF support, by default False
-        max_otf_size : int, optional
-            make sure OTF is smaller than this many bytes. Deconvolution
-            may fail if the OTF is larger than 60KB (default: 60000)
-        skewed_decon : bool, optional
-            generate 3D OTF instead of radially averaged OTF for deconvolution
-            in skewed space
-
-        Returns
-        -------
-        str
-            Path to the OTF file
-        """
-        if outpath is None:
-            outpath = psf.replace(".tif", "_otf.tif")
-
-        if otf_bgrd and isinstance(otf_bgrd, (int, float)):
-            bUserBackground = True
-            background = float(otf_bgrd)
         else:
-            bUserBackground = False
-            background = 0.0
 
-        with CappedPSF(psf, max_otf_size) as _psf:
             lib.makeOTF(
                 str.encode(_psf.path),
                 str.encode(outpath),
@@ -315,7 +246,7 @@ else:
                 skewed_decon,
             )
 
-        return outpath
+    return outpath
 
 
 class TemporaryOTF:
