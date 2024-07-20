@@ -189,8 +189,11 @@ if lib.lib.version and lib.lib.version < (0, 7):
             clean-up outside OTF support, by default False
         max_otf_size : int, optional
             make sure OTF is smaller than this many bytes. Deconvolution
-            may fail if the OTF is larger than 60KB (default: 60000), by default 60000
-
+            may fail if the OTF is larger than 60KB (default: 60000)
+        skewed_decon : bool, optional
+            generate 3D OTF instead of radially averaged OTF for deconvolution 
+            in skewed space
+            
         Returns
         -------
         str
@@ -272,9 +275,10 @@ else:
             clean-up outside OTF support, by default False
         max_otf_size : int, optional
             make sure OTF is smaller than this many bytes. Deconvolution
-            may fail if the OTF is larger than 60KB (default: 60000), by default 60000
+            may fail if the OTF is larger than 60KB (default: 60000)
         skewed_decon : bool, optional
-            generate 3D OTF instead of radially averaged OTF for deconvolution in skewed space
+            generate 3D OTF instead of radially averaged OTF for deconvolution 
+            in skewed space
 
         Returns
         -------
