@@ -209,7 +209,6 @@ def make_otf(
         background = 0.0
 
     with CappedPSF(psf, max_otf_size) as _psf:
-    
         args = [
             str.encode(_psf.path),
             str.encode(outpath),
@@ -224,7 +223,7 @@ def make_otf(
             krmax,
             cleanup_otf,
         ]
-    
+
         if not lib.lib.version or lib.lib.version >= (0, 7):
             args += [skewed_decon]
 
