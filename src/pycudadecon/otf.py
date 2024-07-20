@@ -156,6 +156,7 @@ def make_otf(
     cleanup_otf: bool = False,
     max_otf_size: int = 60000,
     skewed_decon: bool = False,
+    **kwargs: Any,
 ) -> str:
     """Generate a radially averaged OTF file from a PSF file.
 
@@ -192,7 +193,8 @@ def make_otf(
     skewed_decon : bool, optional
         generate 3D OTF instead of radially averaged OTF for deconvolution
         in skewed space
-
+    **kwargs : Any
+        additional keyword arguments are ignored
     Returns
     -------
     str
