@@ -191,9 +191,9 @@ if lib.lib.version and lib.lib.version < (0, 7):
             make sure OTF is smaller than this many bytes. Deconvolution
             may fail if the OTF is larger than 60KB (default: 60000)
         skewed_decon : bool, optional
-            generate 3D OTF instead of radially averaged OTF for deconvolution 
+            generate 3D OTF instead of radially averaged OTF for deconvolution
             in skewed space
-            
+
         Returns
         -------
         str
@@ -277,7 +277,7 @@ else:
             make sure OTF is smaller than this many bytes. Deconvolution
             may fail if the OTF is larger than 60KB (default: 60000)
         skewed_decon : bool, optional
-            generate 3D OTF instead of radially averaged OTF for deconvolution 
+            generate 3D OTF instead of radially averaged OTF for deconvolution
             in skewed space
 
         Returns
