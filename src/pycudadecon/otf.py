@@ -7,7 +7,7 @@ from typing import Any, Optional
 import numpy as np
 import tifffile as tf
 
-from . import lib
+from . import otf_lib
 from .util import PathOrArray, imread, is_otf
 
 
@@ -142,7 +142,7 @@ class CappedPSF:
                 pass
 
 
-if lib.version and lib.version < (0, 7):
+if otf_lib.version and otf_lib.version < (0, 7):
 
     def make_otf(
         psf: str,
@@ -208,7 +208,7 @@ if lib.version and lib.version < (0, 7):
             background = 0.0
 
         with CappedPSF(psf, max_otf_size) as _psf:
-            lib.makeOTF(
+            otf_lib.makeOTF(
                 str.encode(_psf.path),
                 str.encode(outpath),
                 wavelength,
@@ -294,7 +294,7 @@ else:
             background = 0.0
 
         with CappedPSF(psf, max_otf_size) as _psf:
-            lib.makeOTF(
+            otf_lib.makeOTF(
                 str.encode(_psf.path),
                 str.encode(outpath),
                 wavelength,
