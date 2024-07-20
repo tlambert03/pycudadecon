@@ -205,22 +205,36 @@ def make_otf(
         background = 0.0
 
     with CappedPSF(psf, max_otf_size) as _psf:
-        lib.makeOTF(
-            str.encode(_psf.path),
-            str.encode(outpath),
-            wavelength,
-            dzpsf,
-            fixorigin,
-            bUserBackground,
-            background,
-            na,
-            nimm,
-            dxpsf,
-            krmax,
-            cleanup_otf,
-            skewed_decon,
-        )
-
+        if lib.version and lib.version < (0, 7):
+            lib.makeOTF(
+                str.encode(_psf.path),
+                str.encode(outpath),
+                wavelength,
+                dzpsf,
+                fixorigin,
+                bUserBackground,
+                background,
+                na,
+                nimm,
+                dxpsf,
+                krmax,
+                cleanup_otf)
+        else:
+             lib.makeOTF(
+                str.encode(_psf.path),
+                str.encode(outpath),
+                wavelength,
+                dzpsf,
+                fixorigin,
+                bUserBackground,
+                background,
+                na,
+                nimm,
+                dxpsf,
+                krmax,
+                cleanup_otf,
+                skewed_decon)
+            
     return outpath
 
 
