@@ -142,7 +142,7 @@ class CappedPSF:
                 pass
 
 
-if lib.version < (0, 7):
+if lib.lib.version and lib.lib.version < (0, 7):
 
     def make_otf(
         psf: str,
