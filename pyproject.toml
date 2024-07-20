@@ -1,14 +1,21 @@
 # https://peps.python.org/pep-0517/
 [build-system]
-requires = ["setuptools>=45", "wheel", "setuptools-scm>=6.2"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+# https://hatch.pypa.io/latest/config/metadata/
+[tool.hatch.version]
+source = "vcs"
+[tool.hatch.build.targets.wheel]
+only-include = ["src"]
+sources = ["src"]
 
 # https://peps.python.org/pep-0621/
 [project]
 name = "pycudadecon"
 description = "Python wrapper for CUDA-accelerated 3D deconvolution"
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 license = { text = "MIT" }
 keywords = ["deconvolution", "microscopy", "CUDA"]
 authors = [{ email = "talley.lambert@gmail.com", name = "Talley Lambert" }]
@@ -19,26 +26,21 @@ classifiers = [
   "Intended Audience :: Science/Research",
   "License :: OSI Approved :: MIT License",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.7",
   "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
   "Topic :: Scientific/Engineering",
 ]
 dynamic = ["version"]
-dependencies = [
-  "numpy",
-  "tifffile",
-  "typing_extensions",
-  "importlib-metadata;python_version<'3.8'",
-]
+dependencies = ["numpy", "tifffile", "typing_extensions"]
 
 # extras
 # https://peps.python.org/pep-0621/#dependencies-optional-dependencies
 [project.optional-dependencies]
 test = ["pytest>=6.0", "pytest-cov"]
-dev = ["black", "ipython", "mypy", "pdbpp", "pre-commit", "rich"]
+dev = ["ipython", "mypy", "pdbpp", "pre-commit", "rich", "ruff"]
 docs = [
   "jupyter-book==0.13.1",
   "ghp-import==2.1.0",
@@ -47,94 +49,82 @@ docs = [
 ]
 
 [project.urls]
-Documentation = "https://pycudadecon.readthedocs.io/en/latest/"
+Documentation = "https://tlambert03.github.io/pycudadecon/"
 Source = "https://github.com/tlambert03/pycudadecon"
 Tracker = "https://github.com/tlambert03/pycudadecon/issues"
-
-# same as console_scripts entry point
-# [project.scripts]
-# spam-cli = "spam:main_cli"
 
 # Entry points
 # https://peps.python.org/pep-0621/#entry-points
 [project.entry-points."napari.manifest"]
 pycudadecon = "pycudadecon:napari.yaml"
 
-# https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
-[tool.setuptools]
-zip-safe = false
-include-package-data = true
-packages = { find = { where = ["src"], exclude = [] } }
 
-[tool.setuptools.package-data]
-"*" = ["py.typed", "*.yaml"]
-
-# https://github.com/pypa/setuptools_scm/#pyprojecttoml-usage
-[tool.setuptools_scm]
-
-
-# https://github.com/charliermarsh/ruff
+# https://docs.astral.sh/ruff
 [tool.ruff]
 line-length = 88
 target-version = "py38"
-# https://beta.ruff.rs/docs/rules/
+src = ["src"]
+
+# https://docs.astral.sh/ruff/rules
+[tool.ruff.lint]
+pydocstyle = { convention = "numpy" }
 select = [
   "E",    # style errors
   "W",    # style warnings
   "F",    # flakes
-  # "D",    # pydocstyle
+  "D",    # pydocstyle
+  "D417", # Missing argument descriptions in Docstrings
   "I",    # isort
   "UP",   # pyupgrade
   "C4",   # flake8-comprehensions
   "B",    # flake8-bugbear
   "A001", # flake8-builtins
   "RUF",  # ruff-specific rules
+  "TCH",  # flake8-type-checking
+  "TID",  # flake8-tidy-imports
 ]
-# I do this to get numpy-style docstrings AND retain
-# D417 (Missing argument descriptions in the docstring)
-# otherwise, see:
-# https://beta.ruff.rs/docs/faq/#does-ruff-support-numpy-or-google-style-docstrings
-# https://github.com/charliermarsh/ruff/issues/2606
 ignore = [
-  "D100", # Missing docstring in public module
-  "D107", # Missing docstring in __init__
-  "D203", # 1 blank line required before class docstring
-  "D212", # Multi-line docstring summary should start at the first line
-  "D213", # Multi-line docstring summary should start at the second line
-  "D401", # First line should be in imperative mood
-  "D413", # Missing blank line after last section
-  "D416", # Section name should end with a colon
+  "D401", # First line should be in imperative mood (remove to opt in)
 ]
 
-[tool.ruff.per-file-ignores]
-"tests/*.py" = ["D"]
-"setup.py" = ["D"]
+[tool.ruff.lint.per-file-ignores]
+"tests/*.py" = ["D", "S"]
+
+# https://docs.astral.sh/ruff/formatter/
+[tool.ruff.format]
+docstring-code-format = true
+skip-magic-trailing-comma = false # default is false
 
 
 # https://docs.pytest.org/en/6.2.x/customize.html
 [tool.pytest.ini_options]
-minversion = "6.0"
+minversion = "7.0"
 testpaths = ["tests"]
-filterwarnings = ["error"]
+filterwarnings = ["error", "ignore:Unable to find function"]
 
 # https://mypy.readthedocs.io/en/stable/config_file.html
 [tool.mypy]
 files = "src/**/"
-strict = false
+strict = true
 disallow_any_generics = false
 disallow_subclassing_any = false
 show_error_codes = true
 pretty = true
 
-
 # https://coverage.readthedocs.io/en/6.4/config.html
 [tool.coverage.report]
+show_missing = true
 exclude_lines = [
   "pragma: no cover",
   "if TYPE_CHECKING:",
   "@overload",
   "except ImportError",
+  "\\.\\.\\.",
+  "raise NotImplementedError()",
+  "pass",
 ]
+[tool.coverage.run]
+source = ["pycudadecon"]
 
 # https://github.com/mgedmin/check-manifest#configuration
 [tool.check-manifest]
@@ -145,5 +135,7 @@ ignore = [
   "docs/**/*",
   "examples/**/*",
   "tests/**/*",
-  "tox.ini",
 ]
+
+[tool.typos.default]
+extend-ignore-identifiers-re = ["(?i)otfs?.*", "(?i)nd2"]

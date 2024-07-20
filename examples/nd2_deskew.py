@@ -1,16 +1,19 @@
+"""Example of deskewing an ND2 file using pycudadecon."""
+
 # pip install pims_nd2
 import os
 
 import numpy as np
 from pims import ND2_Reader
-from pycudadecon.affine import affineGPU
 from skimage.io import imsave
+
+from pycudadecon.affine import affineGPU
 
 # needed to flip the sign on the transform
 DEFAULT_TMAT = np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0.70711, 0, 1, 0], [0, 0, 0, 1]])
 
 
-def deskew_file(path, tmat=DEFAULT_TMAT, mip=True):
+def deskew_file(path: str, tmat: np.ndarray = DEFAULT_TMAT, mip: bool = True) -> None:
     """Deskews an nd2 file at `path` using matrix tmat.
 
     Will create a new folder (with the same name as the file)

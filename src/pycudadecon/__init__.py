@@ -1,14 +1,13 @@
-try:
-    from importlib.metadata import PackageNotFoundError, version
-except ImportError:
-    from importlib_metadata import PackageNotFoundError, version  # type: ignore
+"""Python wrapper for CUDA-accelerated 3D deconvolution."""
+
+from importlib.metadata import PackageNotFoundError, version
 
 try:
     __version__ = version("pycudadecon")
 except PackageNotFoundError:
     __version__ = "uninstalled"
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from . import _libwrap as lib
@@ -20,10 +19,10 @@ except FileNotFoundError as e:
     import warnings
 
     t = e
-    warnings.warn(f"\n{e}\n\nMost functionality will fail!\n", stacklevel=2)
+    warnings.warn(f"\n\n{e}\n\nMost functionality will fail!\n", stacklevel=2)
 
     class _stub:
-        def __getattr__(self, name):
+        def __getattr__(self, name: str) -> Any:
             raise t
 
     lib = _stub()  # type: ignore

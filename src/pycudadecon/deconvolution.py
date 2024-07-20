@@ -1,3 +1,5 @@
+"""Main deconvolution functions."""
+
 import os
 from fnmatch import fnmatch
 from typing import Any, Iterator, List, Literal, Optional, Sequence, Tuple, Union, cast
@@ -77,7 +79,7 @@ def rl_init(
 
     args: list = [nx, ny, nz, dxdata, dzdata, dxpsf, dzpsf, deskew, rotate, width]
 
-    if lib.lib.version >= (0, 6):  # must have cudadecon library >= 0.6.0
+    if not lib.lib.version or lib.lib.version >= (0, 6):
         args += [skewed_decon]
 
     lib.RL_interface_init(*args, otfpath.encode())  # type: ignore
@@ -189,7 +191,7 @@ def rl_decon(
         dup_rev_z,
     ]
 
-    if lib.lib.version >= (0, 6):
+    if not lib.lib.version or lib.lib.version >= (0, 6):
         args += [skewed_decon]
 
     lib.RL_interface(*args)  # type: ignore
@@ -266,7 +268,7 @@ class RLContext:
     def __exit__(self, *_: Any) -> None:
         """Cleanup the context."""
         # exit receives a tuple with any exceptions raised during processing
-        # if __exit__ returns True, exceptions will be supressed
+        # if __exit__ returns True, exceptions will be suppressed
         lib.RL_cleanup()
 
 
@@ -307,9 +309,8 @@ def _yield_arrays(
             imfiles = [f for f in os.listdir(images) if fnmatch(f, fpattern)]
             if not len(imfiles):
                 raise OSError(
-                    'No files matching pattern "{}" found in directory: {}'.format(
-                        fpattern, images
-                    )
+                    f"No files matching pattern {fpattern!r} found in "
+                    f"directory: {images}"
                 )
             for fpath in imfiles:
                 yield imread(os.path.join(images, fpath))
@@ -455,22 +456,22 @@ def decon(
     --------
     deconvolve a 3D TIF volume with a 3D PSF volume (e.g. a single bead stack)
 
-    >>> result = decon('/path/to/image.tif', '/path/to/psf.tif')
+    >>> result = decon("/path/to/image.tif", "/path/to/psf.tif")
 
     deconvolve all TIF files in a specific directory that match a certain
     `filename pattern <https://docs.python.org/3.6/library/fnmatch.html>`_,
     (in this example, all TIFs with the string '560nm' in their name)
 
     >>> result = decon(
-    ...     '/directory/with/images', '/path/to/psf.tif', fpattern='*560nm*.tif'
+    ...     "/directory/with/images", "/path/to/psf.tif", fpattern="*560nm*.tif"
     ... )
 
     deconvolve a list of images, provided either as np.ndarrays, filepaths,
     or directories
 
-    >>> imarray = tifffile.imread('some_other_image.tif')
-    >>> inputs = ['/directory/with/images', '/path/to/image.tif', imarray]
-    >>> result = decon(inputs, '/path/to/psf.tif', fpattern='*560nm*.tif')
+    >>> imarray = tifffile.imread("some_other_image.tif")
+    >>> inputs = ["/directory/with/images", "/path/to/image.tif", imarray]
+    >>> result = decon(inputs, "/path/to/psf.tif", fpattern="*560nm*.tif")
     """
     if save_deskewed and deskew == 0:
         raise ValueError("Must set deskew != 0 when using save_deskewed=True")
@@ -494,8 +495,9 @@ def decon(
         # first, assume that all of the images are the same shape...
         # in which case we can prevent a lot of GPU IO
         # grab and store the shape of the first item in the generator
-        next_im: np.ndarray = next(arraygen)
-        assert next_im.ndim == 3, "Images must be 3D"
+        next_im: np.ndarray | None = next(arraygen)
+        if not (isinstance(next_im, np.ndarray) and next_im.ndim == 3):
+            raise ValueError("Images must be 3D")
         shp = cast("tuple[int, int, int]", next_im.shape)
 
         with RLContext(
@@ -509,7 +511,7 @@ def decon(
             rotate=rotate,
             width=width,
             skewed_decon=skewed_decon,
-        ) as ctx:  # type: ignore
+        ) as ctx:
             while True:
                 out.append(
                     rl_decon(
@@ -533,14 +535,25 @@ def decon(
                     if next_im.shape != shp:
                         break
                 except StopIteration:
-                    next_im = None  # type: ignore
+                    next_im = None
                     break
 
         # if we had a shape mismatch, there will still be images left to process
         # process them the slow way here...
         if next_im is not None:
             for imarray in [next_im, *arraygen]:
-                with RLContext(imarray.shape, otf.path, **init_kwargs) as ctx:  # type: ignore # noqa
+                with RLContext(
+                    imarray.shape,  # type: ignore
+                    otf.path,
+                    dzdata=dzdata,
+                    dxdata=dxdata,
+                    dzpsf=dzpsf,
+                    dxpsf=dxpsf,
+                    deskew=deskew,
+                    rotate=rotate,
+                    width=width,
+                    skewed_decon=skewed_decon,
+                ) as ctx:
                     out.append(
                         rl_decon(
                             imarray,
@@ -558,6 +571,6 @@ def decon(
                     )
 
     if isinstance(images, (list, tuple)) and len(images) > 1:
-        return out  # type: ignore
+        return out  # type: ignore [return-value]
     else:
-        return out[0]  # type: ignore
+        return out[0]  # type: ignore [return-value]
