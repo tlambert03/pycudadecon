@@ -248,21 +248,39 @@ except FileNotFoundError:
         "Please try `conda install -c conda-forge cudadecon`."
     ) from None
 
+if lib.version and lib.version < (0, 7):
+    @otf_lib.function
+    def makeOTF(
+        ifiles: bytes,
+        ofiles: bytes,
+        lambdanm: int = 520,
+        dz: float = 0.102,
+        interpkr: int = 10,
+        bUserBackground: bool = False,
+        background: float = 90,
+        NA: float = 1.25,
+        NIMM: float = 1.3,
+        dr: float = 0.102,
+        krmax: int = 0,
+        bDoCleanup: bool = False,
+    ) -> None:
+        """Make OTF file(s) from `ifiles`, write to `ofiles`."""
 
-@otf_lib.function
-def makeOTF(
-    ifiles: bytes,
-    ofiles: bytes,
-    lambdanm: int = 520,
-    dz: float = 0.102,
-    interpkr: int = 10,
-    bUserBackground: bool = False,
-    background: float = 90,
-    NA: float = 1.25,
-    NIMM: float = 1.3,
-    dr: float = 0.102,
-    krmax: int = 0,
-    bDoCleanup: bool = False,
-    b3Dout: bool = False,
-):
-    """Make OTF file(s) from `ifiles`, write to `ofiles`."""
+else:
+    @otf_lib.function
+    def makeOTF(
+        ifiles: bytes,
+        ofiles: bytes,
+        lambdanm: int = 520,
+        dz: float = 0.102,
+        interpkr: int = 10,
+        bUserBackground: bool = False,
+        background: float = 90,
+        NA: float = 1.25,
+        NIMM: float = 1.3,
+        dr: float = 0.102,
+        krmax: int = 0,
+        bDoCleanup: bool = False,
+        b3Dout: bool = False,
+    ) -> None:
+        """Make OTF file(s) from `ifiles`, write to `ofiles`."""
