@@ -252,7 +252,7 @@ except FileNotFoundError:
         "Please try `conda install -c conda-forge cudadecon`."
     ) from None
 
-if otf_lib.version and otf_lib.version < (0, 7):
+if lib.version and lib.version < (0, 7):
 
     @otf_lib.function
     def makeOTF(
