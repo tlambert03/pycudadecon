@@ -195,6 +195,7 @@ def make_otf(
         in skewed space
     **kwargs : Any
         additional keyword arguments are ignored
+
     Returns
     -------
     str
