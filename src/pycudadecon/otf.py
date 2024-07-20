@@ -210,9 +210,7 @@ def make_otf(
         background = 0.0
 
     with CappedPSF(psf, max_otf_size) as _psf:
-
         if lib.lib.version and lib.lib.version < (0, 7):
-    
             lib.makeOTF(
                 str.encode(_psf.path),
                 str.encode(outpath),
@@ -229,7 +227,6 @@ def make_otf(
             )
 
         else:
-
             lib.makeOTF(
                 str.encode(_psf.path),
                 str.encode(outpath),
