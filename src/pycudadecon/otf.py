@@ -141,6 +141,7 @@ class CappedPSF:
             except Exception:
                 pass
 
+
 if lib.version and lib.version < (0, 7):
 
     def make_otf(
@@ -159,7 +160,7 @@ if lib.version and lib.version < (0, 7):
         **kwargs: Any,
     ) -> str:
         """Generate a radially averaged OTF file from a PSF file.
-    
+
         Parameters
         ----------
         psf : str
@@ -190,7 +191,7 @@ if lib.version and lib.version < (0, 7):
         max_otf_size : int, optional
             make sure OTF is smaller than this many bytes. Deconvolution
             may fail if the OTF is larger than 60KB (default: 60000), by default 60000
-    
+
         Returns
         -------
         str
@@ -198,16 +199,15 @@ if lib.version and lib.version < (0, 7):
         """
         if outpath is None:
             outpath = psf.replace(".tif", "_otf.tif")
-    
+
         if otf_bgrd and isinstance(otf_bgrd, (int, float)):
             bUserBackground = True
             background = float(otf_bgrd)
         else:
             bUserBackground = False
             background = 0.0
-    
+
         with CappedPSF(psf, max_otf_size) as _psf:
-        
             lib.makeOTF(
                 str.encode(_psf.path),
                 str.encode(outpath),
@@ -220,12 +220,13 @@ if lib.version and lib.version < (0, 7):
                 nimm,
                 dxpsf,
                 krmax,
-                cleanup_otf)
-                
+                cleanup_otf,
+            )
+
         return outpath
 
 else:
-    
+
     def make_otf(
         psf: str,
         outpath: Optional[str] = None,
@@ -243,7 +244,7 @@ else:
         **kwargs: Any,
     ) -> str:
         """Generate a radially averaged OTF file from a PSF file.
-    
+
         Parameters
         ----------
         psf : str
@@ -276,7 +277,7 @@ else:
             may fail if the OTF is larger than 60KB (default: 60000), by default 60000
         skewed_decon : bool, optional
             generate 3D OTF instead of radially averaged OTF for deconvolution in skewed space
-    
+
         Returns
         -------
         str
@@ -284,16 +285,15 @@ else:
         """
         if outpath is None:
             outpath = psf.replace(".tif", "_otf.tif")
-    
+
         if otf_bgrd and isinstance(otf_bgrd, (int, float)):
             bUserBackground = True
             background = float(otf_bgrd)
         else:
             bUserBackground = False
             background = 0.0
-    
+
         with CappedPSF(psf, max_otf_size) as _psf:
-        
             lib.makeOTF(
                 str.encode(_psf.path),
                 str.encode(outpath),
@@ -307,8 +307,9 @@ else:
                 dxpsf,
                 krmax,
                 cleanup_otf,
-                skewed_decon)
-                
+                skewed_decon,
+            )
+
         return outpath
 
 

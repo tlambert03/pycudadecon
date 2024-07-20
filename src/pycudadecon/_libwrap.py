@@ -253,6 +253,7 @@ except FileNotFoundError:
     ) from None
 
 if lib.version and lib.version < (0, 7):
+
     @otf_lib.function
     def makeOTF(
         ifiles: bytes,
@@ -271,6 +272,7 @@ if lib.version and lib.version < (0, 7):
         """Make OTF file(s) from `ifiles`, write to `ofiles`."""
 
 else:
+
     @otf_lib.function
     def makeOTF(
         ifiles: bytes,
