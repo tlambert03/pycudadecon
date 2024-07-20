@@ -155,6 +155,7 @@ def make_otf(
     fixorigin: int = 10,
     cleanup_otf: bool = False,
     max_otf_size: int = 60000,
+    skewed_decon: bool = False,
     **kwargs: Any,
 ) -> str:
     """Generate a radially averaged OTF file from a PSF file.
@@ -188,7 +189,10 @@ def make_otf(
         clean-up outside OTF support, by default False
     max_otf_size : int, optional
         make sure OTF is smaller than this many bytes. Deconvolution
-        may fail if the OTF is larger than 60KB (default: 60000), by default 60000
+        may fail if the OTF is larger than 60KB (default: 60000)
+    skewed_decon : bool, optional
+        generate 3D OTF instead of radially averaged OTF for deconvolution
+        in skewed space
     **kwargs : Any
         additional keyword arguments are ignored
 
@@ -208,7 +212,7 @@ def make_otf(
         background = 0.0
 
     with CappedPSF(psf, max_otf_size) as _psf:
-        lib.makeOTF(
+        args = [
             str.encode(_psf.path),
             str.encode(outpath),
             wavelength,
@@ -221,7 +225,12 @@ def make_otf(
             dxpsf,
             krmax,
             cleanup_otf,
-        )
+        ]
+
+        if not lib.lib.version or lib.lib.version >= (0, 7):
+            args += [skewed_decon]
+
+        lib.makeOTF(*args)  # type: ignore
 
     return outpath
 

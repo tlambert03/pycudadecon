@@ -489,6 +489,7 @@ def decon(
         fixorigin=fixorigin,
         cleanup_otf=cleanup_otf,
         max_otf_size=max_otf_size,
+        skewed_decon=skewed_decon,
     ) as otf:
         arraygen = _yield_arrays(images, fpattern)
         # first, assume that all of the images are the same shape...
