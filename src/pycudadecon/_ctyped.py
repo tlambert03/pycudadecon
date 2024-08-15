@@ -26,7 +26,7 @@ class Library:
         _file = name
         if not _file or not os.path.exists(_file):
             _file = find_library(name.replace("lib", "", 1))  # type: ignore
-            if not _file or not os.path.exists(_file):
+            if not _file:
                 _file = find_library(name)  # type: ignore
         if not _file:
             raise FileNotFoundError(f"Unable to find library: {name}")
