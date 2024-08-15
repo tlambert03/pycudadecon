@@ -1,12 +1,13 @@
 # Command Line Interface
 
 If you installed `pycudadecon` using conda, the original binaries for OTF
-generation (`radialft`) and deconvolution (`cudaDeconv`) will also be
-installed in your conda environment.
+generation (`radialft`) and deconvolution (`cudadecon`) will also be
+installed in your conda environment. The CLI is not created by pycudadecon;
+it is entirely defined by [cudadecon](https://github.com/scopetools/cudadecon).
 
-## cudaDeconv
+## cudadecon
 
-The `cudaDeconv` command runs deconvolution (with deskewing and rotation if
+The `cudadecon` command runs deconvolution (with deskewing and rotation if
 desired) on all of the files in the `--input-dir` whose names match the
 pattern `--filename-pattern`, using the OTF specified by `--otf-arg`.
 
@@ -14,18 +15,20 @@ pattern `--filename-pattern`, using the OTF specified by `--otf-arg`.
 
 ```bash
 # deconvolve a folder of images
-cudaDeconv /folder/of/images 488nm /path/to/488nm_otf.tif -z 0.3
+cudadecon /folder/of/images 488nm /path/to/488nm_otf.tif -z 0.3
 
 # a typical lattice experiment might also add the deskew flag and maybe MIPs
-cudaDeconv /folder/of/images 488nm /path/to/488nm_otf.tif -z 0.3 -D 31.5 -M 0 0 1
+cudadecon /folder/of/images 488nm /path/to/488nm_otf.tif -z 0.3 -D 31.5 -M 0 0 1
 ```
 
-Run `cudaDeconv --help` at the command prompt for the full menu of options
+Run `cudadecon --help` at the command prompt for the full menu of options.
+(the output below may be slightly out of date)
 
 ```text
-$ cudaDeconv -h
+$ cudadecon -h
 
-cudaDeconv compiled for LLSpy.  Version: 0.4.0
+cudaDeconv.  Version: 0.7.0
+:
   --input-dir arg                   Folder of input images
   --filename-pattern arg            File name pattern to find input images
                                     to process
@@ -36,7 +39,7 @@ cudaDeconv compiled for LLSpy.  Version: 0.4.0
   -Z [ --dzpsf ] arg (=0.1)         PSF z step (um)
   -l [ --wavelength ] arg (=0.525)  Emission wavelength (um)
   -W [ --wiener ] arg (=-1)         Wiener constant (regularization
-                                    factor); if this value is postive then
+                                    factor); if this value is positive then
                                     do Wiener filter instead of R-L
   -b [ --background ] arg (=90)     User-supplied background
   -e [ --napodize ] arg (=15)       # of pixels to soften edge with
@@ -49,6 +52,8 @@ cudaDeconv compiled for LLSpy.  Version: 0.4.0
                                     iterations
   -D [ --deskew ] arg (=0)          Deskew angle; if not 0.0 then perform
                                     deskewing before deconv
+  --dcbds                           If deskewing, do it after decon;
+                                    require sample-scan PSF and non-RA 3D OTF
   --padval arg (=0)                 Value to pad image with when deskewing
   -w [ --width ] arg (=0)           If deskewed, the output image's width
   -x [ --shift ] arg (=0)           If deskewed, the output image's extra
@@ -80,7 +85,7 @@ cudaDeconv compiled for LLSpy.  Version: 0.4.0
   --LSC arg                         Lightsheet correction file
   --FlatStart                       Start the RL from a guess that is a
                                     flat image filled with the median image
-                                    value.  This may supress noise.
+                                    value.  This may suppress noise.
   -p [ --bleachCorrection ]         Apply bleach correction when running
                                     multiple images in a single batch
   --lzw                             Use LZW tiff compression
@@ -96,7 +101,8 @@ cudaDeconv compiled for LLSpy.  Version: 0.4.0
 ## radialft
 
 The `radialft` command turns a 3D PSF volume into a radially-averaged 2D
-complex OTF file that can be used by cudaDeconv.
+complex OTF file that can be used by `cudaDecon` (or a 3D OTF file if
+--3Dout is specified).
 
 ### Examples
 
@@ -123,5 +129,6 @@ $ radialft --help
     --nocleanup                elect not to do clean-up outside OTF support
     --background arg           use user-supplied background instead of the
                                 estimated
+    -3 [ --3Dout ]             Output 3D, instead of rotationally averaged, OTF
     -h [ --help ]              produce help message
 ```

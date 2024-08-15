@@ -21,8 +21,7 @@ versions of the CUDA toolkit have different GPU driver requirements:
 To specify a specific cudatoolkit version, install as follows:
 
 ```sh
-# install with cudatoolkit=10.2
-conda install -c condaforge pycudadecon cudatoolkit=10.2
+conda install -c condaforge pycudadecon cuda-version=<11 or 12>
 ```
 
 ```{list-table}

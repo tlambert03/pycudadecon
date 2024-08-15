@@ -1,9 +1,9 @@
 # pyCUDAdecon
 
 This package provides a python wrapper and convenience functions for
-[cudaDeconv](https://github.com/scopetools/cudaDecon), which is a CUDA/C++
+[cudaDecon](https://github.com/scopetools/cudaDecon), which is a CUDA/C++
 implementation of an accelerated Richardson Lucy Deconvolution
-algorithm {cite}`biggs_97`. ``cudaDeconv`` was originally
+algorithm {cite}`biggs_97`. ``cudaDecon`` was originally
 written by [Lin Shao](https://github.com/linshaova) and modified by [Dan Milkie](https://github.com/dmilkie), at Janelia Research campus.  This package
 makes use of a shared library interface that I wrote for cudaDecon while
 developing [LLSpy](https://github.com/tlambert03/LLSpy), that adds a couple
