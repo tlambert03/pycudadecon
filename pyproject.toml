@@ -42,10 +42,10 @@ dependencies = ["numpy", "tifffile", "typing_extensions"]
 test = ["pytest>=6.0", "pytest-cov"]
 dev = ["ipython", "mypy", "pdbpp", "pre-commit", "rich", "ruff"]
 docs = [
-  "jupyter-book==0.13.1",
+  "jupyter-book==1.0.2",
   "ghp-import==2.1.0",
-  "sphinx-autodoc-typehints==1.19.1",
-  "furo==2022.9.29",
+  "sphinx-autodoc-typehints==2.2.3",
+  "furo==2024.8.6"
 ]
 
 [project.urls]
