@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.5.1](https://github.com/tlambert03/pycudadecon/tree/v0.5.1) (2024-08-15)
+
+[Full Changelog](https://github.com/tlambert03/pycudadecon/compare/v0.5.0...v0.5.1)
+
+**Merged pull requests:**
+
+- fix: fix finding library [\#61](https://github.com/tlambert03/pycudadecon/pull/61) ([tlambert03](https://github.com/tlambert03))
+
 ## [v0.5.0](https://github.com/tlambert03/pycudadecon/tree/v0.5.0) (2024-08-15)
 
 [Full Changelog](https://github.com/tlambert03/pycudadecon/compare/v0.4.1...v0.5.0)
