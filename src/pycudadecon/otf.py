@@ -99,11 +99,13 @@ class CappedPSF:
 
     This is guaranteed to yield an OTF that is smaller than the specified value.
 
-    Args:
-    ----
-        psf (str, np.ndarray): Path to a PSF or a numpy array with a 3D PSF
-        max_otf_size (int, None): maximum allowable size in bytes of the OTF.  If None,
-            do not restrict size of OTF.
+    Parameters
+    ----------
+    psf : str | np.ndarray
+        Path to a PSF or a numpy array with a 3D PSF
+    max_otf_size : int | None
+        maximum allowable size in bytes of the OTF.  If None, do not restrict size of
+        OTF. Default is None.
 
     Returns
     -------
@@ -244,21 +246,23 @@ class TemporaryOTF:
     ``self.path`` can be used within the context to get the filepath to
     the temporary OTF filepath.
 
-    Args:
-    ----
-        psf (str, np.ndarray): 3D PSF numpy array, or a filepath to a 3D PSF
-            or 2D complex OTF file.
-        **kwargs: optional keyword arguments will be passed to the
-            :func:`pycudadecon.otf.make_otf` function
+    Parameters
+    ----------
+    psf : str | np.ndarray
+        3D PSF numpy array, or a filepath to a 3D PSF or 2D complex OTF file.
+    **kwargs
+        optional keyword arguments will be passed to the
+        :func:`pycudadecon.otf.make_otf` function
 
-    Note:
-    ----
-        OTF files cannot currently be provided directly as 2D complex np.ndarrays
+    Notes
+    -----
+    OTF files cannot currently be provided directly as 2D complex np.ndarrays
 
     Raises
     ------
-        ValueError: If the PSF/OTF is an unexpected type
-        NotImplementedError: if the PSF/OTF is a complex 2D numpy array
+    ValueError
+        If the PSF/OTF is an unexpected type NotImplementedError: if the PSF/OTF is a
+        complex 2D numpy array
 
     Example:
     -------

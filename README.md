@@ -1,4 +1,4 @@
-# pyCUDAdecon
+# pycudadecon
 
 This package provides a python wrapper and convenience functions for
 [cudaDecon](https://github.com/scopetools/cudaDecon), which is a CUDA/C++
@@ -10,7 +10,6 @@ algorithm<sup>1</sup>.
   independence between PSF and data volumes
 * 3D deskew, rotation, general affine transformations
 * CUDA-based camera-correction for [sCMOS artifact correction](https://llspy.readthedocs.io/en/latest/camera.html)
-
 
 ### Install
 
@@ -24,40 +23,29 @@ conda install -c conda-forge pycudadecon
 
 ### 📖   &nbsp; [Documentation](http://www.talleylambert.com/pycudadecon)
 
-
 ### GPU requirements
 
-This software requires a CUDA-compatible NVIDIA GPU. The underlying cudadecon
-libraries have been compiled against different versions of the CUDA toolkit.
-The required CUDA libraries are bundled in the conda distributions so you don't
-need to install the CUDA toolkit separately.  If desired, you can pick which
-version of CUDA you'd like based on your needs, but please note that different
-versions of the CUDA toolkit have different GPU driver requirements:
+This software requires a CUDA-compatible NVIDIA GPU.
 
-To specify a specific cudatoolkit version, install as follows (for instance, to
-use `cudatoolkit=10.2`)
+The libraries available on conda-forge have been compiled against different
+versions of the CUDA toolkit. The required CUDA libraries are bundled in the
+conda distributions so you don't need to install the CUDA toolkit separately.
+
+If desired, you may specify cuda-version as follows:
 
 ```sh
-conda install -c conda-forge pycudadecon cudatoolkit=10.2
+conda install -c conda-forge pycudadecon cuda-version=<11 or 12>
 ```
 
-| CUDA | Linux driver | Win driver |
-| ---- | ------------ | ---------- |
-| 10.2 | ≥ 440.33     | ≥ 441.22   |
-| 11.0 | ≥ 450.36.06  | ≥ 451.22   |
-| 11.1 | ≥ 455.23     | ≥ 456.38   |
-| 11.2 | ≥ 460.27.03  | ≥ 460.82   |
-
-
-If you run into trouble, feel free to [open an
-issue](https://github.com/tlambert03/pycudadecon/issues) and describe your
-setup.
-
+You should also ensure that you have the
+[minimum required driver version](https://docs.nvidia.com/deploy/cuda-compatibility/index.html#cuda-11-and-later-defaults-to-minor-version-compatibility)
+installed for the CUDA version you are using.
 
 ## Usage
 
-
-The [`pycudadecon.decon()`](https://www.talleylambert.com/pycudadecon/deconvolution.html#pycudadecon.decon) function is designed be able to handle most basic applications:
+The
+[`pycudadecon.decon()`](https://www.talleylambert.com/pycudadecon/deconvolution.html#pycudadecon.decon)
+function is designed be able to handle most basic applications:
 
 ```python
 from pycudadecon import decon
@@ -74,7 +62,14 @@ result = decon([img_array, '/path/to/3D_image.tif'], psf_array)
 # see docstrings for additional parameter options
 ```
 
-For finer-tuned control, you may wish to make an OTF file from your PSF using [`pycudadecon.make_otf()`](https://www.talleylambert.com/pycudadecon/otf.html#pycudadecon.make_otf), and then use the [`pycudadecon.RLContext`](https://www.talleylambert.com/pycudadecon/deconvolution.html#pycudadecon.RLContext) context manager to setup the GPU for use with the [`pycudadecon.rl_decon()`](https://www.talleylambert.com/pycudadecon/deconvolution.html#pycudadecon.rl_decon) function.  (Note all images processed in the same context must have the same input shape).
+For finer-tuned control, you may wish to make an OTF file from your PSF using
+[`pycudadecon.make_otf()`](https://www.talleylambert.com/pycudadecon/otf.html#pycudadecon.make_otf),
+and then use the
+[`pycudadecon.RLContext`](https://www.talleylambert.com/pycudadecon/deconvolution.html#pycudadecon.RLContext)
+context manager to setup the GPU for use with the
+[`pycudadecon.rl_decon()`](https://www.talleylambert.com/pycudadecon/deconvolution.html#pycudadecon.rl_decon)
+function.  (Note all images processed in the same context must have the same
+input shape).
 
 ```python
 from pycudadecon import RLContext, rl_decon
