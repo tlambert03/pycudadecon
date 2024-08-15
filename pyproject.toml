@@ -138,4 +138,4 @@ ignore = [
 ]
 
 [tool.typos.default]
-extend-ignore-identifiers-re = ["(?i)otfs?.*", "(?i)nd2", "(?i)b3Dout"]
+extend-ignore-identifiers-re = ["(?i)otfs?.*", "(?i)nd2", "(?i)b3Dout", "3Dout"]
