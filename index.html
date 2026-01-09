@@ -7,11 +7,11 @@
 
     <!-- Generated with Sphinx 7.4.7 and Furo 2024.08.06 -->
         <title>pycudadecon</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d623d863" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=20074c1a" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=302659d7" />
@@ -284,7 +284,7 @@ independence between PSF and data volumes</p></li>
 <p>If you have a PSF and an image volume and you just want to get started, check
 out the <a class="reference internal" href="deconvolution.html#pycudadecon.decon" title="pycudadecon.decon"><code class="xref py py-func docutils literal notranslate"><span class="pre">pycudadecon.decon()</span></code></a> function, which should be able to handle most
 basic applications.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pycudadecon</span> <span class="kn">import</span> <span class="n">decon</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pycudadecon</span><span class="w"> </span><span class="kn">import</span> <span class="n">decon</span>
 
 <span class="n">image_path</span> <span class="o">=</span> <span class="s1">&#39;/path/to/some_image.tif&#39;</span>
 <span class="n">psf_path</span> <span class="o">=</span> <span class="s1">&#39;/path/to/psf_3D.tif&#39;</span>
@@ -296,9 +296,9 @@ basic applications.</p>
 context manager to setup the GPU for use with the <a class="reference internal" href="deconvolution.html#pycudadecon.rl_decon" title="pycudadecon.rl_decon"><code class="xref py py-func docutils literal notranslate"><span class="pre">rl_decon()</span></code></a>
 function.  (Note all images processed in the same context must have the same
 input shape).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pycudadecon</span> <span class="kn">import</span> <span class="n">RLContext</span><span class="p">,</span> <span class="n">rl_decon</span>
-<span class="kn">from</span> <span class="nn">glob</span> <span class="kn">import</span> <span class="n">glob</span>
-<span class="kn">import</span> <span class="nn">tifffile</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pycudadecon</span><span class="w"> </span><span class="kn">import</span> <span class="n">RLContext</span><span class="p">,</span> <span class="n">rl_decon</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">glob</span><span class="w"> </span><span class="kn">import</span> <span class="n">glob</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tifffile</span>
 
 <span class="n">image_folder</span> <span class="o">=</span> <span class="s1">&#39;/path/to/some_images/&#39;</span>
 <span class="n">imlist</span> <span class="o">=</span> <span class="n">glob</span><span class="p">(</span><span class="n">image_folder</span> <span class="o">+</span> <span class="s1">&#39;*488*.tif&#39;</span><span class="p">)</span>

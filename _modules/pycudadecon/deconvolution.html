@@ -6,11 +6,11 @@
 
     <!-- Generated with Sphinx 7.4.7 and Furo 2024.08.06 -->
         <title>pycudadecon.deconvolution - pycudadecon</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d623d863" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=20074c1a" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
@@ -249,20 +249,20 @@
           <h1>Source code for pycudadecon.deconvolution</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Main deconvolution functions.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">fnmatch</span> <span class="kn">import</span> <span class="n">fnmatch</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">cast</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fnmatch</span><span class="w"> </span><span class="kn">import</span> <span class="n">fnmatch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">cast</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">lib</span>
-<span class="kn">from</span> <span class="nn">.otf</span> <span class="kn">import</span> <span class="n">TemporaryOTF</span>
-<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">PathOrArray</span><span class="p">,</span> <span class="n">_kwargs_for</span><span class="p">,</span> <span class="n">imread</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">lib</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.otf</span><span class="w"> </span><span class="kn">import</span> <span class="n">TemporaryOTF</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">PathOrArray</span><span class="p">,</span> <span class="n">_kwargs_for</span><span class="p">,</span> <span class="n">imread</span>
 
 
 <div class="viewcode-block" id="rl_cleanup">
 <a class="viewcode-back" href="../../deconvolution.html#pycudadecon.rl_cleanup">[docs]</a>
-<span class="k">def</span> <span class="nf">rl_cleanup</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rl_cleanup</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Release GPU buffer and cleanup after deconvolution.</span>
 
 <span class="sd">    Call this before program quits to release global GPUBuffer d_interpOTF.</span>
@@ -278,7 +278,7 @@
 
 <div class="viewcode-block" id="rl_init">
 <a class="viewcode-back" href="../../deconvolution.html#pycudadecon.rl_init">[docs]</a>
-<span class="k">def</span> <span class="nf">rl_init</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rl_init</span><span class="p">(</span>
     <span class="n">rawdata_shape</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
     <span class="n">otfpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">dzdata</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
@@ -342,7 +342,7 @@
 
 <div class="viewcode-block" id="rl_decon">
 <a class="viewcode-back" href="../../deconvolution.html#pycudadecon.rl_decon">[docs]</a>
-<span class="k">def</span> <span class="nf">rl_decon</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rl_decon</span><span class="p">(</span>
     <span class="n">im</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">background</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;auto&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">80</span><span class="p">,</span>
     <span class="n">n_iters</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
@@ -460,7 +460,7 @@
 
 
 
-<span class="k">def</span> <span class="nf">quickDecon</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">quickDecon</span><span class="p">(</span>
     <span class="n">image</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">otfpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform deconvolution of `image` with otf at `otfpath`.</span>
@@ -476,7 +476,7 @@
 
 <div class="viewcode-block" id="RLContext">
 <a class="viewcode-back" href="../../deconvolution.html#pycudadecon.RLContext">[docs]</a>
-<span class="k">class</span> <span class="nc">RLContext</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RLContext</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Context manager to setup the GPU for RL decon.</span>
 
 <span class="sd">    Takes care of handing the OTF to the GPU, preparing a cuFFT plan,</span>
@@ -492,7 +492,7 @@
 <span class="sd">    ...     result = rl_decon(data, ctx.out_shape)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">rawdata_shape</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
         <span class="n">otfpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -519,13 +519,13 @@
         <span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">out_shape</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;RLContext&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;RLContext&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Setup the context and return the ZYX shape of the output image.&quot;&quot;&quot;</span>
         <span class="n">rl_init</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">out_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">lib</span><span class="o">.</span><span class="n">get_output_nz</span><span class="p">(),</span> <span class="n">lib</span><span class="o">.</span><span class="n">get_output_ny</span><span class="p">(),</span> <span class="n">lib</span><span class="o">.</span><span class="n">get_output_nx</span><span class="p">())</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Cleanup the context.&quot;&quot;&quot;</span>
         <span class="c1"># exit receives a tuple with any exceptions raised during processing</span>
         <span class="c1"># if __exit__ returns True, exceptions will be suppressed</span>
@@ -537,7 +537,7 @@
 <span class="n">rl_context</span> <span class="o">=</span> <span class="n">RLContext</span>
 
 
-<span class="k">def</span> <span class="nf">_yield_arrays</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_yield_arrays</span><span class="p">(</span>
     <span class="n">images</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">PathOrArray</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">PathOrArray</span><span class="p">]],</span> <span class="n">fpattern</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;*.tif&quot;</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Yield arrays from an array, path, or sequence of either.</span>
@@ -583,7 +583,7 @@
 
 <div class="viewcode-block" id="decon">
 <a class="viewcode-back" href="../../deconvolution.html#pycudadecon.decon">[docs]</a>
-<span class="k">def</span> <span class="nf">decon</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">decon</span><span class="p">(</span>
     <span class="n">images</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">PathOrArray</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">PathOrArray</span><span class="p">]],</span>
     <span class="n">psf</span><span class="p">:</span> <span class="n">PathOrArray</span><span class="p">,</span>
     <span class="n">fpattern</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;*.tif&quot;</span><span class="p">,</span>
