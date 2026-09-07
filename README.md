@@ -51,13 +51,13 @@ function is designed be able to handle most basic applications:
 from pycudadecon import decon
 
 # pass filenames of an image and a PSF
-result = decon('/path/to/3D_image.tif', '/path/to/3D_psf.tif')
+result = decon("/path/to/3D_image.tif", "/path/to/3D_psf.tif")
 
 # decon also accepts numpy arrays
 result = decon(img_array, psf_array)
 
 # the image source can also be a sequence of arrays or paths
-result = decon([img_array, '/path/to/3D_image.tif'], psf_array)
+result = decon([img_array, "/path/to/3D_image.tif"], psf_array)
 
 # see docstrings for additional parameter options
 ```
@@ -76,9 +76,9 @@ from pycudadecon import RLContext, rl_decon
 from glob import glob
 import tifffile
 
-image_folder = '/path/to/some_images/'
-imlist = glob(image_folder + '*488*.tif')
-otf_path = '/path/to/pregenerated_otf.tif'
+image_folder = "/path/to/some_images/"
+imlist = glob(image_folder + "*488*.tif")
+otf_path = "/path/to/pregenerated_otf.tif"
 
 with tifffile.TiffFile(imlist[0]) as tf:
     imshape = tf.series[0].shape
