@@ -77,7 +77,7 @@ def is_otf(arr_or_fpath: PathOrArray) -> bool:
 @contextmanager
 def stdout_redirected(to: str = os.devnull) -> Iterator[None]:
     """
-    import os.
+    Import os.
 
     with stdout_redirected(to=filename):
         print("from Python")
