@@ -35,8 +35,8 @@ basic applications.
 ```python
 from pycudadecon import decon
 
-image_path = '/path/to/some_image.tif'
-psf_path = '/path/to/psf_3D.tif'
+image_path = "/path/to/some_image.tif"
+psf_path = "/path/to/psf_3D.tif"
 result = decon(image_path, psf_path)
 ```
 
@@ -51,9 +51,9 @@ from pycudadecon import RLContext, rl_decon
 from glob import glob
 import tifffile
 
-image_folder = '/path/to/some_images/'
-imlist = glob(image_folder + '*488*.tif')
-otf_path = '/path/to/pregenerated_otf.tif'
+image_folder = "/path/to/some_images/"
+imlist = glob(image_folder + "*488*.tif")
+otf_path = "/path/to/pregenerated_otf.tif"
 
 with tifffile.TiffFile(imlist[0]) as tf:
     imshape = tf.series[0].shape
